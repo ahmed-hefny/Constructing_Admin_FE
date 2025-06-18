@@ -7,7 +7,7 @@ import { PasswordModule } from 'primeng/password';
 import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -29,11 +29,9 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
+  private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   ngOnInit(): void {
-    this.inputForm = new UntypedFormGroup({
-      username: new UntypedFormControl('', [Validators.required]),
-      password: new UntypedFormControl('', [Validators.required])
-    });
+    this.initializeForm();
   }
 
   login(): void {
@@ -45,16 +43,14 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     const credentials = this.inputForm.value;
-    
+
     this.authService.login(credentials).subscribe({
-      next: (response) => {
-        console.log('Login successful:', response);
+      next: () => {
         this.isLoading = false;
-        this.router.navigate(['']);  // Redirect to dashboard or home page
-        // Handle successful login, e.g., redirect to dashboard
+        this.navigateAfterLogin();
       },
       error: (error) => {
-        console.error('Login failed:', {error});
+        console.error('Login failed:', { error });
         this.isLoading = false;
         this.errorMessage = error.error;
       }
@@ -74,5 +70,17 @@ export class LoginComponent implements OnInit {
 
   get passwordControl() {
     return this.inputForm.get('password');
+  }
+
+  private initializeForm(): void {
+    this.inputForm = new UntypedFormGroup({
+      username: new UntypedFormControl('', [Validators.required]),
+      password: new UntypedFormControl('', [Validators.required])
+    });
+  }
+
+  private navigateAfterLogin(): void {
+    const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+    this.router.navigate([returnUrl]);
   }
 }

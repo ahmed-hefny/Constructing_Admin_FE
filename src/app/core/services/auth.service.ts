@@ -5,13 +5,15 @@ import { jwtDecode } from 'jwt-decode';
 import { HttpService } from './http.service';
 import { LoginRequest, LoginResponse, DecodedToken } from '../models/auth.models';
 import { TOKEN_KEY, USER_KEY } from '../constants/keys.constants';
+import { Router } from '@angular/router';
+import { LOGIN_URL } from '../constants/app.constants';
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
 
     private httpService: HttpService = inject(HttpService);
-
+    private router: Router = inject(Router);
     /**
      * Login user with credentials
      */
@@ -37,6 +39,7 @@ export class AuthService {
      */
     logout(): void {
         this.clearAuthData();
+        this.router.navigate([LOGIN_URL]);
     }
 
     /**
