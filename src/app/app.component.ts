@@ -1,23 +1,13 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { AuthService } from './core/services';
+import { Component} from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'Constructing_Admin_FE';
-  authService = inject(AuthService);
 
-  ngOnInit(): void {
-    // Test the auth service with login
-    const credentials = {
-      username: "hefny",
-      password: "123456"
-    };
-
-    this.authService.login(credentials).subscribe();
-  }
 }
