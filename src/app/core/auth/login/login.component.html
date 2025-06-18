@@ -1,1 +1,90 @@
-<p>login works!</p>
+<div
+  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4"
+>
+  <div class="w-full max-w-md">
+    <p-card class="shadow-xl border-radius-lg">
+      <ng-template pTemplate="header">
+        <div class="text-center py-6">
+          <p class="text-gray-600">Please sign in to your account</p>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="content">
+        <form [formGroup]="inputForm" (ngSubmit)="login()" class="space-y-6">
+          <!-- Error Message -->
+          @if (errorMessage) {
+          <div class="mb-4">
+            <p-message
+              severity="error"
+              [text]="errorMessage"
+              class="w-full"
+            ></p-message>
+          </div>
+          }
+
+          <!-- Username Field -->
+          <div class="space-y-2">
+            <label
+              for="username"
+              class="block text-sm font-medium text-gray-700"
+            >
+              Username
+            </label>
+            <input
+              pInputText
+              id="username"
+              formControlName="username"
+              placeholder="Enter your username"
+              class="w-full"
+            />
+            @if (usernameControl?.invalid && usernameControl?.touched) {
+            <div class="text-red-500 text-sm">
+              @if (usernameControl?.errors?.['required']) {
+              <span>Username is required</span>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Password Field -->
+          <div class="space-y-2">
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+              >Password</label
+            >
+            <p-password
+              formControlName="password"
+              placeholder="Enter your password"
+              [toggleMask]="true"
+              [feedback]="false"
+              inputId="password"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+            ></p-password>
+            @if (passwordControl?.invalid && passwordControl?.touched) {
+            <div class="text-red-500 text-sm">
+              @if (passwordControl?.errors?.['required']) {
+              <span>Password is required</span>
+              }
+            </div>
+            }
+          </div>
+
+          <!-- Login Button -->
+          <div class="pt-4">
+            <p-button
+              type="button"
+              label="Sign In"
+              [loading]="isLoading"
+              class="w-full bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 transition duration-150 ease-in-out text-center rounded-lg shadow-sm py-3 text-lg cursor-pointer"
+              severity="contrast"
+              size="large"
+              (click)="login()"
+            ></p-button>
+          </div>
+        </form>
+      </ng-template>
+    </p-card>
+  </div>
+</div>
