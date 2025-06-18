@@ -11,7 +11,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   );
 };
 
-function handleError(error: HttpErrorResponse): Error {
+function handleError(error: HttpErrorResponse): HttpErrorResponse | Error {
   let errorMessage = 'An unknown error occurred';
   
   if (error.error instanceof ErrorEvent) {
@@ -35,5 +35,5 @@ function handleError(error: HttpErrorResponse): Error {
     });
   }
 
-  return new Error(errorMessage);
+  return error;
 }
