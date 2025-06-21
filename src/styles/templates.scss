@@ -1,0 +1,26 @@
+@import "./variables.scss";
+
+.page {
+    &-header{
+        &-title {
+            font-size: $font-size-2xl;
+            font-weight: $font-weight-semibold;
+        }
+        display: flex;
+        gap: $spacing-md;
+    }
+}
+
+@media (max-width: $breakpoint-md) {
+    .page {
+        &-header {
+            justify-content: space-between;
+            gap: $spacing-sm;
+            
+            &-title {
+                font-size: $font-size-xl;
+            }
+        }
+    }
+}
+

@@ -16,3 +16,10 @@
 // Custom styles
 @import "styles/input.scss";
 @import "styles/utilities.scss";
+@import "styles/buttons.scss";
+@import "styles/templates.scss";
+
+html {
+    font-family: 'Inter', sans-serif;
+    color: $text-primary;
+}

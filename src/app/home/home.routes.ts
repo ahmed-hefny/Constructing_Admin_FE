@@ -9,12 +9,10 @@ export default [
             {
                 path: '',
                 loadChildren: () => import('features/projects/projects.routes'),
-                pathMatch: 'full'
             },
             {
                 path: 'users',
                 loadChildren: () => import('features/users/users.routes'),
-                pathMatch: 'full'
 
             }
         ]
