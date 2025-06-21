@@ -1,3 +1,5 @@
+import { PaginationRequest } from "../models";
+
 export const LOGIN_URL = '/auth/login';
 
 export enum SystemRoles {
@@ -12,3 +14,8 @@ export const SYSTEM_ROLES_OPTIONS = [
     { label: 'Supervisor', value: SystemRoles.SUPER_VISOR },
     { label: 'Employee', value: SystemRoles.EMPLOYEE },
 ]
+
+export const Default_PAGINATION: PaginationRequest = {
+    pageNumber: 1,
+    pageSize: 10,
+}
