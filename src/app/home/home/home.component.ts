@@ -42,7 +42,7 @@ export class HomeComponent {
           return {
             ...item,
             visible: this.authService.hasRole(item?.roles || []),
-            // command: () => this.toggleSidebar(),
+            command: () => this.toggleSidebar(),
             routerLinkActiveOptions: { exact: true }
           }
         })
