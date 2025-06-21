@@ -6,7 +6,7 @@ import { HttpService } from './http.service';
 import { LoginRequest, LoginResponse, DecodedToken } from '../models/auth.models';
 import { TOKEN_KEY, USER_KEY } from '../constants/keys.constants';
 import { Router } from '@angular/router';
-import { LOGIN_URL } from '../constants/app.constants';
+import { LOGIN_URL, SystemRoles } from '../constants/app.constants';
 @Injectable({
     providedIn: 'root'
 })
@@ -77,7 +77,7 @@ export class AuthService {
     /**
      * Check if user has specific role
      */
-    hasRole(role: string | string[]): boolean {
+    hasRole(role: SystemRoles | SystemRoles[]): boolean {
         const decodedToken = this.decodeToken();
         if (!decodedToken || !decodedToken.role) return false;
         if (Array.isArray(role)) {
