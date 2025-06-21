@@ -9,6 +9,9 @@
     display: flex;
     gap: $spacing-md;
   }
+  &-content {
+    padding-top: $spacing-lg;
+  }
 }
 
 .input-form {

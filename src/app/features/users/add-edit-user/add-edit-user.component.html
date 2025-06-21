@@ -3,7 +3,9 @@
     <button class="btn btn-outline border-0" (click)="navigateBack()">
       <i class="pi pi-angle-left text-2xl"></i>
     </button>
-    <h1 class="page-header-title">Create new user</h1>
+    <h1 class="page-header-title">
+      {{ editMode ? "Edit" : "Create new" }} user
+    </h1>
   </div>
   <div class="page-content">
     <p-card>
@@ -79,10 +81,9 @@
               placeholder="Select a Company"
             />
           </div>
-          @if(inputForm.get('companyId')?.invalid && inputForm.get('companyId')?.touched) {
-          <small class="error-message">
-            Company is required
-          </small>
+          @if(inputForm.get('companyId')?.invalid &&
+          inputForm.get('companyId')?.touched) {
+          <small class="error-message"> Company is required </small>
           }
         </div>
         }

@@ -190,6 +190,7 @@
     .p-menuitem-link {
       padding: $spacing-md $spacing-xl;
       color: $menu-text;
+      text-transform: capitalize;
       @include transition();
       border-radius: 0;
       border: none;

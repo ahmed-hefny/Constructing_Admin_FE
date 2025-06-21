@@ -5,3 +5,10 @@ export interface UserPayload {
     role: string,
     companyId: number | null
 }
+
+export interface UserResponse {
+    id: number,
+    username: string,
+    role: string,
+    companyId: number | null,
+}

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormControl, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -24,10 +24,10 @@ const imports = [
   CardModule,
 ]
 @Component({
-  selector: 'app-create-user',
+  selector: 'app-add-edit-user',
   imports,
-  templateUrl: './create-user.component.html',
-  styleUrl: './create-user.component.scss',
+  templateUrl: './add-edit-user.component.html',
+  styleUrl: './add-edit-user.component.scss',
   standalone: true,
 })
 export class CreateUserComponent {
@@ -46,9 +46,11 @@ export class CreateUserComponent {
   private router: Router = inject(Router);
   private usersService: UsersService = inject(UsersService);
   private toaster: ToasterService = inject(ToasterService);
+  private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   constructor() {
     this.initializeForm();
     this.listenToRoleChanges();
+    this.processEditMode();
   }
   navigateBack(): void {
     this.router.navigate(['users']);
@@ -61,17 +63,35 @@ export class CreateUserComponent {
       this.isLoading = false;
       return;
     }
-    this.usersService.create(this.inputForm.value)
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        })
-      ).subscribe({
-        next: (response) => {
-          this.toaster.showSuccess('User created successfully');
-          this.navigateBack();
+    const payload = this.inputForm.value;
+    const action = this.editMode ? this.usersService.update(payload) : this.usersService.create(payload);
+    action.pipe(
+      finalize(() => this.isLoading = false)
+    ).subscribe({
+      next: () => {
+        const message = `user ${this.editMode ? 'updated' : 'created'} successfully`;
+        this.toaster.showSuccess(message);
+        this.navigateBack();
+      }
+    })
+  }
+
+  private processEditMode(): void {
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.editMode = true;
+      this.usersService.getUserById(id).subscribe({
+        next: (user) => {
+          console.log({ user });
+          this.inputForm.patchValue(user);
+          this.inputForm.get('password')?.setValidators([]);
+          this.inputForm.get('password')?.updateValueAndValidity();
+        },
+        error: (error) => {
+          this.toaster.showError('Failed to load user data');
         }
-      })
+      });
+    }
   }
 
   private listenToRoleChanges(): void {
@@ -86,8 +106,9 @@ export class CreateUserComponent {
 
   private initializeForm(): void {
     this.inputForm = new UntypedFormGroup({
-      username: new FormControl<string>('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
-      password: new FormControl<string>('', [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
+      id: new FormControl<number | null>(null),
+      username: new FormControl<string | null>(null, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
+      password: new FormControl<string | null>(null, [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
       role: new FormControl<SystemRoles | null>(null, [Validators.required]),
       companyId: new UntypedFormControl(null, [CreateUserComponent.companyIdValidator()]),
     });

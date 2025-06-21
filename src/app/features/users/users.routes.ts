@@ -7,6 +7,10 @@ export default [
     },
     {
         path: 'create',
-        loadComponent: () => import('./create-user/create-user.component').then(m => m.CreateUserComponent)
+        loadComponent: () => import('./add-edit-user/add-edit-user.component').then(m => m.CreateUserComponent)
+    },
+    {
+        path: 'edit/:id',
+        loadComponent: () => import('./add-edit-user/add-edit-user.component').then(m => m.CreateUserComponent)
     }
 ] as Routes
