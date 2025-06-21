@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
+// Design System Variables (imported first)
+@import "styles/variables.scss";
+
 // Tailwind CSS
 @tailwind base;
 @tailwind components;
@@ -10,5 +13,6 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
-@import "styles/variables.scss";
+// Custom styles
 @import "styles/input.scss";
+@import "styles/utilities.scss";

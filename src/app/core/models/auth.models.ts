@@ -1,3 +1,5 @@
+import { SystemRoles } from "../constants/app.constants";
+
 export interface LoginRequest {
     username: string;
     password: string;
@@ -10,7 +12,7 @@ export interface LoginResponse {
 export interface DecodedToken {
     nameid: string;
     unique_name: string;
-    role: string;
+    role: SystemRoles;
     CompanyId: number;
     iat: number; // Issued at
     exp: number; // Expiration time

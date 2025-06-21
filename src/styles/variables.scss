@@ -1,0 +1,219 @@
+// =============================================================================
+// CONSTRUCTION ADMIN DESIGN SYSTEM
+// =============================================================================
+
+// Brand Colors
+// -----------------------------------------------------------------------------
+$brand-primary: #667eea;
+$brand-secondary: #764ba2;
+$brand-gradient: linear-gradient(135deg, $brand-primary 0%, $brand-secondary 100%);
+
+// Neutral Colors (Slate Palette)
+// -----------------------------------------------------------------------------
+$neutral-50: #f8fafc;
+$neutral-100: #f1f5f9;
+$neutral-200: #e2e8f0;
+$neutral-300: #cbd5e1;
+$neutral-400: #94a3b8;
+$neutral-500: #64748b;
+$neutral-600: #475569;
+$neutral-700: #334155;
+$neutral-800: #1e293b;
+$neutral-900: #0f172a;
+
+// Gray Colors (Neutral Palette)
+// -----------------------------------------------------------------------------
+$gray-50: #f9fafb;
+$gray-100: #f3f4f6;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-800: #1f2937;
+$gray-900: #111827;
+
+// Surface Colors
+// -----------------------------------------------------------------------------
+$surface-white: #ffffff;
+$surface-gray: #f8f9fa;
+$surface-border: #e9ecef;
+$surface-content: #f8fafc;
+
+// Semantic Colors
+// -----------------------------------------------------------------------------
+$success: #10b981;
+$success-light: #d1fae5;
+$success-dark: #047857;
+
+$warning: #f59e0b;
+$warning-light: #fef3c7;
+$warning-dark: #d97706;
+
+$error: #ef4444;
+$error-light: #fee2e2;
+$error-dark: #dc2626;
+
+$info: #3b82f6;
+$info-light: #dbeafe;
+$info-dark: #1d4ed8;
+
+// Text Colors
+// -----------------------------------------------------------------------------
+$text-primary: $neutral-700;
+$text-secondary: $neutral-500;
+$text-muted: $neutral-400;
+$text-white: #ffffff;
+$text-brand: $brand-primary;
+
+// Interactive Colors
+// -----------------------------------------------------------------------------
+$interactive-hover: rgba(255, 255, 255, 0.1);
+$interactive-focus: rgba(102, 126, 234, 0.1);
+$interactive-disabled: $neutral-300;
+
+// Shadow Colors
+// -----------------------------------------------------------------------------
+$shadow-light: rgba(0, 0, 0, 0.1);
+$shadow-medium: rgba(0, 0, 0, 0.15);
+$shadow-dark: rgba(0, 0, 0, 0.25);
+
+// Layout Dimensions
+// -----------------------------------------------------------------------------
+$sidebar-width: 280px;
+$top-bar-height: 60px;
+
+// Border Radius
+// -----------------------------------------------------------------------------
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-full: 50%;
+
+// Spacing Scale
+// -----------------------------------------------------------------------------
+$spacing-xs: 0.25rem;  // 4px
+$spacing-sm: 0.5rem;   // 8px
+$spacing-md: 0.75rem;  // 12px
+$spacing-lg: 1rem;     // 16px
+$spacing-xl: 1.5rem;   // 24px
+$spacing-2xl: 2rem;    // 32px
+$spacing-3xl: 3rem;    // 48px
+
+// Typography Scale
+// -----------------------------------------------------------------------------
+$font-size-xs: 0.75rem;   // 12px
+$font-size-sm: 0.875rem;  // 14px
+$font-size-base: 1rem;    // 16px
+$font-size-lg: 1.125rem;  // 18px
+$font-size-xl: 1.25rem;   // 20px
+$font-size-2xl: 1.5rem;   // 24px
+$font-size-3xl: 1.875rem; // 30px
+
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+
+// Transitions
+// -----------------------------------------------------------------------------
+$transition-fast: 0.15s ease-in-out;
+$transition-base: 0.3s ease-in-out;
+$transition-slow: 0.5s ease-in-out;
+
+// Z-Index Scale
+// -----------------------------------------------------------------------------
+$z-index-dropdown: 1000;
+$z-index-sidebar: 999;
+$z-index-top-bar: 1000;
+$z-index-modal: 1050;
+$z-index-tooltip: 1100;
+
+// Breakpoints
+// -----------------------------------------------------------------------------
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-2xl: 1400px;
+
+// Component Specific Variables
+// -----------------------------------------------------------------------------
+
+// Sidebar
+$sidebar-bg: $surface-white;
+$sidebar-border: $surface-border;
+$sidebar-header-bg: $surface-gray;
+$sidebar-profile-bg: $surface-gray;
+$sidebar-menu-hover: $neutral-100;
+$sidebar-menu-active: $neutral-200;
+
+// top-bar
+$top-bar-bg: $brand-gradient;
+$top-bar-text: $text-white;
+$top-bar-shadow: 0 2px 12px 0 $shadow-light;
+
+// Content
+$content-bg: $surface-content;
+$content-padding: $spacing-2xl;
+
+// Menu Items
+$menu-text: $text-primary;
+$menu-text-hover: $brand-primary;
+$menu-icon: $text-secondary;
+$menu-icon-hover: $brand-primary;
+
+// Avatar
+$avatar-bg: $brand-gradient;
+
+// Buttons
+$button-primary-bg: $brand-gradient;
+$button-hover-overlay: $interactive-hover;
+
+// =============================================================================
+// UTILITY MIXINS
+// =============================================================================
+
+@mixin button-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin transition($property: all) {
+  transition: #{$property} $transition-base;
+}
+
+@mixin shadow-sm {
+  box-shadow: 0 1px 3px 0 $shadow-light;
+}
+
+@mixin shadow-md {
+  box-shadow: 0 4px 6px -1px $shadow-light;
+}
+
+@mixin shadow-lg {
+  box-shadow: 0 10px 15px -3px $shadow-light;
+}

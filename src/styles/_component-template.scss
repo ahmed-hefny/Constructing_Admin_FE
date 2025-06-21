@@ -1,0 +1,205 @@
+// =============================================================================
+// COMPONENT TEMPLATE - DESIGN SYSTEM USAGE EXAMPLE
+// =============================================================================
+// This template shows best practices for using the Construction Admin Design System
+
+@import '../../../styles/variables.scss';
+
+.example-component {
+  // Use semantic variables for backgrounds and borders
+  background: $surface-white;
+  border: 1px solid $surface-border;
+  border-radius: $border-radius-lg;
+  
+  // Use spacing variables consistently
+  padding: $spacing-xl;
+  margin-bottom: $spacing-lg;
+  
+  // Apply shadows using mixins
+  @include shadow-md();
+  
+  // Use transition mixins for smooth interactions
+  @include transition();
+  
+  &:hover {
+    @include shadow-lg();
+  }
+}
+
+.example-header {
+  // Use layout mixins for common patterns
+  @include flex-between();
+  
+  // Use spacing and border variables
+  padding-bottom: $spacing-lg;
+  border-bottom: 1px solid $surface-border;
+  margin-bottom: $spacing-lg;
+  
+  .title {
+    // Use typography variables
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    color: $text-primary;
+    
+    // Use text utility mixin
+    @include text-truncate();
+  }
+  
+  .actions {
+    display: flex;
+    gap: $spacing-sm;
+  }
+}
+
+.example-content {
+  .description {
+    font-size: $font-size-base;
+    color: $text-secondary;
+    line-height: 1.5;
+    margin-bottom: $spacing-lg;
+  }
+  
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $spacing-lg;
+  }
+}
+
+.stat-card {
+  background: $surface-gray;
+  border-radius: $border-radius-md;
+  padding: $spacing-lg;
+  
+  .stat-label {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+    font-weight: $font-weight-medium;
+    margin-bottom: $spacing-xs;
+  }
+  
+  .stat-value {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $text-primary;
+  }
+  
+  &.success {
+    border-left: 4px solid $success;
+    
+    .stat-value {
+      color: $success;
+    }
+  }
+  
+  &.warning {
+    border-left: 4px solid $warning;
+    
+    .stat-value {
+      color: $warning;
+    }
+  }
+  
+  &.error {
+    border-left: 4px solid $error;
+    
+    .stat-value {
+      color: $error;
+    }
+  }
+}
+
+.example-button {
+  // Reset button defaults
+  @include button-reset();
+  
+  // Apply design system values
+  background: $brand-gradient;
+  color: $text-white;
+  padding: $spacing-md $spacing-xl;
+  border-radius: $border-radius-md;
+  font-weight: $font-weight-medium;
+  
+  // Apply interactions
+  @include transition();
+  
+  &:hover {
+    transform: translateY(-1px);
+    @include shadow-md();
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:disabled {
+    background: $interactive-disabled;
+    color: $text-muted;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// Responsive design using breakpoint variables
+@media (max-width: $breakpoint-md) {
+  .example-component {
+    padding: $spacing-lg;
+    margin-bottom: $spacing-md;
+  }
+  
+  .example-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-md;
+    
+    .actions {
+      width: 100%;
+      justify-content: flex-end;
+    }
+  }
+  
+  .stat-card {
+    .stat-value {
+      font-size: $font-size-xl;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .example-content {
+    .stats {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+/* 
+USAGE NOTES:
+
+1. Always import variables at the top: @import '../../../styles/variables.scss';
+
+2. Use semantic variables instead of hardcoded values:
+   ✅ color: $text-primary;
+   ❌ color: #334155;
+
+3. Leverage mixins for common patterns:
+   ✅ @include flex-between();
+   ❌ display: flex; align-items: center; justify-content: space-between;
+
+4. Use spacing variables consistently:
+   ✅ padding: $spacing-lg;
+   ❌ padding: 16px;
+
+5. Apply responsive design with breakpoint variables:
+   ✅ @media (max-width: $breakpoint-md)
+   ❌ @media (max-width: 768px)
+
+6. Use transition mixins for smooth interactions:
+   ✅ @include transition();
+   ❌ transition: all 0.3s ease;
+
+7. Apply shadows using mixins:
+   ✅ @include shadow-md();
+   ❌ box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+*/

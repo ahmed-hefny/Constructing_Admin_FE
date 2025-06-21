@@ -77,9 +77,14 @@ export class AuthService {
     /**
      * Check if user has specific role
      */
-    hasRole(role: string): boolean {
+    hasRole(role: string | string[]): boolean {
         const decodedToken = this.decodeToken();
-        return decodedToken?.role === role;
+        if (!decodedToken || !decodedToken.role) return false;
+        if (Array.isArray(role)) {
+            return role.includes(decodedToken.role);
+        } else {
+            return decodedToken?.role === role;
+        }
     }
 
     // Private helper methods

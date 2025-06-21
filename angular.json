@@ -95,31 +95,38 @@
         }
       }
     }
-  },
-  "schematics": {
+  },  "schematics": {
     "@schematics/angular:component": {
-      "type": "component"
+      "type": "component",
+      "skipTests": true
     },
     "@schematics/angular:directive": {
-      "type": "directive"
+      "type": "directive",
+      "skipTests": true
     },
     "@schematics/angular:service": {
-      "type": "service"
+      "type": "service",
+      "skipTests": true
     },
     "@schematics/angular:guard": {
-      "typeSeparator": "."
+      "typeSeparator": ".",
+      "skipTests": true
     },
     "@schematics/angular:interceptor": {
-      "typeSeparator": "."
+      "typeSeparator": ".",
+      "skipTests": true
     },
     "@schematics/angular:module": {
-      "typeSeparator": "."
+      "typeSeparator": ".",
+      "skipTests": true
     },
     "@schematics/angular:pipe": {
-      "typeSeparator": "."
+      "typeSeparator": ".",
+      "skipTests": true
     },
     "@schematics/angular:resolver": {
-      "typeSeparator": "."
+      "typeSeparator": ".",
+      "skipTests": true
     }
   }
 }

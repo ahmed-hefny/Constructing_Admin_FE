@@ -1,0 +1,137 @@
+// =============================================================================
+// UTILITY CLASSES
+// =============================================================================
+// These utility classes complement Tailwind CSS and provide Construction Admin
+// specific utilities using our design system variables.
+
+@import 'variables';
+
+// Spacing Utilities (prefix with 'ca-' to avoid Tailwind conflicts)
+.ca-p-xs { padding: $spacing-xs; }
+.ca-p-sm { padding: $spacing-sm; }
+.ca-p-md { padding: $spacing-md; }
+.ca-p-lg { padding: $spacing-lg; }
+.ca-p-xl { padding: $spacing-xl; }
+.ca-p-2xl { padding: $spacing-2xl; }
+.ca-p-3xl { padding: $spacing-3xl; }
+
+.ca-m-xs { margin: $spacing-xs; }
+.ca-m-sm { margin: $spacing-sm; }
+.ca-m-md { margin: $spacing-md; }
+.ca-m-lg { margin: $spacing-lg; }
+.ca-m-xl { margin: $spacing-xl; }
+.ca-m-2xl { margin: $spacing-2xl; }
+.ca-m-3xl { margin: $spacing-3xl; }
+
+// Text Color Utilities
+.ca-text-primary { color: $text-primary; }
+.ca-text-secondary { color: $text-secondary; }
+.ca-text-muted { color: $text-muted; }
+.ca-text-white { color: $text-white; }
+.ca-text-brand { color: $text-brand; }
+.ca-text-success { color: $success; }
+.ca-text-warning { color: $warning; }
+.ca-text-error { color: $error; }
+.ca-text-info { color: $info; }
+
+// Background Color Utilities
+.ca-bg-white { background-color: $surface-white; }
+.ca-bg-gray { background-color: $surface-gray; }
+.ca-bg-content { background-color: $surface-content; }
+.ca-bg-brand { background: $brand-gradient; }
+.ca-bg-success { background-color: $success; }
+.ca-bg-warning { background-color: $warning; }
+.ca-bg-error { background-color: $error; }
+.ca-bg-info { background-color: $info; }
+
+// Border Utilities
+.ca-border { border: 1px solid $surface-border; }
+.ca-border-top { border-top: 1px solid $surface-border; }
+.ca-border-right { border-right: 1px solid $surface-border; }
+.ca-border-bottom { border-bottom: 1px solid $surface-border; }
+.ca-border-left { border-left: 1px solid $surface-border; }
+
+// Border Radius Utilities
+.ca-rounded-sm { border-radius: $border-radius-sm; }
+.ca-rounded-md { border-radius: $border-radius-md; }
+.ca-rounded-lg { border-radius: $border-radius-lg; }
+.ca-rounded-xl { border-radius: $border-radius-xl; }
+.ca-rounded-full { border-radius: $border-radius-full; }
+
+// Shadow Utilities
+.ca-shadow-sm { @include shadow-sm; }
+.ca-shadow-md { @include shadow-md; }
+.ca-shadow-lg { @include shadow-lg; }
+
+// Layout Utilities
+.ca-flex-center { @include flex-center; }
+.ca-flex-between { @include flex-between; }
+.ca-text-truncate { @include text-truncate; }
+
+// Typography Utilities
+.ca-text-xs { font-size: $font-size-xs; }
+.ca-text-sm { font-size: $font-size-sm; }
+.ca-text-base { font-size: $font-size-base; }
+.ca-text-lg { font-size: $font-size-lg; }
+.ca-text-xl { font-size: $font-size-xl; }
+.ca-text-2xl { font-size: $font-size-2xl; }
+.ca-text-3xl { font-size: $font-size-3xl; }
+
+.ca-font-normal { font-weight: $font-weight-normal; }
+.ca-font-medium { font-weight: $font-weight-medium; }
+.ca-font-semibold { font-weight: $font-weight-semibold; }
+.ca-font-bold { font-weight: $font-weight-bold; }
+
+// Transition Utilities
+.ca-transition { @include transition(); }
+.ca-transition-fast { transition: all $transition-fast; }
+.ca-transition-slow { transition: all $transition-slow; }
+
+// Component-specific Utilities
+.ca-sidebar-width { width: $sidebar-width; }
+.ca-top-bar-height { height: $top-bar-height; }
+
+// Interactive States
+.ca-hover-brand {
+  &:hover {
+    color: $brand-primary;
+  }
+}
+
+.ca-hover-bg-light {
+  &:hover {
+    background-color: $neutral-100;
+  }
+}
+
+.ca-focus-brand {
+  &:focus {
+    outline: 2px solid $brand-primary;
+    outline-offset: 2px;
+  }
+}
+
+// Responsive Visibility
+@media (max-width: $breakpoint-sm) {
+  .ca-hidden-sm { display: none; }
+}
+
+@media (max-width: $breakpoint-md) {
+  .ca-hidden-md { display: none; }
+}
+
+@media (max-width: $breakpoint-lg) {
+  .ca-hidden-lg { display: none; }
+}
+
+@media (min-width: $breakpoint-sm) {
+  .ca-show-sm { display: block; }
+}
+
+@media (min-width: $breakpoint-md) {
+  .ca-show-md { display: block; }
+}
+
+@media (min-width: $breakpoint-lg) {
+  .ca-show-lg { display: block; }
+}

@@ -1,14 +1,80 @@
-<div class="flex gap-10 items-center justify-center p-4">
-  <p class="text-gray-800 font-bold text-center">home works!</p>
+<div class="layout-wrapper" [class.sidebar-active]="sidebarVisible">  <!-- Top Header -->
+  <header class="layout-top-bar">
+    <div class="top-bar-left">
+      <button 
+        type="button" 
+        class="top-bar-menu-button p-link" 
+        (click)="toggleSidebar()"
+        pRipple>
+        <i class="pi pi-bars"></i>
+      </button>
+      <span class="top-bar-separator"></span>
+      <div class="layout-top-bar-logo">
+        <span>Construction Admin</span>
+      </div>
+    </div>
+    
+    <div class="top-bar-right">
+      <ul class="layout-top-bar-actions">
+        <li class="top-bar-item">
+          <p-avatar 
+            icon="pi pi-user" 
+            styleClass="mr-2" 
+            shape="circle">
+          </p-avatar>
+        </li>
+        <li class="top-bar-item">
+          <p-button 
+            icon="pi pi-sign-out"
+            [text]="true"
+            severity="secondary"
+            (click)="logout()"
+            pTooltip="Logout"
+            tooltipPosition="bottom">
+          </p-button>
+        </li>
+      </ul>
+    </div>
+  </header>
 
-  <div>
-    <p-button
-      type="button"
-      label="Logout"
-      class="min-w-56 w-full bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 transition duration-150 ease-in-out text-center rounded-lg shadow-sm py-3 text-lg cursor-pointer"
-      severity="contrast"
-      size="large"
-      (click)="logout()"
-    ></p-button>
+  <!-- Custom Sidebar (not using p-sidebar) -->
+  <aside class="layout-sidebar" [class.sidebar-visible]="sidebarVisible">
+    <div class="sidebar-header">
+      <i class="pi pi-building sidebar-header-icon"></i>
+      <span class="sidebar-header-text">Construction Admin</span>
+    </div>
+
+    <div class="sidebar-content">
+      <!-- User Profile Section -->
+      <div class="sidebar-profile">
+        <div class="profile-info">
+          <p-avatar 
+            icon="pi pi-user" 
+            size="large" 
+            shape="circle"
+            styleClass="profile-avatar">
+          </p-avatar>
+          <div class="profile-details">
+            <div class="profile-name">Admin User</div>
+            <div class="profile-role">Administrator</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <div class="sidebar-menu">
+        <p-menu 
+          [model]="menuItems" 
+          styleClass="sidebar-nav-menu">
+        </p-menu>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="layout-main">
+    <div class="layout-content">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>
