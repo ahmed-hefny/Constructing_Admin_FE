@@ -18,3 +18,10 @@ export interface DecodedToken {
     exp: number; // Expiration time
     nbf: number; // Not before time
 }
+
+export interface AuthUser {
+    nameid: string;
+    uniqueName: string;
+    role: SystemRoles;
+    companyId: number;
+}

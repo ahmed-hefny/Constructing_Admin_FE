@@ -1,26 +1,86 @@
 @import "./variables.scss";
-
+// Page Styles
 .page {
-    &-header{
-        &-title {
-            font-size: $font-size-2xl;
-            font-weight: $font-weight-semibold;
-        }
-        display: flex;
-        gap: $spacing-md;
+  &-header {
+    &-title {
+      font-size: $font-size-2xl;
+      font-weight: $font-weight-semibold;
     }
+    display: flex;
+    gap: $spacing-md;
+  }
+}
+
+.input-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-lg;
+  .field {
+    &-label {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-semibold;
+    }
+    &-input {
+      font-size: $font-size-base;
+      padding: $spacing-xs $spacing-sm;
+      border-radius: $border-radius-sm;
+      border: 1px solid $surface-gray;
+    }
+
+    &-suffix-container {
+      width: 100%;
+
+      .p-password,
+      .p-inputtext {
+        width: 100%;
+      }
+
+      .p-dropdown {
+        width: 100%;
+        padding: $spacing-sm $spacing-sm;
+        border-radius: $border-radius-sm;
+        --tw-border-opacity: 1;
+        border: 1px solid;
+        border-color: rgb(209 213 219 / var(--tw-border-opacity));
+        .p-inputtext {
+          padding: 0px;
+        }
+      }
+    }
+  }
+}
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+.error-message {
+  color: $error;
+  font-size: $font-size-xs;
+  margin-top: $spacing-xs;
 }
 
 @media (max-width: $breakpoint-md) {
-    .page {
-        &-header {
-            justify-content: space-between;
-            gap: $spacing-sm;
-            
-            &-title {
-                font-size: $font-size-xl;
-            }
-        }
-    }
-}
+  .page {
+    &-header {
+      justify-content: space-between;
+      gap: $spacing-sm;
 
+      &-title {
+        font-size: $font-size-xl;
+      }
+    }
+  }
+  .input-form {
+    grid-template-columns: 1fr;
+    .field {
+      &-label {
+        font-size: $font-size-base;
+      }
+      &-input {
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}

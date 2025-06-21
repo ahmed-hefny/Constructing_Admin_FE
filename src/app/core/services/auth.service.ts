@@ -1,9 +1,9 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal, WritableSignal, signal } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { HttpService } from './http.service';
-import { LoginRequest, LoginResponse, DecodedToken } from '../models/auth.models';
+import { LoginRequest, LoginResponse, DecodedToken, AuthUser } from '../models/auth.models';
 import { TOKEN_KEY, USER_KEY } from '../constants/keys.constants';
 import { Router } from '@angular/router';
 import { LOGIN_URL, SystemRoles } from '../constants/app.constants';
@@ -14,6 +14,7 @@ export class AuthService {
 
     private httpService: HttpService = inject(HttpService);
     private router: Router = inject(Router);
+    user: WritableSignal<AuthUser | null> = signal<AuthUser | null>(null);
     /**
      * Login user with credentials
      */
@@ -22,9 +23,7 @@ export class AuthService {
             tap(response => {
                 if (response.token) {
                     this.setToken(response.token);
-
-                    const decodedToken = this.decodeToken(response.token);
-                    console.log('Decoded Token:', decodedToken);
+                    this.setUser();
                 }
             }),
             catchError(error => {
@@ -32,6 +31,28 @@ export class AuthService {
                 return throwError(() => error);
             })
         );
+    }
+
+    constructor() {
+        this.setUser();
+    }
+
+    setUser(): void {
+        const token = this.getStoredToken();
+        if (token) {
+            const decodedToken = this.decodeToken(token);
+            if (decodedToken) {
+                this.user.set({
+                    nameid: decodedToken.nameid,
+                    uniqueName: decodedToken.unique_name,
+                    role: decodedToken.role,
+                    companyId: decodedToken.CompanyId
+                });
+            }
+        } else {
+            this.user.set(null);
+        }
+
     }
 
     /**

@@ -1,1 +1,103 @@
-<p>create-user works!</p>
+<div class="page">
+  <div class="page-header">
+    <button class="btn btn-outline border-0" (click)="navigateBack()">
+      <i class="pi pi-angle-left text-2xl"></i>
+    </button>
+    <h1 class="page-header-title">Create new user</h1>
+  </div>
+  <div class="page-content">
+    <p-card>
+      <form [formGroup]="inputForm" class="input-form">
+        <!-- Username Field -->
+        <div class="form-field">
+          <label for="username" class="field-label">Username</label>
+          <input
+            pInputText
+            id="username"
+            formControlName="username"
+            class="w-full"
+            placeholder="Enter username"
+          />
+          <!-- prettier-ignore -->
+          @if (inputForm.get('username')?.invalid && inputForm.get('username')?.touched) {
+          <small class="error-message">
+            Username is required (3-20 characters)
+          </small>
+          }
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-field field-suffix-container">
+          <label for="password" class="field-label">Password</label>
+          <div>
+            <p-password
+              id="password"
+              formControlName="password"
+              [toggleMask]="true"
+              [feedback]="false"
+              placeholder="Enter password"
+            />
+          </div>
+          <!-- prettier-ignore -->
+          @if(inputForm.get('password')?.invalid && inputForm.get('password')?.touched) {
+          <small class="error-message">
+            Password is required (6-20 characters)
+          </small>
+          }
+        </div>
+
+        <!-- Role Field -->
+        <div class="form-field">
+          <label for="role" class="field-label">Role</label>
+          <div class="field-suffix-container">
+            <p-dropdown
+              class="w-full"
+              id="role"
+              formControlName="role"
+              [options]="systemRoles"
+              optionValue="value"
+              optionLabel="label"
+              placeholder="Select a Role"
+            />
+          </div>
+        </div>
+
+        <!-- Company Field -->
+        <!-- prettier-ignore -->
+        @if(inputForm.get('role')?.value === ROLES_ENUM.EMPLOYEE) {
+        <div class="form-field">
+          <label for="company" class="field-label">Company</label>
+          <div class="field-suffix-container">
+            <p-dropdown
+              class="w-full"
+              id="company"
+              formControlName="companyId"
+              [options]="companies"
+              optionLabel="label"
+              optionValue="value"
+              [showClear]="true"
+              placeholder="Select a Company"
+            />
+          </div>
+          @if(inputForm.get('companyId')?.invalid && inputForm.get('companyId')?.touched) {
+          <small class="error-message">
+            Company is required
+          </small>
+          }
+        </div>
+        }
+      </form>
+      <div class="form-actions">
+        <button
+          pButton
+          type="submit"
+          class="btn btn-primary"
+          size="large"
+          label="Save"
+          [loading]="isLoading"
+          (click)="onSaveClick()"
+        ></button>
+      </div>
+    </p-card>
+  </div>
+</div>

@@ -151,11 +151,13 @@
     font-weight: $font-weight-semibold;
     color: $text-primary;
     margin-bottom: $spacing-xs;
+    text-transform: capitalize;
   }
 
   .profile-role {
     font-size: $font-size-sm;
     color: $text-secondary;
+    text-transform: capitalize;
   }
 }
 
@@ -217,11 +219,7 @@
   }
 
   .p-submenu-header {
-    padding: $spacing-md $spacing-xl;
-    background: $sidebar-header-bg;
-    font-weight: $font-weight-semibold;
-    color: $text-primary;
-    border: none;
+    display: none;
   }
 }
 

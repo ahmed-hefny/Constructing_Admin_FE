@@ -1,11 +1,13 @@
-<div class="layout-wrapper" [class.sidebar-active]="sidebarVisible">  <!-- Top Header -->
+<div class="layout-wrapper" [class.sidebar-active]="sidebarVisible">
+  <!-- Top Header -->
   <header class="layout-top-bar">
     <div class="top-bar-left">
-      <button 
-        type="button" 
-        class="top-bar-menu-button p-link" 
+      <button
+        type="button"
+        class="top-bar-menu-button p-link"
         (click)="toggleSidebar()"
-        pRipple>
+        pRipple
+      >
         <i class="pi pi-bars"></i>
       </button>
       <span class="top-bar-separator"></span>
@@ -13,24 +15,18 @@
         <span>Construction Admin</span>
       </div>
     </div>
-    
+
     <div class="top-bar-right">
       <ul class="layout-top-bar-actions">
         <li class="top-bar-item">
-          <p-avatar 
-            icon="pi pi-user" 
-            styleClass="mr-2" 
-            shape="circle">
-          </p-avatar>
-        </li>
-        <li class="top-bar-item">
-          <p-button 
+          <p-button
             icon="pi pi-sign-out"
             [text]="true"
             severity="secondary"
             (click)="logout()"
             pTooltip="Logout"
-            tooltipPosition="bottom">
+            tooltipPosition="bottom"
+          >
           </p-button>
         </li>
       </ul>
@@ -48,25 +44,26 @@
       <!-- User Profile Section -->
       <div class="sidebar-profile">
         <div class="profile-info">
-          <p-avatar 
-            icon="pi pi-user" 
-            size="large" 
+          <p-avatar
+            icon="pi pi-user"
+            size="large"
             shape="circle"
-            styleClass="profile-avatar">
+            styleClass="profile-avatar"
+          >
           </p-avatar>
           <div class="profile-details">
-            <div class="profile-name">Admin User</div>
-            <div class="profile-role">Administrator</div>
+            <div class="profile-name">{{ user?.uniqueName }}</div>
+            <div class="profile-role">{{ user?.role }}</div>
           </div>
         </div>
       </div>
 
       <!-- Navigation Menu -->
       <div class="sidebar-menu">
-        <p-menu 
-          [model]="menuItems" 
-          styleClass="sidebar-nav-menu">
-        </p-menu>
+        <p-menu
+          [model]="menuItems"
+          styleClass="sidebar-nav-menu"
+        />      
       </div>
     </div>
   </aside>

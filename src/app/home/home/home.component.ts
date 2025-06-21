@@ -9,6 +9,7 @@ import { RippleModule } from 'primeng/ripple';
 import { CommonModule } from '@angular/common';
 import { MenuItem } from 'primeng/api';
 import { MENU_ITEMS } from 'app/core/config/sidebar.config';
+import { AuthUser } from 'app/core/models';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +30,7 @@ export class HomeComponent {
 
   sidebarVisible: boolean = false;
   menuItems: MenuItem[] = [];
-
+  user: AuthUser | null = this.authService.user();
   constructor() {
     this.initializeMenuItems();
   }

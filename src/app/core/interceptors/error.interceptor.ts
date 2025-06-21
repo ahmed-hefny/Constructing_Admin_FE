@@ -2,10 +2,20 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { inject } from '@angular/core';
+import { ToasterService } from 'app/shared/services/toaster.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+  const toaster = inject(ToasterService);
+  
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
+      if(error.status === 400) {
+        // Handle 400 Bad Request error
+        console.error('Bad Request:', error.error);
+        toaster.showError(error.error || 'Invalid request');
+        return throwError(() => error)
+      } 
       return throwError(() => handleError(error));
     })
   );

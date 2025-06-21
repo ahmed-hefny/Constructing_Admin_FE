@@ -4,14 +4,14 @@
   border-width: 1px;
   padding: $spacing-xs $spacing-md;
   border-radius: $border-radius-sm;
-  min-width: 120px;
+  min-width: 60px;
   font-size: $font-size-sm;
   display: inline-flex;
   gap: $spacing-xs;
   justify-content: center;
   align-items: center;
   font-weight: $font-weight-semibold;
-  
+
   // Base button styles
   cursor: pointer;
   text-decoration: none;
@@ -31,6 +31,11 @@
     &:hover:not(:disabled) {
       background-color: $color-primary-dark;
       border-color: $color-primary-dark;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
     }
   }
 
@@ -68,5 +73,13 @@
     &:hover:not(:disabled) {
       color: $color-primary-dark;
     }
+  }
+
+  &.btn-outline {
+    background-color: transparent;
+    color: $color-primary;
+    border-color: $color-primary;
+    min-width: auto ;
+    padding: 0 ;
   }
 }
