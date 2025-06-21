@@ -22,6 +22,11 @@
     opacity: 0.6;
   }
 
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
   // Primary button
   &.btn-primary {
     background-color: $color-primary;
@@ -48,6 +53,28 @@
     &:hover:not(:disabled) {
       background-color: $color-primary;
       color: $surface-white;
+    }
+  }
+
+  &.btn-error {
+    background-color: $error;
+    color: $surface-white;
+    border-color: $error;
+
+    &:hover:not(:disabled) {
+      background-color: $error-dark;
+      border-color: $error-dark;
+    }
+  }
+
+  &.btn-accent {
+    background-color: $color-accent;
+    color: $surface-white;
+    border-color: $color-accent;
+
+    &:hover:not(:disabled) {
+      background-color: $color-accent-dark;
+      border-color: $color-accent-dark;
     }
   }
 
@@ -79,7 +106,7 @@
     background-color: transparent;
     color: $color-primary;
     border-color: $color-primary;
-    min-width: auto ;
-    padding: 0 ;
+    min-width: auto;
+    padding: 0;
   }
 }

@@ -26,7 +26,7 @@ export class UsersService {
     return this.http.put('/user/update', payload);
   }
 
-  delete(id: string): Observable<null> {
+  delete(id: number): Observable<null> {
     return this.http.delete(`/user/delete/${id}`);
   }
   

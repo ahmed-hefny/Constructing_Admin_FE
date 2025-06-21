@@ -8,6 +8,7 @@ import { UserResponse } from './models/users.models';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { ToasterService } from 'app/shared/services/toaster.service';
+import { ConfirmationService } from 'primeng/api';
 
 const imports = [
   ButtonModule,
@@ -26,6 +27,7 @@ export class UsersComponent implements OnInit {
   private usersService: UsersService = inject(UsersService);
   private pagination: PaginationRequest = Default_PAGINATION;
   private toaster: ToasterService = inject(ToasterService);
+  private confirmationService: ConfirmationService = inject(ConfirmationService);
   ngOnInit(): void {
     this.getAllUsers();
   }
@@ -38,17 +40,34 @@ export class UsersComponent implements OnInit {
     this.router.navigate(['users', 'edit', userId], { relativeTo: this.router.routerState.root });
   }
 
-  deleteUser(userId: string): void {
-    // Implement delete user logic here
-    console.log(`Delete user with ID: ${userId}`);
+  deleteUser(userId: number): void {
     this.usersService.delete(userId).subscribe({
       next: () => {
         this.getAllUsers();
         this.toaster.showSuccess('User deleted successfully');
       }
     })
-
   }
+
+  confirmDelete(userId: number): void {
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: 'btn btn-error',
+      rejectButtonStyleClass: 'btn btn-accent mr-2',
+      acceptLabel: 'Delete',
+      acceptIcon: 'pi pi-check',
+      rejectLabel: 'Cancel',
+      rejectIcon: 'pi pi-times',
+      message: 'Are you sure you want to delete this user?',
+      accept: () => {
+        this.deleteUser(userId);
+      },
+    })
+  }
+
+
 
   getAllUsers(): void {
     this.usersService.getAllUsers(this.pagination).subscribe({
