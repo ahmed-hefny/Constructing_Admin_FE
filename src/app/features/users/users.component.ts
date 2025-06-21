@@ -1,13 +1,13 @@
 import { Router } from '@angular/router';
 import { Component, inject, OnInit } from '@angular/core';
-import { PrimeIcons } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { UsersService } from './service/users.service';
 import { PaginationRequest, PaginationResponse } from 'app/core/models';
 import { Default_PAGINATION } from 'app/core/constants/app.constants';
 import { UserResponse } from './models/users.models';
 import { CardModule } from 'primeng/card';
-import { Table, TableModule } from 'primeng/table';
+import { TableModule } from 'primeng/table';
+import { ToasterService } from 'app/shared/services/toaster.service';
 
 const imports = [
   ButtonModule,
@@ -25,6 +25,7 @@ export class UsersComponent implements OnInit {
   private router: Router = inject(Router);
   private usersService: UsersService = inject(UsersService);
   private pagination: PaginationRequest = Default_PAGINATION;
+  private toaster: ToasterService = inject(ToasterService);
   ngOnInit(): void {
     this.getAllUsers();
   }
@@ -40,6 +41,13 @@ export class UsersComponent implements OnInit {
   deleteUser(userId: string): void {
     // Implement delete user logic here
     console.log(`Delete user with ID: ${userId}`);
+    this.usersService.delete(userId).subscribe({
+      next: () => {
+        this.getAllUsers();
+        this.toaster.showSuccess('User deleted successfully');
+      }
+    })
+
   }
 
   getAllUsers(): void {

@@ -17,6 +17,7 @@ export class UsersService {
   getUserById(id: string): Observable<USERS_MODELS.UserResponse> {
     return this.http.get(`/user/GetUserById/${id}`);
   }
+
   create(payload: USERS_MODELS.UserPayload): Observable<string> {
     return this.http.post('/user/register', payload);
   }
@@ -24,4 +25,9 @@ export class UsersService {
   update(payload: USERS_MODELS.UserPayload): Observable<any> {
     return this.http.put('/user/update', payload);
   }
+
+  delete(id: string): Observable<null> {
+    return this.http.delete(`/user/delete/${id}`);
+  }
+  
 }
