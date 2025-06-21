@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpService } from 'app/core/services';
 import { Observable } from 'rxjs';
 import * as USERS_MODELS from '../models/users.models';
-import { PaginationRequest } from 'app/core/models';
+import { PaginationRequest, PaginationResponse } from 'app/core/models';
 import { buildQueryParams } from 'app/shared/helpers/queryParamBuilder';
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ import { buildQueryParams } from 'app/shared/helpers/queryParamBuilder';
 export class UsersService {
   private http: HttpService = inject(HttpService);
 
-  getAllUsers(pagination: PaginationRequest): Observable<any> {
+  getAllUsers(pagination: PaginationRequest): Observable<PaginationResponse<USERS_MODELS.UserResponse>> {
     return this.http.get(`/user/GetUsersList${buildQueryParams(pagination)}`);
   }
 

@@ -11,4 +11,5 @@ export interface UserResponse {
     username: string,
     role: string,
     companyId: number | null,
+    companyName: string | null,
 }
