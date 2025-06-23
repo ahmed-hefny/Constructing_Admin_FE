@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpService } from 'app/core/services';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import * as USERS_MODELS from '../models/users.models';
 import { PaginationRequest, PaginationResponse } from 'app/core/models';
 import { buildQueryParams } from 'app/shared/helpers/queryParamBuilder';
@@ -29,5 +29,13 @@ export class UsersService {
   delete(id: number): Observable<null> {
     return this.http.delete(`/user/delete/${id}`);
   }
-  
+
+  getCompanies(): Observable<USERS_MODELS.CompanyResponse[]> {
+    const query = {
+      pageNumber: 1,
+      pageSize: 1000
+    }
+    return this.http.get<PaginationResponse<USERS_MODELS.CompanyResponse>>(`/company/list${buildQueryParams(query)}`).pipe(map((res: PaginationResponse<USERS_MODELS.CompanyResponse>) => res.items));
+  }
+
 }

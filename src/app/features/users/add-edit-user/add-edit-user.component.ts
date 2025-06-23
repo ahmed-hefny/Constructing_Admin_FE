@@ -12,6 +12,7 @@ import { UsersService } from '../service/users.service';
 import { MessageService } from 'primeng/api';
 import { finalize } from 'rxjs';
 import { ToasterService } from 'app/shared/services/toaster.service';
+import { CompanyResponse } from '../models/users.models';
 
 
 const imports = [
@@ -35,11 +36,7 @@ export class CreateUserComponent {
   isLoading = false;
   systemRoles = SYSTEM_ROLES_OPTIONS;
   ROLES_ENUM: typeof SystemRoles = SystemRoles;
-  companies = [
-    { label: 'Company 1', value: 1 },
-    { label: 'Company 2', value: 2 },
-    { label: 'Company 3', value: 3 }
-  ];
+  companies: CompanyResponse[] = [];
   editMode: boolean = false;
 
 
@@ -52,10 +49,20 @@ export class CreateUserComponent {
     this.listenToRoleChanges();
     this.processEditMode();
   }
+
   navigateBack(): void {
     this.router.navigate(['users']);
   }
-
+  getCompanies(): void {
+    this.usersService.getCompanies().subscribe({
+      next: (companies) => {
+        this.companies = companies
+      },
+      error: (error) => {
+        this.toaster.showError('Failed to load companies');
+      }
+    });
+  }
   onSaveClick(): void {
     this.isLoading = true;
     if (this.inputForm.invalid) {
@@ -100,6 +107,9 @@ export class CreateUserComponent {
       roleControl.valueChanges.subscribe((value: SystemRoles | null) => {
         const companyIdControl = this.inputForm.get('companyId');
         companyIdControl?.setValue(null);
+        if (value === SystemRoles.EMPLOYEE && this.companies?.length === 0) {
+          this.getCompanies();
+        }
       });
     }
   }
