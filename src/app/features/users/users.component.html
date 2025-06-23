@@ -12,7 +12,7 @@
       <p-table
         [value]="data"
         [responsiveLayout]="'scroll'"
-        stripedRows
+        styleClass="p-datatable-striped"
         [scrollable]="true"
       >
         <ng-template pTemplate="header">
@@ -27,13 +27,19 @@
           <tr>
             <td pFrozenColumn>{{ item.username }}</td>
             <td>{{ item.role }}</td>
-            <td>{{ item.companyName || '-' }}</td>
+            <td>{{ item.companyName || "-" }}</td>
             <td>
               <div class="flex gap-10">
-                <button class="btn btn-outline border-0" (click)="editUser(item.id)">
+                <button
+                  class="btn btn-outline border-0"
+                  (click)="editUser(item.id)"
+                >
                   <i class="pi pi-pencil ca-text-info ca-font-bold"></i>
                 </button>
-                <button class="btn btn-outline border-0" (click)="confirmDelete(item.id)">
+                <button
+                  class="btn btn-outline border-0"
+                  (click)="confirmDelete(item.id)"
+                >
                   <i class="pi pi-trash ca-text-error ca-font-bold"></i>
                 </button>
               </div>
