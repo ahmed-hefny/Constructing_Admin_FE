@@ -9,6 +9,8 @@ import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { ToasterService } from 'app/shared/services/toaster.service';
 import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogConfig } from 'app/shared/models/dialog.models';
+import { DialogService } from 'app/shared/services/dialog.service';
 
 const imports = [
   ButtonModule,
@@ -27,7 +29,7 @@ export class UsersComponent implements OnInit {
   private usersService: UsersService = inject(UsersService);
   private pagination: PaginationRequest = Default_PAGINATION;
   private toaster: ToasterService = inject(ToasterService);
-  private confirmationService: ConfirmationService = inject(ConfirmationService);
+  private dialogService: DialogService = inject(DialogService);
   ngOnInit(): void {
     this.getAllUsers();
   }
@@ -50,7 +52,7 @@ export class UsersComponent implements OnInit {
   }
 
   confirmDelete(userId: number): void {
-    this.confirmationService.confirm({
+    const config: ConfirmDialogConfig = {
       header: 'Confirmation',
       closeOnEscape: true,
       icon: 'pi pi-exclamation-triangle',
@@ -61,10 +63,11 @@ export class UsersComponent implements OnInit {
       rejectLabel: 'Cancel',
       rejectIcon: 'pi pi-times',
       message: 'Are you sure you want to delete this user?',
-      accept: () => {
+      onAccept: () => {
         this.deleteUser(userId);
       },
-    })
+    }
+    this.dialogService.confirmDialog(config);
   }
 
 

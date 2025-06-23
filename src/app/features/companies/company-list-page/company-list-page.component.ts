@@ -9,6 +9,8 @@ import { Default_PAGINATION } from 'app/core/constants/app.constants';
 import { PaginationRequest } from 'app/core/models';
 import { ToasterService } from 'app/shared/services/toaster.service';
 import { ConfirmationService } from 'primeng/api';
+import { DialogService } from 'app/shared/services/dialog.service';
+import { ConfirmDialogConfig } from 'app/shared/models/dialog.models';
 
 const imports = [
   ButtonModule,
@@ -31,7 +33,7 @@ export class CompanyListPageComponent implements OnInit {
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private confirmationService: ConfirmationService = inject(ConfirmationService);
-
+  private dialogService: DialogService = inject(DialogService);
   ngOnInit(): void {
     this.getData();
   }
@@ -56,8 +58,8 @@ export class CompanyListPageComponent implements OnInit {
     });
   }
 
-  confirmDelete(userId: number): void {
-    this.confirmationService.confirm({
+  confirmDelete(id: number): void {
+    const config: ConfirmDialogConfig = {
       header: 'Confirmation',
       closeOnEscape: true,
       icon: 'pi pi-exclamation-triangle',
@@ -68,10 +70,11 @@ export class CompanyListPageComponent implements OnInit {
       rejectLabel: 'Cancel',
       rejectIcon: 'pi pi-times',
       message: 'Are you sure you want to delete this company?',
-      accept: () => {
-        this.deleteCompany(userId);
-      },
-    })
+      onAccept: () => {
+        this.deleteCompany(id);
+      }
+    }
+    this.dialogService.confirmDialog(config);
   }
 
   getData(): void {
