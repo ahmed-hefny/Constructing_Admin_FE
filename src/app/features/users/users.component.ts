@@ -36,7 +36,7 @@ export class UsersComponent implements OnInit {
     this.router.navigate(['users', 'create'], { relativeTo: this.router.routerState.root });
   }
 
-  editUser(userId: string): void {
+  editUser(userId: number): void {
     this.router.navigate(['users', 'edit', userId], { relativeTo: this.router.routerState.root });
   }
 

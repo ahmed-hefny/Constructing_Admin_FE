@@ -1,0 +1,7 @@
+:host {
+  ::ng-deep {
+    .input-form {
+        grid-template-columns: 1fr;
+    }
+  }
+}

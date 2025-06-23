@@ -12,5 +12,11 @@ export const MENU_ITEMS = [
         routerLink: ['/users'],
         roles: [SystemRoles.ADMIN],
     },
+    {
+        label: 'companies',
+        icon: 'pi pi-building',
+        routerLink: ['/companies'],
+        roles: [SystemRoles.ADMIN],
+    },
 
 ]

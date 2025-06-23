@@ -14,6 +14,10 @@ export default [
                 path: 'users',
                 loadChildren: () => import('features/users/users.routes'),
 
+            },
+            {
+                path: 'companies',
+                loadChildren: () => import('features/companies/companies.route'),
             }
         ]
     }
