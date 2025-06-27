@@ -52,6 +52,10 @@
           </tr>
         </ng-template>
       </p-table>
+      <app-pagination
+        [paginationConfig]="pagination"
+        (onPageChange)="onPageChange($event)"
+      />
     </p-card>
   </div>
 </div>
