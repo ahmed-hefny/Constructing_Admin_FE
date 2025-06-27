@@ -6,33 +6,33 @@ import { Company } from '../models/companies.models';
 import { Router } from '@angular/router';
 import { CompaniesService } from '../service/companies.service';
 import { Default_PAGINATION } from 'app/core/constants/app.constants';
-import { PaginationRequest } from 'app/core/models';
+import { PaginationConfig } from 'app/core/models';
 import { ToasterService } from 'app/shared/services/toaster.service';
-import { ConfirmationService } from 'primeng/api';
 import { DialogService } from 'app/shared/services/dialog.service';
 import { ConfirmDialogConfig } from 'app/shared/models/dialog.models';
+import { PaginatorModule } from 'primeng/paginator';
+import { PaginationComponent } from 'app/shared/components/pagination/pagination.component';
 
 const imports = [
   ButtonModule,
   CardModule,
-  TableModule
+  TableModule,
+  PaginationComponent
 ]
 
 @Component({
-  selector: 'app-company-list-page',
   imports,
+  selector: 'app-company-list-page',
   templateUrl: './company-list-page.component.html',
   styleUrl: './company-list-page.component.scss'
 })
 export class CompanyListPageComponent implements OnInit {
 
   public data: Company[] = [];
-
+  public pagination: PaginationConfig = Default_PAGINATION;
   private companiesService: CompaniesService = inject(CompaniesService);
-  private pagination: PaginationRequest = Default_PAGINATION;
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
-  private confirmationService: ConfirmationService = inject(ConfirmationService);
   private dialogService: DialogService = inject(DialogService);
   ngOnInit(): void {
     this.getData();
@@ -81,10 +81,21 @@ export class CompanyListPageComponent implements OnInit {
     this.companiesService.getAllCompanies(this.pagination).subscribe({
       next: (res) => {
         this.data = res.items;
+        this.pagination = {
+          ...this.pagination,
+          totalRecords: res.count,
+        };
+
       },
       error: (err) => {
         this.toaster.showError('Failed to load companies', err);
       }
     });
+  }
+
+  onPageChange(event: { pageNumber: number; pageSize: number }): void {
+    this.pagination.pageNumber = event.pageNumber;
+    this.pagination.pageSize = event.pageSize;
+    this.getData();
   }
 }
