@@ -1,0 +1,10 @@
+<p-paginator
+  [classList]="'pagination-component ' + classList"
+  [first]="(paginationConfig.pageNumber - 1) * paginationConfig.pageSize"
+  [rows]="paginationConfig.pageSize"
+  [totalRecords]="paginationConfig.totalRecords"
+  [rowsPerPageOptions]="paginationConfig.rowsPerPageOptions"
+  [showCurrentPageReport]="paginationConfig.showCurrentPageReport"
+  [currentPageReportTemplate]="paginationConfig.currentPageReportTemplate"
+  (onPageChange)="onPaginationChange($event)"
+/>

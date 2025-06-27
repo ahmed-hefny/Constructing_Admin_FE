@@ -4,6 +4,13 @@ export interface PaginationResponse<T> {
 }
 
 export interface PaginationRequest {
-    pageNumber?: number;
-    pageSize?: number;
+    pageNumber: number;
+    pageSize: number;
+}
+
+export interface PaginationConfig extends PaginationRequest {
+    totalRecords: number;
+    rowsPerPageOptions: number[];
+    showCurrentPageReport: boolean;
+    currentPageReportTemplate: string;
 }

@@ -1,4 +1,4 @@
-import { PaginationRequest } from "../models";
+import { PaginationConfig, PaginationRequest } from "../models";
 
 export const LOGIN_URL = '/auth/login';
 
@@ -15,7 +15,13 @@ export const SYSTEM_ROLES_OPTIONS = [
     { label: 'Employee', value: SystemRoles.EMPLOYEE },
 ]
 
-export const Default_PAGINATION: PaginationRequest = {
+export const PAGINATION_OPTIONS = [10, 20, 30, 50, 100];
+
+export const Default_PAGINATION: PaginationConfig = {
     pageNumber: 1,
     pageSize: 10,
+    totalRecords: 0,
+    rowsPerPageOptions: PAGINATION_OPTIONS,
+    showCurrentPageReport: true,
+    currentPageReportTemplate: 'Showing {first} of {totalRecords}'
 }
