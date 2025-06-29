@@ -35,7 +35,7 @@ export class UsersService {
       pageNumber: 1,
       pageSize: 1000
     }
-    return this.http.get<PaginationResponse<USERS_MODELS.CompanyResponse>>(`/company/list${buildQueryParams(query)}`).pipe(map((res: PaginationResponse<USERS_MODELS.CompanyResponse>) => res.items));
+    return this.http.get<PaginationResponse<USERS_MODELS.CompanyResponse>>(`/company/GetCompaniesList${buildQueryParams(query)}`).pipe(map((res: PaginationResponse<USERS_MODELS.CompanyResponse>) => res.items));
   }
 
 }
