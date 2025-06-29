@@ -12,7 +12,7 @@ export class CompaniesService {
   constructor() { }
 
   getAllCompanies(pagination: PaginationRequest): Observable<PaginationResponse<COMPANIES_MODELS.Company>> {
-    return this.http.get(`/company/list${buildQueryParams(pagination)}`);
+    return this.http.get(`/company/GetCompaniesList${buildQueryParams(pagination)}`);
   }
 
   create(payload: COMPANIES_MODELS.Company): Observable<string> {
