@@ -16,14 +16,14 @@ export class CompaniesService {
   }
 
   create(payload: COMPANIES_MODELS.Company): Observable<string> {
-    return this.http.post('/company', payload);
+    return this.http.post('/company/Create', payload);
   }
 
   update(payload: COMPANIES_MODELS.Company): Observable<string> {
-    return this.http.put('/company', payload);
+    return this.http.put('/company/Update', payload);
   }
 
   delete(id: number): Observable<null> {
-    return this.http.delete(`/company/${id}`);
+    return this.http.delete(`/company/Delete/${id}`);
   }
 }
