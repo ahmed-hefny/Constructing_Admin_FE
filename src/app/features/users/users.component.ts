@@ -8,7 +8,6 @@ import { UserResponse } from './models/users.models';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
 import { ToasterService } from 'app/shared/services/toaster.service';
-import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogConfig } from 'app/shared/models/dialog.models';
 import { DialogService } from 'app/shared/services/dialog.service';
 import { PaginationComponent } from 'app/shared/components/pagination/pagination.component';

@@ -10,8 +10,8 @@ import { buildQueryParams } from 'app/shared/helpers/queryParamBuilder';
 export class UsersService {
   private http: HttpService = inject(HttpService);
 
-  getAllUsers(pagination: PaginationRequest): Observable<PaginationResponse<USERS_MODELS.UserResponse>> {
-    return this.http.get(`/user/GetUsersList${buildQueryParams(pagination)}`);
+  getAllUsers({ pageNumber, pageSize }: PaginationRequest): Observable<PaginationResponse<USERS_MODELS.UserResponse>> {
+    return this.http.get(`/user/GetUsersList${buildQueryParams({ pageNumber, pageSize })}`);
   }
 
   getUserById(id: string): Observable<USERS_MODELS.UserResponse> {

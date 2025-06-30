@@ -11,8 +11,8 @@ export class CompaniesService {
   private http: HttpService = inject(HttpService);
   constructor() { }
 
-  getAllCompanies(pagination: PaginationRequest): Observable<PaginationResponse<COMPANIES_MODELS.Company>> {
-    return this.http.get(`/company/GetCompaniesList${buildQueryParams(pagination)}`);
+  getAllCompanies({ pageNumber, pageSize }: PaginationRequest): Observable<PaginationResponse<COMPANIES_MODELS.Company>> {
+    return this.http.get(`/company/GetCompaniesList${buildQueryParams({ pageNumber, pageSize })}`);
   }
 
   create(payload: COMPANIES_MODELS.Company): Observable<string> {
