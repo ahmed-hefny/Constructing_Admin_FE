@@ -12,7 +12,7 @@ import { UsersService } from '../service/users.service';
 import { MessageService } from 'primeng/api';
 import { finalize } from 'rxjs';
 import { ToasterService } from 'app/shared/services/toaster.service';
-import { CompanyResponse } from '../models/users.models';
+import { CompanyResponse } from 'app/shared/models/company.models';
 
 
 const imports = [

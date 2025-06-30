@@ -13,8 +13,3 @@ export interface UserResponse {
     companyId: number | null,
     companyName: string | null,
 }
-
-export interface CompanyResponse {
-    id: number,
-    name: string,
-}
