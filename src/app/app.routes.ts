@@ -8,6 +8,10 @@ export const routes: Routes = [
         loadChildren: () => import('./home/home.routes')
     },
     {
+        path: 'test',
+        loadComponent: () => import('features/test/test.component').then(m => m.TestComponent),
+    },
+    {
         path: 'auth',
         canActivate: [NotAuthGuard],
         loadChildren: () => import('./core/auth/auth.routes')

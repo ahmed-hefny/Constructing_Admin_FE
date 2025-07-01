@@ -18,7 +18,7 @@ export default [
             {
                 path: 'companies',
                 loadChildren: () => import('features/companies/companies.route'),
-            }
+            },
         ]
     }
 ] as Routes;
