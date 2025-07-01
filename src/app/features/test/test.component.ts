@@ -3,13 +3,18 @@ import { BarcodeFormat } from '@zxing/library';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { LOAD_WASM, NgxScannerQrcodeComponent, NgxScannerQrcodeService, ScannerQRCodeConfig, ScannerQRCodeResult, ScannerQRCodeSelectedFiles } from 'ngx-scanner-qrcode';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 LOAD_WASM('assets/wasm/ngx-scanner-qrcode.wasm').subscribe();
 
 const imports = [
+  CommonModule,
   ZXingScannerModule,
   NgxScannerQrcodeComponent,
-  CommonModule
+  ToggleButtonModule,
+  FormsModule,
+  ReactiveFormsModule
 ]
 
 @Component({
@@ -21,25 +26,25 @@ const imports = [
 export class TestComponent {
   allowedFormats = [BarcodeFormat.QR_CODE, BarcodeFormat.CODABAR, BarcodeFormat.CODE_128];
   value: string = '';
+  public isZingScannerPackage: boolean = true
   public qrCodeResult: ScannerQRCodeSelectedFiles[] = [];
   public result: any[] = []
   public qrCodeConfig: ScannerQRCodeConfig = {
     isBeep: false,
+    constraints: {
+      video: {
+        width: window.innerWidth
+      }
+    },
     
+
   }
-  constructor(private qrcode: NgxScannerQrcodeService) {}
+  constructor(private qrcode: NgxScannerQrcodeService) { }
   print(event: string, data: any): void {
     console.log(event, data);
     if (typeof data === 'string') this.value = data;
   }
 
-  public config: ScannerQRCodeConfig = {
-    constraints: { 
-      video: {
-        width: window.innerWidth
-      }
-    } 
-  };
 
   public onSelects(files: any) {
     this.qrcode.loadFiles(files).subscribe((res: ScannerQRCodeSelectedFiles[]) => {
@@ -51,7 +56,7 @@ export class TestComponent {
   addValue(index: number, data: ScannerQRCodeResult[]): void {
     console.log(this.result)
     this.result[index] = {
-      ...this.result[index], 
+      ...this.result[index],
       data: data[0]
     }
   }
