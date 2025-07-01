@@ -25,11 +25,10 @@ const imports = [
   CardModule,
 ]
 @Component({
-  selector: 'app-add-edit-user',
   imports,
+  selector: 'app-add-edit-user',
   templateUrl: './add-edit-user.component.html',
   styleUrl: './add-edit-user.component.scss',
-  standalone: true,
 })
 export class CreateUserComponent {
   inputForm!: UntypedFormGroup;

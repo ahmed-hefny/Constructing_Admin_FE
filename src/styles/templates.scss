@@ -34,11 +34,13 @@
       width: 100%;
 
       .p-password,
-      .p-inputtext {
+      .p-inputtext,
+      .p-multiselect {
         width: 100%;
       }
 
-      .p-dropdown {
+      .p-dropdown,
+      .p-multiselect {
         width: 100%;
         padding: $spacing-sm $spacing-sm;
         border-radius: $border-radius-sm;
@@ -46,6 +48,12 @@
         border: 1px solid;
         border-color: rgb(209 213 219 / var(--tw-border-opacity));
         .p-inputtext {
+          padding: 0px;
+        }
+      }
+
+      .p-multiselect {
+        .p-multiselect-label {
           padding: 0px;
         }
       }

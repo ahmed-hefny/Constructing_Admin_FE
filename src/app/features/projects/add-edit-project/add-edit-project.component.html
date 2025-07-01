@@ -1,0 +1,63 @@
+<div class="page">
+  <div class="page-header">
+    <button class="btn btn-outline border-0" (click)="navigateBack()">
+      <i class="pi pi-angle-left text-2xl"></i>
+    </button>
+    <h1 class="page-header-title">
+      {{ editMode ? "Edit" : "Create new" }} Project
+    </h1>
+  </div>
+
+  <div class="page-content">
+    <p-card>
+      <form [formGroup]="inputForm" class="input-form">
+        <!-- Name Field -->
+        <div class="form-field">
+          <label for="name" class="field-label">Name</label>
+          <input
+            pInputText
+            id="name"
+            formControlName="name"
+            class="w-full"
+            placeholder="Enter name"
+          />
+          <!-- prettier-ignore -->
+          @if (inputForm.get('name')?.invalid && inputForm.get('name')?.touched) {
+          <small class="error-message">
+            Name is required (3-20 characters)
+          </small>
+          }
+        </div>
+        <div class="form-field">
+          <label for="company" class="field-label">Company</label>
+          <div class="field-suffix-container">
+            <p-multiSelect
+              id="company"
+              [options]="companies"
+              formControlName="companiesIdsList"
+              placeholder="Select Companies"
+              [filter]="true"
+              optionLabel="name"
+              optionValue="id"
+            />
+          </div>
+          @if(inputForm.get('companiesIdsList')?.invalid &&
+          inputForm.get('companiesIdsList')?.touched) {
+          <small class="error-message"> Company is required </small>
+          }
+        </div>
+      </form>
+      <div class="form-actions">
+        <button
+          pButton
+          type="submit"
+          class="btn btn-primary"
+          size="large"
+          label="Save"
+          [loading]="isLoading"
+          (click)="onSaveClick()"
+        ></button>
+      </div>
+    </p-card>
+  </div>
+</div>
