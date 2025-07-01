@@ -1,3 +1,10 @@
 <div style="border: 1px solid #ccc; padding: 15px; max-width: 400px">
-  <zxing-scanner></zxing-scanner>
+  <zxing-scanner
+    [autostart]="true"
+    [formats]="allowedFormats"
+    (scanSuccess)="print('ScanSuccess', $event)"
+    (scanError)="print('ScanError', $event)"
+    (camerasFound)="print('CamerasFound', $event)"
+    (scanComplete)="print('ScanComplete', $event)"
+  ></zxing-scanner>
 </div>
