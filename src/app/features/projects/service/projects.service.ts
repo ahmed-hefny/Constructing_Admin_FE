@@ -19,7 +19,7 @@ export class ProjectsService {
   }
 
   getById(id: string): Observable<Project> {
-    return this.http.get(`/project/GetById/${id}`);
+    return this.http.get(`/project/GetById${buildQueryParams({id})}`);
   }
 
   create(payload: ProjectPayload): Observable<string> {

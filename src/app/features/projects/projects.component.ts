@@ -41,6 +41,10 @@ export class ProjectsComponent {
     this.router.navigate(['create-project'], { relativeTo: this.router.routerState.root });
   }
 
+  edit(id: number): void {
+    this.router.navigate(['edit-project', id], { relativeTo: this.router.routerState.root });
+  }
+
   view(id: number): void {
     console.log('View project with ID:', id);
   }

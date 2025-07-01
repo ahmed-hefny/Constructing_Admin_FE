@@ -89,6 +89,17 @@ export class AddEditProjectComponent {
   }
 
   private processEditMode(): void {
-    console.log('processEditMode');
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.editMode = true;
+      this.projectsService.getById(id).subscribe({
+        next: (project) => {
+          this.inputForm.patchValue(project);
+        },
+        error: (error) => {
+          this.toaster.showError('Failed to load project data');
+        }
+      });
+    }
   }
 }

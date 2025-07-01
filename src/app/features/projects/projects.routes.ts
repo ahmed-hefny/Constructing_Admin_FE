@@ -14,5 +14,14 @@ export default [
         data: {
             roles: [SystemRoles.ADMIN]
         }
-    }
+    },
+    {
+        path: 'edit-project/:id',
+        loadComponent: () => import('./add-edit-project/add-edit-project.component').then(m => m.AddEditProjectComponent),
+        canActivate: [hasRoleGuard],
+        data: {
+            roles: [SystemRoles.ADMIN]
+        }
+    },
+
 ] as Routes;
