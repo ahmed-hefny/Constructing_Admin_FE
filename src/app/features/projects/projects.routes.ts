@@ -1,4 +1,6 @@
 import { Routes } from "@angular/router";
+import { SystemRoles } from "app/core/constants/app.constants";
+import { hasRoleGuard } from "app/core/guards";
 
 export default [
     {
@@ -7,6 +9,10 @@ export default [
     },
     {
         path: 'create-project',
-        loadComponent: () => import('./add-edit-project/add-edit-project.component').then(m => m.AddEditProjectComponent)
+        loadComponent: () => import('./add-edit-project/add-edit-project.component').then(m => m.AddEditProjectComponent),
+        canActivate: [hasRoleGuard],
+        data: {
+            roles: [SystemRoles.ADMIN]
+        }
     }
 ] as Routes;
