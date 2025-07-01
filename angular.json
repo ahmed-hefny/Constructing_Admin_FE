@@ -27,6 +27,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-scanner-qrcode/wasm/", 
+                "output": "./assets/wasm/"
               }
             ],
             "styles": ["src/styles.scss"],
@@ -131,5 +136,8 @@
       "typeSeparator": ".",
       "skipTests": true
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

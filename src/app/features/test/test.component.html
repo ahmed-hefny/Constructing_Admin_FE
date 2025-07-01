@@ -1,10 +1,47 @@
 <div style="border: 1px solid #ccc; padding: 15px; max-width: 400px">
-  <zxing-scanner
-    [autostart]="true"
-    [formats]="allowedFormats"
-    (scanSuccess)="print('ScanSuccess', $event)"
-    (scanError)="print('ScanError', $event)"
-    (camerasFound)="print('CamerasFound', $event)"
-    (scanComplete)="print('ScanComplete', $event)"
-  ></zxing-scanner>
+  <h2>zxing-scanner lib</h2>
+  <zxing-scanner [autostart]="true" [formats]="allowedFormats" [tryHarder]="true"
+    (scanSuccess)="print('ScanSuccess', $event)" />
+</div>
+<span>
+  Value:
+  @if(value) {
+  {{value}}
+  }
+</span>
+here
+<hr>
+<div style="border: 1px solid #ccc; padding: 15px; max-width: 400px">
+  <h2>ngx-scanner-qrcode</h2>
+  <ngx-scanner-qrcode [config]="qrCodeConfig" #action="scanner"
+    (event)="print('NGX-Scanner Camera: ', $event)"></ngx-scanner-qrcode>
+
+</div>
+<button style="width: 120px;"
+  class="mx-2 bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 transition duration-150 ease-in-out text-center rounded-lg shadow-sm py-2 px-3 my-2 text-lg cursor-pointer"
+  (click)="action.isStart ? action.stop() : action.start()">{{action.isStart ? 'Stop' : 'Start'}}</button>
+<br>
+<span>quality: {{action.data.value[0]?.quality}}</span>
+<!-- data  -->
+<br>
+<span>Data.Value: <span class="text-underline ">{{ action.data.value[0]?.value }}</span></span><!-- value -->
+<br>
+<span>Action.Data: {{ action.data | async | json }}</span><!-- async -->
+
+
+<hr>
+Select File
+<input #file type="file" (change)="onSelects(file.files)" [multiple]="'multiple'"
+  [accept]="'.jpg, .png, .gif, .jpeg'" />
+<div style="border: 1px solid #ccc; padding: 15px; max-width: 400px">
+  @for(item of qrCodeResult; let i = $index; track item;){
+  <div>
+    <ngx-scanner-qrcode [config]="qrCodeConfig" #actionFile="scanner" (event)="addValue(i, $event)" [src]="item.url"
+      [config]="config"></ngx-scanner-qrcode>
+    <p>Data: {{result[i].data?.value}}</p>
+    <hr>
+    <p>{{ actionFile.data.value | json }}</p>
+    <!-- <p>{{ actionFile.data | async | json }}</p>async -->
+  </div>
+  }
 </div>
