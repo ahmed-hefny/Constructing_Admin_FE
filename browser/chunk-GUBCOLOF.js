@@ -1,0 +1,1 @@
+function a(e){let n=new URLSearchParams;Object.entries(e).forEach(([i,r])=>{r!=null&&r!==""&&(Array.isArray(r)?r.forEach(s=>n.append(i,String(s))):n.append(i,String(r)))});let t=n.toString();return t?`?${t}`:""}export{a};
