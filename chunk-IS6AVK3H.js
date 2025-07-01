@@ -1,0 +1,1 @@
+import"./chunk-EQDQRRRY.js";var t=[{path:"",loadComponent:()=>import("./chunk-RHOYGTW4.js").then(o=>o.CompanyListPageComponent)},{path:"create",loadComponent:()=>import("./chunk-Y3N2QSVL.js").then(o=>o.AddEditCompanyComponent)},{path:"edit/:id",loadComponent:()=>import("./chunk-Y3N2QSVL.js").then(o=>o.AddEditCompanyComponent)}];export{t as default};
