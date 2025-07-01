@@ -21,7 +21,7 @@ const imports = [
   MultiSelectModule,
   ButtonModule,
   CardModule,
-  
+
 ]
 @Component({
   selector: 'app-add-edit-project',
@@ -94,7 +94,7 @@ export class AddEditProjectComponent {
       this.editMode = true;
       this.projectsService.getById(id).subscribe({
         next: (project) => {
-          this.inputForm.patchValue(project);
+          this.inputForm.patchValue({ ...project , companiesIdsList: project?.companyList?.map(c => c.id) });
         },
         error: (error) => {
           this.toaster.showError('Failed to load project data');
