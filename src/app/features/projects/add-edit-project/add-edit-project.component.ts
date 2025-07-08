@@ -34,6 +34,7 @@ export class AddEditProjectComponent {
   isLoading = false;
   companies: CompanyResponse[] = [];
   editMode: boolean = false;
+  id: string | null = null;
 
   private projectsService: ProjectsService = inject(ProjectsService);
   private router: Router = inject(Router);
@@ -69,6 +70,9 @@ export class AddEditProjectComponent {
       return;
     }
     const payload = this.inputForm.value;
+    if(this.editMode) {
+      payload['id'] = this.id;
+    }
     const action = this.editMode ? this.projectsService.update(payload) : this.projectsService.create(payload);
     action.pipe(
       finalize(() => this.isLoading = false)
@@ -89,10 +93,10 @@ export class AddEditProjectComponent {
   }
 
   private processEditMode(): void {
-    const id = this.activatedRoute.snapshot.paramMap.get('id');
-    if (id) {
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (this.id) {
       this.editMode = true;
-      this.projectsService.getById(id).subscribe({
+      this.projectsService.getById(this.id).subscribe({
         next: (project) => {
           this.inputForm.patchValue({ ...project , companiesIdsList: project?.companyList?.map(c => c.id) });
         },
