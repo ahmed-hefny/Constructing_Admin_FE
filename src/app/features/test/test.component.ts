@@ -32,8 +32,11 @@ export class TestComponent {
   public qrCodeConfig: ScannerQRCodeConfig = {
     isBeep: false,
     constraints: {
+      audio: false,
       video: {
-        width: window.innerWidth
+        facingMode: 'environment', // Use back camera
+        width: window.innerWidth,
+        height: window.innerHeight
       }
     },
     

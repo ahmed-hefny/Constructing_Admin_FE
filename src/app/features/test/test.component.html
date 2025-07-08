@@ -1,27 +1,30 @@
-<div style="border: 1px solid #ccc; padding: 15px; max-width: 400px">
-  <h2>zxing-scanner lib</h2>
-  <zxing-scanner
-    [formats]="allowedFormats"
-    (scanSuccess)="print('ScanSuccess', $event)"
-    #zxingScanner
-  ></zxing-scanner>
-</div>
-<br />
-<span>
-  Value: @if(value) {
-  {{ value }}
-  }
-</span>
-<br />
-<button
-  style="width: 120px"
-  class="my-2 mx-2 bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 transition duration-150 ease-in-out text-center rounded-lg shadow-sm py-2 px-3 text-lg cursor-pointer"
-  (click)="
-    zxingScanner.enabled ? zxingScanner.scanStart() : zxingScanner.scanStop()
-  "
->
-  Start
-</button>
+@if(false) {
+
+  <div style="border: 1px solid #ccc; padding: 15px; max-width: 400px">
+    <h2>zxing-scanner lib</h2>
+    <zxing-scanner
+      [formats]="allowedFormats"
+      (scanSuccess)="print('ScanSuccess', $event)"
+      #zxingScanner
+    ></zxing-scanner>
+  </div>
+  <br />
+  <span>
+    Value: @if(value) {
+    {{ value }}
+    }
+  </span>
+  <br />
+  <button
+    style="width: 120px"
+    class="my-2 mx-2 bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 transition duration-150 ease-in-out text-center rounded-lg shadow-sm py-2 px-3 text-lg cursor-pointer"
+    (click)="
+      zxingScanner.enabled ? zxingScanner.scanStart() : zxingScanner.scanStop()
+    "
+  >
+    Start
+  </button>
+}
 
 <div style="border: 1px solid #ccc; padding: 15px; max-width: 400px">
   <h2>ngx-scanner-qrcode</h2>
@@ -29,7 +32,7 @@
     [config]="qrCodeConfig"
     #action="scanner"
     (event)="print('NGX-Scanner Camera: ', $event)"
-  ></ngx-scanner-qrcode>
+  />
 </div>
 <button
   style="width: 120px"
