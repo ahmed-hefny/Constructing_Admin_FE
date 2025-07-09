@@ -20,7 +20,7 @@
             <th>#</th>
             <th>Id</th>
             <th>Name</th>
-            <th pFrozenColumn>Actions</th>
+            <th pFrozenColumn *appAccessControl="[SystemRoles.ADMIN]">Actions</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item let-index="rowIndex">
@@ -28,11 +28,17 @@
             <td>{{ index + 1 }}</td>
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
-            <td pFrozenColumn>
+            <td pFrozenColumn *appAccessControl="[SystemRoles.ADMIN]">
               <div class="flex gap-10">
                 <button
                   class="btn btn-outline border-0"
                   (click)="view(item.id)"
+                >
+                  <i class="pi pi-eye ca-text-muted ca-font-bold"></i>
+                </button>
+                <button
+                  class="btn btn-outline border-0"
+                  (click)="edit(item.id)"
                 >
                   <i class="pi pi-pencil ca-text-info ca-font-bold"></i>
                 </button>

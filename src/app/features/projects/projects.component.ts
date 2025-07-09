@@ -38,21 +38,20 @@ export class ProjectsComponent {
   }
 
   create(): void {
-    this.router.navigate(['create-project'], { relativeTo: this.router.routerState.root });
+    this.router.navigate(['create'], { relativeTo: this.router.routerState.root });
   }
 
   edit(id: number): void {
-    this.router.navigate(['edit-project', id], { relativeTo: this.router.routerState.root });
+    this.router.navigate(['edit', id], { relativeTo: this.router.routerState.root });
   }
-
+  
   view(id: number): void {
-    console.log('View project with ID:', id);
+    this.router.navigate(['view', id], { relativeTo: this.router.routerState.root });
   }
 
   getData(): void {
     this.projectsService.getAll(this.pagination).subscribe({
       next: (res) => {
-        console.log(res);
         this.data = res.items;
         this.pagination = {
           ...this.pagination,
