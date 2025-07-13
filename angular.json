@@ -27,6 +27,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-scanner-qrcode/wasm/",
+                "output": "./assets/wasm/"
               }
             ],
             "styles": ["src/styles.scss"],
@@ -90,6 +95,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-scanner-qrcode/wasm/",
+                "output": "./assets/wasm/"
               }
             ],
             "styles": ["src/styles.scss"],
@@ -98,7 +108,8 @@
         }
       }
     }
-  },  "schematics": {
+  },
+  "schematics": {
     "@schematics/angular:component": {
       "type": "component",
       "skipTests": true
