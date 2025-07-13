@@ -69,7 +69,7 @@
             <td>{{ item.id || "-" }}</td>
             <td>
               <div class="flex gap-10">
-                <button class="btn btn-outline border-0">Payload list</button>
+                <button class="btn btn-outline border-0" (click)="navigateToPayloads(item.id)">Payload list</button>
               </div>
             </td>
           </tr>

@@ -11,6 +11,10 @@ export default [
                 loadChildren: () => import('features/projects/projects.routes'),
             },
             {
+                path: 'payloads',
+                loadChildren: () => import('features/payloads/payloads.routes'),
+            },
+            {
                 path: 'users',
                 loadChildren: () => import('features/users/users.routes'),
 

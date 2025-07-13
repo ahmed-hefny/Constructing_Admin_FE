@@ -16,7 +16,6 @@ const imports = [
   CommonModule,
   CardModule,
   TableModule,
-  PaginationComponent,
   AccessControlDirective,
   TooltipModule
 
@@ -65,6 +64,14 @@ export class ProjectDetailsComponent implements OnInit {
 
   navigateBack(): void {
     this.router.navigate(['/']);
+  }
+
+  navigateToPayloads(companyId: string): void {
+    if (!this.id || !companyId) {
+      this.toaster.showError('Project data is not available');
+      return;
+    }
+    this.router.navigate(['payloads', this.id, companyId]);
   }
 
 }
