@@ -50,6 +50,6 @@ export class PayloadsComponent implements OnInit {
   }
 
   create(): void {
-    this.router.navigate(['create'], { relativeTo: this.activatedRoute });
+    this.router.navigate(['upload'], { relativeTo: this.activatedRoute });
   }
 }
