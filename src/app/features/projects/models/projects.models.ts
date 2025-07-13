@@ -4,6 +4,8 @@ export interface Project {
     id: number;
     name: string;
     companyList: CompanyResponse[];
+    resource?: string;
+    allQnt?: string;
 }
 
 export interface ProjectPayload {

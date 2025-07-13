@@ -1,1 +1,85 @@
-<p>project-details works!</p>
+<div class="page">
+  <div class="page-header">
+    <button class="btn btn-outline border-0" (click)="navigateBack()">
+      <i class="pi pi-angle-left text-2xl"></i>
+    </button>
+    <h1 class="page-header-title">Project Details</h1>
+  </div>
+  <div class="page-content">
+    <p-card class="px-0">
+      <div class="project-details">
+        <div class="project-info">
+          <div class="w-full md:w-1/2">
+            <div class="project-info-wrapper">
+              <p class="project-info-head">Name:</p>
+              <p
+                class="truncate-text"
+                [pTooltip]="project?.name"
+                tooltipPosition="bottom"
+              >
+                {{ project?.name }}
+              </p>
+            </div>
+            <div class="project-info-wrapper">
+              <p class="project-info-head">Resources:</p>
+              <p
+                class="truncate-text"
+                [pTooltip]="project?.resource"
+                tooltipPosition="bottom"
+              >
+                {{ project?.resource }}
+              </p>
+            </div>
+            <div class="project-info-wrapper">
+              <p class="project-info-head">All Qnt:</p>
+              <p
+                class="truncate-text"
+                [pTooltip]="project?.allQnt"
+                tooltipPosition="bottom"
+              >
+                {{ project?.allQnt }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+  <div class="page-content">
+    <!-- Project details Companies -->
+    <p-card class="px-0 mt-3">
+      <p-table
+        [value]="project?.companyList || []"
+        [responsiveLayout]="'scroll'"
+        styleClass="p-datatable-striped"
+        [scrollable]="true"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>ID</th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-index="rowIndex">
+          <tr>
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.id || "-" }}</td>
+            <td>
+              <div class="flex gap-10">
+                <button class="btn btn-outline border-0">Payload list</button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="4" class="text-center">No Result found.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-card>
+  </div>
+</div>

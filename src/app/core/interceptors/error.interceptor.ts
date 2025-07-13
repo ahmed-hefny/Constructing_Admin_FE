@@ -1,13 +1,14 @@
-import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { inject } from '@angular/core';
 import { ToasterService } from 'app/shared/services/toaster.service';
+import { AuthService } from '../services';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const toaster = inject(ToasterService);
-  
+  const authService = inject(AuthService);
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if(error.status === 400) {
@@ -16,6 +17,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         toaster.showError(error.error || 'Invalid request');
         return throwError(() => error)
       } 
+      else if (error.status === HttpStatusCode.Unauthorized) {
+        // Handle 401 Unauthorized error
+        authService.logout();
+        toaster.showError('Unauthorized access. Please log in again.');
+        return throwError(() => error);
+      }
       return throwError(() => handleError(error));
     })
   );

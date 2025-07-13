@@ -19,7 +19,13 @@ export class ProjectsService {
   }
 
   getById(id: string): Observable<Project> {
-    return this.http.get(`/project/GetById${buildQueryParams({id})}`);
+    return this.http.get<Project>(`/project/GetById${buildQueryParams({ id })}`).pipe(
+      map((res: Project) => ({
+        ...res,
+        resource: res.resource || 'Cement',
+        allQnt: res.allQnt || '9',
+      }))
+    )
   }
 
   create(payload: ProjectPayload): Observable<string> {

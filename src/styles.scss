@@ -19,7 +19,15 @@
 @import "styles/buttons.scss";
 @import "styles/templates.scss";
 @import "styles/overrides.scss";
+
 html {
-    font-family: 'Inter', sans-serif;
-    color: $text-primary;
+  font-family: "Inter", sans-serif;
+  color: $text-primary;
+}
+
+.truncate-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: default;
 }
