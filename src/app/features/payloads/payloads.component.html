@@ -1,1 +1,18 @@
-<p>payloads works!</p>
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-header-title">Payloads</h1>
+    <button
+      class="btn btn-primary"
+      (click)="create()"
+      *appAccessControl="[SystemRoles.ADMIN]"
+    >
+      <i class="pi pi-plus"></i>
+      <span>New</span>
+    </button>
+  </div>
+  <div class="page-content">
+    <p-card class="p-0">
+        Not implemented yet.
+    </p-card>
+  </div>
+</div>
