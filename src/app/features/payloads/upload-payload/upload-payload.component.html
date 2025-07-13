@@ -1,1 +1,42 @@
-<p>upload-payload works!</p>
+<div class="page">
+  <div class="page-header">
+    <button class="btn btn-outline border-0" (click)="navigateBack()">
+      <i class="pi pi-angle-left text-2xl"></i>
+    </button>
+    <h1 class="page-header-title">Upload Payload</h1>
+  </div>
+</div>
+<div class="page-content">
+  <p-card>
+    <form [formGroup]="inputForm" class="input-form">
+      <!-- Quantity Field -->
+      <div class="form-field">
+        <label for="qnt" class="field-label">Quantity</label>
+        <input
+          type="number"
+          pInputNumber
+          id="qnt"
+          formControlName="qnt"
+          class="w-full"
+          placeholder="Enter quantity"
+        />
+        <!-- prettier-ignore -->
+        @if (inputForm.get('qnt')?.invalid && inputForm.get('qnt')?.touched) {
+        <small class="error-message"> Quantity is required, must be at least 1 </small>
+        }
+      </div>
+    </form>
+
+    <div class="form-actions">
+      <button
+        pButton
+        type="submit"
+        class="btn btn-primary"
+        size="large"
+        label="Save"
+        [loading]="isLoading"
+        (click)="onSaveClick()"
+      ></button>
+    </div>
+  </p-card>
+</div>
