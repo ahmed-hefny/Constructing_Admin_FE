@@ -10,16 +10,22 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { PayloadsService } from '../service/payloads.service';
 import { PayloadConfig } from '../models/payloads.models';
+import { LOAD_WASM, NgxScannerQrcodeComponent, NgxScannerQrcodeService, ScannerQRCodeConfig, ScannerQRCodeResult, ScannerQRCodeSelectedFiles } from 'ngx-scanner-qrcode';
+
+
+LOAD_WASM('assets/wasm/ngx-scanner-qrcode.wasm').subscribe();
+
 
 
 const imports = [
   CommonModule,
   ReactiveFormsModule,
   InputTextModule,
-  PasswordModule,
-  DropdownModule,
   ButtonModule,
   CardModule,
+  NgxScannerQrcodeComponent,
+
+
 ]
 @Component({
   imports,
@@ -31,6 +37,17 @@ export class UploadPayloadComponent implements OnInit {
   inputForm!: UntypedFormGroup;
   isLoading = false;
   payloadConfig: PayloadConfig | null = null;
+  public qrCodeConfig: ScannerQRCodeConfig = {
+    isBeep: false,
+    constraints: {
+      video: {
+        width: window?.innerWidth || 400,
+        height: window?.innerHeight,
+        facingMode: 'environment'
+      }
+    }
+  }
+
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -61,6 +78,14 @@ export class UploadPayloadComponent implements OnInit {
     console.log(this.inputForm.value)
   }
 
+  onScan(result: ScannerQRCodeResult[]): void {
+    console.log({ result })
+    if(Array.isArray(result) && result.length > 0) {
+      const scannedData = result[0].value;
+      this.inputForm.patchValue({ policyNo: scannedData });
+    }
+  }
+
   private configurePage(): void {
     const { projectId, companyId } = this.activatedRoute.snapshot.params;
     if (!projectId || !companyId) {
@@ -74,6 +99,7 @@ export class UploadPayloadComponent implements OnInit {
   private initializeForm(): void {
     this.inputForm = new UntypedFormGroup({
       qnt: new UntypedFormControl('', [Validators.required, Validators.min(1)]),
+      policyNo: new UntypedFormControl('', [Validators.required]),
     });
   }
 }

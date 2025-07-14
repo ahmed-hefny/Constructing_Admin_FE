@@ -22,8 +22,52 @@
         />
         <!-- prettier-ignore -->
         @if (inputForm.get('qnt')?.invalid && inputForm.get('qnt')?.touched) {
-        <small class="error-message"> Quantity is required, must be at least 1 </small>
+        <small class="error-message">
+          Quantity is required, must be at least 1
+        </small>
         }
+      </div>
+      <!-- QR Code Scanner -->
+      <div class="form-field">
+        <div class="flex flex-col md:flex-row gap-3">
+          <div class="w-1/2">
+            <div class="">
+              <label for="qrCode" class="field-label">Scan Policy No</label>
+              <ngx-scanner-qrcode
+                [config]="qrCodeConfig"
+                #action="scanner"
+                (event)="onScan($event)"
+                class="w-[400px] rounded-xl overflow-hidden"
+              />
+              <button
+                pButton
+                type="button"
+                class="btn btn-primary mt-3"
+                size="large"
+                [label]="action.isStart ? 'Stop' : 'Start'"
+                [loading]="isLoading"
+                (click)="action.isStart ? action.stop() : action.start()"
+              ></button>
+            </div>
+          </div>
+          <div class="w-1/2">
+            <div class="form-field">
+              <label for="policyNo" class="field-label">Policy No:</label>
+              <input
+                id="policyNo"
+                formControlName="policyNo"
+                class="w-full"
+                placeholder="Enter Policy No"
+              />
+              <!-- prettier-ignore -->
+              @if (inputForm.get('policyNo')?.invalid && inputForm.get('policyNo')?.touched) {
+              <small class="error-message">
+                Policy No is required, must be at least 1
+              </small>
+              }
+            </div>
+          </div>
+        </div>
       </div>
     </form>
 
