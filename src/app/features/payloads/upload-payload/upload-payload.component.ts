@@ -5,12 +5,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToasterService } from 'app/shared/services/toaster.service';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
 import { PayloadsService } from '../service/payloads.service';
 import { PayloadConfig } from '../models/payloads.models';
 import { LOAD_WASM, NgxScannerQrcodeComponent, NgxScannerQrcodeService, ScannerQRCodeConfig, ScannerQRCodeResult, ScannerQRCodeSelectedFiles } from 'ngx-scanner-qrcode';
+import { take } from 'rxjs';
 
 
 LOAD_WASM('assets/wasm/ngx-scanner-qrcode.wasm').subscribe();
@@ -41,8 +40,7 @@ export class UploadPayloadComponent implements OnInit {
     isBeep: false,
     constraints: {
       video: {
-        width: window?.innerWidth || 400,
-        height: window?.innerHeight,
+        width: window?.innerWidth,
         facingMode: 'environment'
       }
     }
@@ -68,6 +66,29 @@ export class UploadPayloadComponent implements OnInit {
     this.router.navigate(['payloads', this.payloadConfig?.projectId, this.payloadConfig?.companyId]);
   }
 
+  scannerActionTaken(scanner: NgxScannerQrcodeComponent): void {
+    const policyNoControl = this.inputForm.get('policyNumber');
+
+    if (scanner.isStart) {
+      scanner.stop();
+
+    } else {
+
+      scanner.start().pipe(take(1)).subscribe({
+        next: (result: ScannerQRCodeResult[]) => {
+          if (policyNoControl) {
+            policyNoControl?.disable();
+            policyNoControl?.setValue('');
+          }
+        },
+        error: (error) => {
+          this.toaster.showError('Error starting scanner: ' + error.message);
+          policyNoControl?.enable();
+        }
+      })
+    }
+  }
+
   onSaveClick(): void {
     this.isLoading = true;
     if (this.inputForm.invalid) {
@@ -75,14 +96,53 @@ export class UploadPayloadComponent implements OnInit {
       this.isLoading = false;
       return;
     }
-    console.log(this.inputForm.value)
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 500)
+    console.log({
+      ...this.inputForm.getRawValue(),
+      ...this.payloadConfig
+    })
   }
 
-  onScan(result: ScannerQRCodeResult[]): void {
-    console.log({ result })
-    if(Array.isArray(result) && result.length > 0) {
+  onScan(result: ScannerQRCodeResult[], scanner: NgxScannerQrcodeComponent): void {
+
+    if (Array.isArray(result) && result.length > 0) {
       const scannedData = result[0].value;
-      this.inputForm.patchValue({ policyNo: scannedData });
+      const policyNoControl = this.inputForm.get('policyNumber');
+      console.log({result})
+      this.inputForm.patchValue({ policyNumber: scannedData });
+      policyNoControl?.disable();
+      policyNoControl?.setValue(scannedData);
+      if(scanner) {
+        setTimeout(() => {
+          scanner.stop();
+        }, 500);
+      }
+      if (result[0].data) {
+        const uint8Array = new Uint8Array(result[0].data);
+        const blob = new Blob([uint8Array], { type: 'image/png' });
+        const file = new File([blob], `scanned-image-${Date.now()}.png`, {
+          type: 'image/png',
+          lastModified: Date.now()
+        });
+        this.inputForm.patchValue({ image: file });
+      }
+    }
+  }
+
+  onEditPolicyNo(): void {
+    const policyNoControl = this.inputForm.get('policyNumber');
+    if (policyNoControl) {
+      policyNoControl.enable();
+      policyNoControl.setValue('');
+      // Focus the input field
+      setTimeout(() => {
+        const inputElement = document.getElementById('policyNumber') as HTMLInputElement;
+        if (inputElement) {
+          inputElement.focus();
+        }
+      }, 0);
     }
   }
 
@@ -99,7 +159,8 @@ export class UploadPayloadComponent implements OnInit {
   private initializeForm(): void {
     this.inputForm = new UntypedFormGroup({
       qnt: new UntypedFormControl('', [Validators.required, Validators.min(1)]),
-      policyNo: new UntypedFormControl('', [Validators.required]),
+      policyNumber: new UntypedFormControl({ value: '', disabled: true }, [Validators.required]),
+      image: new UntypedFormControl(null),
     });
   }
 }

@@ -59,6 +59,59 @@
       }
     }
   }
+  // Input wrapper with suffix button
+  .input-wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    .input-with-suffix {
+      flex: 1;
+      padding-right: 3rem;
+      border-right: none;
+      width: 100%;
+    }
+
+    .suffix-button {
+      @apply border border-gray-300 rounded-md p-2;
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 2.5rem;
+      background: transparent;
+      border-left: none;
+      color: $text-secondary;
+      transition: $transition-fast;
+      border-start-start-radius: 0;
+      border-end-start-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-inline-start: 1px solid $neutral-200;
+      &:hover {
+        color: $surface-white;
+        border-color: $neutral-400;
+        background-color: $neutral-400;
+      }
+
+      i {
+        font-size: 0.875rem;
+        position: relative;
+      }
+    }
+
+    // Focus state for input with suffix
+    .input-with-suffix:focus {
+      border-color: $brand-primary;
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+
+      + .suffix-button {
+        border-color: $brand-primary;
+      }
+    }
+  }
 }
 .form-actions {
   display: flex;
