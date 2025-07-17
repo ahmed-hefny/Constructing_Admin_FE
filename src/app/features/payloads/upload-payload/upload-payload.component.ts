@@ -9,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PayloadsService } from '../service/payloads.service';
 import { PayloadConfig } from '../models/payloads.models';
 import { LOAD_WASM, NgxScannerQrcodeComponent, NgxScannerQrcodeService, ScannerQRCodeConfig, ScannerQRCodeResult, ScannerQRCodeSelectedFiles } from 'ngx-scanner-qrcode';
-import { take } from 'rxjs';
+import { finalize, take } from 'rxjs';
 
 
 LOAD_WASM('assets/wasm/ngx-scanner-qrcode.wasm').subscribe();
@@ -36,7 +36,7 @@ export class UploadPayloadComponent implements OnInit {
   inputForm!: UntypedFormGroup;
   isLoading = false;
   payloadConfig: PayloadConfig | null = null;
-  public qrCodeConfig: ScannerQRCodeConfig = {
+  qrCodeConfig: ScannerQRCodeConfig = {
     isBeep: false,
     constraints: {
       video: {
@@ -45,10 +45,14 @@ export class UploadPayloadComponent implements OnInit {
       }
     }
   }
+  showScanner = true;
+  result!: ScannerQRCodeSelectedFiles;
+
 
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  private qrCode: NgxScannerQrcodeService = inject(NgxScannerQrcodeService);
   private payloadsService: PayloadsService = inject(PayloadsService);
 
   constructor() {
@@ -110,11 +114,10 @@ export class UploadPayloadComponent implements OnInit {
     if (Array.isArray(result) && result.length > 0) {
       const scannedData = result[0].value;
       const policyNoControl = this.inputForm.get('policyNumber');
-      console.log({result})
       this.inputForm.patchValue({ policyNumber: scannedData });
       policyNoControl?.disable();
       policyNoControl?.setValue(scannedData);
-      if(scanner) {
+      if (scanner) {
         setTimeout(() => {
           scanner.stop();
         }, 500);
@@ -144,6 +147,30 @@ export class UploadPayloadComponent implements OnInit {
         }
       }, 0);
     }
+  }
+
+  onUploadPolicyNoImage(files: any): void {
+    this.showScanner = false;
+
+    this.qrCode.loadFiles(files)
+      .pipe(
+        take(1),  // Ensure we only take the first emission
+        finalize(() => {
+          this.showScanner = true;
+        })
+      )
+      .subscribe({
+        next: (result: ScannerQRCodeSelectedFiles[]) => {
+          if (result && result.length > 0) {
+            const file = result[0].file;
+            this.inputForm.patchValue({ image: file });
+            this.result = result[0];
+          }
+        },
+        error: (error) => {
+          this.toaster.showError('Error loading files: ' + error.message);
+        }
+      });
   }
 
   private configurePage(): void {

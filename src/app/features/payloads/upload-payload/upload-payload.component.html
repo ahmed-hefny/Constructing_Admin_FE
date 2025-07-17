@@ -32,21 +32,43 @@
         <div class="flex flex-col md:flex-row gap-3">
           <div class="w-1/2">
             <label for="qrCode" class="field-label">Scan Policy No</label>
-            <ngx-scanner-qrcode
-              [config]="qrCodeConfig"
-              #scanner="scanner"
-              (event)="onScan($event, scanner)"
-              class="w-[400px] rounded-xl overflow-hidden"
-            />
-            <button
-              pButton
-              type="button"
-              class="btn btn-primary mt-3"
-              size="large"
-              [label]="scanner.isStart ? 'Stop' : 'Start'"
-              [loading]="scanner.isLoading"
-              (click)="scannerActionTaken(scanner)"
-            ></button>
+
+            <div>
+              <input
+                #file
+                type="file"
+                (change)="onUploadPolicyNoImage(file.files)"
+                [accept]="'.jpg, .png, .gif, .jpeg'"
+              />
+              <hr class="my-3" />
+              @if(result) {
+                <ngx-scanner-qrcode
+                  [config]="qrCodeConfig"
+                  #scanner="scanner"
+                  [src]="result?.url"
+                  (event)="onScan($event, scanner)"
+                  class="w-[400px] rounded-xl overflow-hidden"
+                />
+              }
+              @else if(!result) {
+              <ngx-scanner-qrcode
+                [config]="qrCodeConfig"
+                #scanner="scanner"
+                (event)="onScan($event, scanner)"
+                class="w-[400px] rounded-xl overflow-hidden"
+              />
+              <br>
+              <button
+                pButton
+                type="button"
+                class="btn btn-primary mt-3"
+                size="large"
+                [label]="scanner.isStart ? 'Stop' : 'Start'"
+                [loading]="scanner.isLoading"
+                (click)="scannerActionTaken(scanner)"
+              ></button>
+              }
+            </div>
           </div>
           <div class="w-1/2">
             <div class="form-field">
