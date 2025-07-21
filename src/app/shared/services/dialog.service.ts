@@ -11,14 +11,14 @@ export class DialogService {
 
   confirmDialog(config: ConfirmDialogConfig): void {
     this.confirmationService.confirm({
-      header: config.header || 'Confirmation',
+      header: config.header || 'تأكيد',
       closeOnEscape: true,
       icon: config.icon || 'pi pi-exclamation-triangle',
       acceptButtonStyleClass: 'btn btn-error',
       rejectButtonStyleClass: 'btn btn-accent mr-2',
-      acceptLabel: config.acceptLabel || 'Confirm',
+      acceptLabel: config.acceptLabel || 'تأكيد',
       acceptIcon: 'pi pi-check',
-      rejectLabel: config.rejectLabel || 'Cancel',
+      rejectLabel: config.rejectLabel || 'إلغاء',
       rejectIcon: 'pi pi-times',
       message: config.message,
       accept: () => {

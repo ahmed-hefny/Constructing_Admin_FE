@@ -38,7 +38,7 @@ export class PayloadsComponent implements OnInit {
   loadPayloads(): void {
     const { projectId, companyId } = this.activatedRoute.snapshot.params;
     if (!projectId || !companyId) {
-      this.toaster.showError('Project ID or Company ID is missing');
+      this.toaster.showError('معرف المشروع أو معرف الشركة مفقود');
       this.navigateBack();
       return;
     }

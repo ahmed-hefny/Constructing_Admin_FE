@@ -86,7 +86,7 @@ export class UploadPayloadComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.toaster.showError('Error starting scanner: ' + error.message);
+          this.toaster.showError('خطأ في بدء الماسح الضوئي: ' + error.message);
           policyNoControl?.enable();
         }
       })
@@ -168,7 +168,7 @@ export class UploadPayloadComponent implements OnInit {
           }
         },
         error: (error) => {
-          this.toaster.showError('Error loading files: ' + error.message);
+          this.toaster.showError('خطأ في تحميل الملفات: ' + error.message);
         }
       });
   }
@@ -176,7 +176,7 @@ export class UploadPayloadComponent implements OnInit {
   private configurePage(): void {
     const { projectId, companyId } = this.activatedRoute.snapshot.params;
     if (!projectId || !companyId) {
-      this.toaster.showError('Project ID or Company ID is missing');
+      this.toaster.showError('معرف المشروع أو معرف الشركة مفقود');
       this.navigateBack();
       return;
     }

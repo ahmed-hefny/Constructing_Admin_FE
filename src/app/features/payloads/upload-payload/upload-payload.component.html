@@ -3,7 +3,7 @@
     <button class="btn btn-outline border-0" (click)="navigateBack()">
       <i class="pi pi-angle-left text-2xl"></i>
     </button>
-    <h1 class="page-header-title">Upload Payload</h1>
+    <h1 class="page-header-title">رفع البيانات</h1>
   </div>
 </div>
 <div class="page-content">
@@ -11,19 +11,19 @@
     <form [formGroup]="inputForm" class="input-form">
       <!-- Quantity Field -->
       <div class="form-field">
-        <label for="qnt" class="field-label">Quantity</label>
+        <label for="qnt" class="field-label">الكمية</label>
         <input
           type="number"
           pInputNumber
           id="qnt"
           formControlName="qnt"
           class="w-full"
-          placeholder="Enter quantity"
+          placeholder="أدخل الكمية"
         />
         <!-- prettier-ignore -->
         @if (inputForm.get('qnt')?.invalid && inputForm.get('qnt')?.touched) {
         <small class="error-message">
-          Quantity is required, must be at least 1
+          الكمية مطلوبة، يجب أن تكون على الأقل 1
         </small>
         }
       </div>
@@ -31,7 +31,7 @@
       <div class="form-field">
         <div class="flex flex-col md:flex-row gap-3">
           <div class="w-1/2">
-            <label for="qrCode" class="field-label">Scan Policy No</label>
+            <label for="qrCode" class="field-label">مسح رقم البوليصة</label>
 
             <div>
               <input
@@ -63,7 +63,7 @@
                 type="button"
                 class="btn btn-primary mt-3"
                 size="large"
-                [label]="scanner.isStart ? 'Stop' : 'Start'"
+                [label]="scanner.isStart ? 'إيقاف' : 'بدء'"
                 [loading]="scanner.isLoading"
                 (click)="scannerActionTaken(scanner)"
               ></button>
@@ -72,13 +72,13 @@
           </div>
           <div class="w-1/2">
             <div class="form-field">
-              <label for="policyNumber" class="field-label">Policy No:</label>
+              <label for="policyNumber" class="field-label">رقم البوليصة:</label>
               <div class="input-wrapper">
                 <input
                   id="policyNumber"
                   formControlName="policyNumber"
                   class="input-with-suffix"
-                  placeholder="Enter Policy No"
+                  placeholder="أدخل رقم البوليصة"
                 />
                 <button
                   type="button"
@@ -91,7 +91,7 @@
               <!-- prettier-ignore -->
               @if (inputForm.get('policyNumber')?.invalid && inputForm.get('policyNumber')?.touched) {
               <small class="error-message">
-                Policy No is required, must be at least 1
+                رقم البوليصة مطلوب، يجب أن يكون على الأقل 1
               </small>
               }
             </div>
@@ -106,7 +106,7 @@
         type="submit"
         class="btn btn-primary"
         size="large"
-        label="Save"
+        label="حفظ"
         [loading]="isLoading"
         (click)="onSaveClick()"
       ></button>

@@ -48,23 +48,23 @@ export class UsersComponent implements OnInit {
     this.usersService.delete(userId).subscribe({
       next: () => {
         this.getData();
-        this.toaster.showSuccess('User deleted successfully');
+        this.toaster.showSuccess('تم حذف المستخدم بنجاح');
       }
     })
   }
 
   confirmDelete(userId: number): void {
     const config: ConfirmDialogConfig = {
-      header: 'Confirmation',
+      header: 'تأكيد',
       closeOnEscape: true,
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass: 'btn btn-error',
       rejectButtonStyleClass: 'btn btn-accent mr-2',
-      acceptLabel: 'Delete',
+      acceptLabel: 'حذف',
       acceptIcon: 'pi pi-check',
-      rejectLabel: 'Cancel',
+      rejectLabel: 'إلغاء',
       rejectIcon: 'pi pi-times',
-      message: 'Are you sure you want to delete this user?',
+      message: 'هل أنت متأكد من أنك تريد حذف هذا المستخدم؟',
       onAccept: () => {
         this.deleteUser(userId);
       },

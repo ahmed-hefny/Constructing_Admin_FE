@@ -58,7 +58,7 @@ export class CreateUserComponent {
         this.companies = companies
       },
       error: (error) => {
-        this.toaster.showError('Failed to load companies');
+        this.toaster.showError('فشل في تحميل الشركات');
       }
     });
   }
@@ -75,7 +75,7 @@ export class CreateUserComponent {
       finalize(() => this.isLoading = false)
     ).subscribe({
       next: () => {
-        const message = `user ${this.editMode ? 'updated' : 'created'} successfully`;
+        const message = `تم ${this.editMode ? 'تحديث' : 'إنشاء'} المستخدم بنجاح`;
         this.toaster.showSuccess(message);
         this.navigateBack();
       }
@@ -94,7 +94,7 @@ export class CreateUserComponent {
           this.inputForm.get('password')?.updateValueAndValidity();
         },
         error: (error) => {
-          this.toaster.showError('Failed to load user data');
+          this.toaster.showError('فشل في تحميل بيانات المستخدم');
         }
       });
     }

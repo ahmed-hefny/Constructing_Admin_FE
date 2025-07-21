@@ -15,7 +15,7 @@ export const hasRoleGuard: CanActivateFn = (route, state) => {
     return true;
   } else {
     console.error('No valid roles provided in route data');
-    toaster.showError('You do not have permission to access this page');
+    toaster.showError('ليس لديك صلاحية للوصول إلى هذه الصفحة');
     router.navigate(['/']);
     return false;
   }

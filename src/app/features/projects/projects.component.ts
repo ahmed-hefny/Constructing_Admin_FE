@@ -59,7 +59,7 @@ export class ProjectsComponent {
         };
       },
       error: (err) => {
-        this.toaster.showError('Failed to load projects');
+        this.toaster.showError('فشل في تحميل المشاريع');
       }
     });
   }

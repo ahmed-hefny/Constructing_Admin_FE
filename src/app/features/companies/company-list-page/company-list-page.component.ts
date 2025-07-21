@@ -50,26 +50,26 @@ export class CompanyListPageComponent implements OnInit {
     this.companiesService.delete(id).subscribe({
       next: () => {
         this.getData();
-        this.toaster.showSuccess('Company deleted successfully');
+        this.toaster.showSuccess('تم حذف الشركة بنجاح');
       },
       error: (err) => {
-        this.toaster.showError('Failed to delete company', err);
+        this.toaster.showError('فشل في حذف الشركة', err);
       }
     });
   }
 
   confirmDelete(id: number): void {
     const config: ConfirmDialogConfig = {
-      header: 'Confirmation',
+      header: 'تأكيد',
       closeOnEscape: true,
       icon: 'pi pi-exclamation-triangle',
       acceptButtonStyleClass: 'btn btn-error',
       rejectButtonStyleClass: 'btn btn-accent mr-2',
-      acceptLabel: 'Delete',
+      acceptLabel: 'حذف',
       acceptIcon: 'pi pi-check',
-      rejectLabel: 'Cancel',
+      rejectLabel: 'إلغاء',
       rejectIcon: 'pi pi-times',
-      message: 'Are you sure you want to delete this company?',
+      message: 'هل أنت متأكد من أنك تريد حذف هذه الشركة؟',
       onAccept: () => {
         this.deleteCompany(id);
       }
@@ -88,7 +88,7 @@ export class CompanyListPageComponent implements OnInit {
 
       },
       error: (err) => {
-        this.toaster.showError('Failed to load companies', err);
+        this.toaster.showError('فشل في تحميل الشركات', err);
       }
     });
   }

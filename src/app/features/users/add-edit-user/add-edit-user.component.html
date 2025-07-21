@@ -4,7 +4,7 @@
       <i class="pi pi-angle-left text-2xl"></i>
     </button>
     <h1 class="page-header-title">
-      {{ editMode ? "Edit" : "Create new" }} user
+      {{ editMode ? "تعديل" : "إنشاء" }} مستخدم
     </h1>
   </div>
   <div class="page-content">
@@ -12,45 +12,45 @@
       <form [formGroup]="inputForm" class="input-form">
         <!-- Username Field -->
         <div class="form-field">
-          <label for="username" class="field-label">Username</label>
+          <label for="username" class="field-label">اسم المستخدم</label>
           <input
             pInputText
             id="username"
             formControlName="username"
             class="w-full"
-            placeholder="Enter username"
+            placeholder="أدخل اسم المستخدم"
           />
           <!-- prettier-ignore -->
           @if (inputForm.get('username')?.invalid && inputForm.get('username')?.touched) {
           <small class="error-message">
-            Username is required (3-20 characters)
+            اسم المستخدم مطلوب (3-20 حرف)
           </small>
           }
         </div>
 
         <!-- Password Field -->
         <div class="form-field field-suffix-container">
-          <label for="password" class="field-label">Password</label>
+          <label for="password" class="field-label">كلمة المرور</label>
           <div>
             <p-password
               id="password"
               formControlName="password"
               [toggleMask]="true"
               [feedback]="false"
-              placeholder="Enter password"
+              placeholder="أدخل كلمة المرور"
             />
           </div>
           <!-- prettier-ignore -->
           @if(inputForm.get('password')?.invalid && inputForm.get('password')?.touched) {
           <small class="error-message">
-            Password is required (6-20 characters)
+            كلمة المرور مطلوبة (6-20 حرف)
           </small>
           }
         </div>
 
         <!-- Role Field -->
         <div class="form-field">
-          <label for="role" class="field-label">Role</label>
+          <label for="role" class="field-label">الدور</label>
           <div class="field-suffix-container">
             <p-dropdown
               class="w-full"
@@ -59,7 +59,7 @@
               [options]="systemRoles"
               optionValue="value"
               optionLabel="label"
-              placeholder="Select a Role"
+              placeholder="اختر دور"
             />
           </div>
         </div>
@@ -68,7 +68,7 @@
         <!-- prettier-ignore -->
         @if(inputForm.get('role')?.value === ROLES_ENUM.EMPLOYEE && companies.length) {
         <div class="form-field">
-          <label for="company" class="field-label">Company</label>
+          <label for="company" class="field-label">الشركة</label>
           <div class="field-suffix-container">
             <p-dropdown
               class="w-full"
@@ -78,13 +78,13 @@
               optionLabel="name"
               optionValue="id"
               [showClear]="true"
-              placeholder="Select a Company"
+              placeholder="اختر شركة"
               [filter]="true"
             />
           </div>
           @if(inputForm.get('companyId')?.invalid &&
           inputForm.get('companyId')?.touched) {
-          <small class="error-message"> Company is required </small>
+          <small class="error-message"> الشركة مطلوبة </small>
           }
         </div>
         }
@@ -95,7 +95,7 @@
           type="submit"
           class="btn btn-primary"
           size="large"
-          label="Save"
+          label="حفظ"
           [loading]="isLoading"
           (click)="onSaveClick()"
         ></button>

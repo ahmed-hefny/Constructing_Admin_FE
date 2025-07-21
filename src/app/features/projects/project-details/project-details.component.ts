@@ -45,7 +45,7 @@ export class ProjectDetailsComponent implements OnInit {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
 
     if (!this.id) {
-      this.toaster.showError('Project ID is missing');
+      this.toaster.showError('معرف المشروع مفقود');
       this.navigateBack();
       return;
     }
@@ -55,7 +55,7 @@ export class ProjectDetailsComponent implements OnInit {
       },
       error: (error) => {
         if (error.status !== HttpStatusCode.Unauthorized) {
-          this.toaster.showError('Failed to load project data');
+          this.toaster.showError('فشل في تحميل بيانات المشروع');
           this.navigateBack();
         }
       }
@@ -68,7 +68,7 @@ export class ProjectDetailsComponent implements OnInit {
 
   navigateToPayloads(companyId: string): void {
     if (!this.id || !companyId) {
-      this.toaster.showError('Project data is not available');
+      this.toaster.showError('بيانات المشروع غير متوفرة');
       return;
     }
     this.router.navigate(['payloads', this.id, companyId]);

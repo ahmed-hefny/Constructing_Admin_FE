@@ -1,19 +1,19 @@
 import { SystemRoles } from '../constants/app.constants';
 export const MENU_ITEMS = [
     {
-        label: 'projects',
+        label: 'المشروعات',
         icon: 'pi pi-briefcase',
         routerLink: ['/'],
         roles: [SystemRoles.ADMIN, SystemRoles.EMPLOYEE],
     },
     {
-        label: 'users',
+        label: 'المستخدمين',
         icon: 'pi pi-users',
         routerLink: ['/users'],
         roles: [SystemRoles.ADMIN],
     },
     {
-        label: 'companies',
+        label: 'الشركات',
         icon: 'pi pi-building',
         routerLink: ['/companies'],
         roles: [SystemRoles.ADMIN],

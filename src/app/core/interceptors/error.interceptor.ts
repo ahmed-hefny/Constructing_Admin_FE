@@ -14,13 +14,13 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       if(error.status === 400) {
         // Handle 400 Bad Request error
         console.error('Bad Request:', error.error);
-        toaster.showError(error.error || 'Invalid request');
+        toaster.showError(error.error || 'طلب غير صالح');
         return throwError(() => error)
       } 
       else if (error.status === HttpStatusCode.Unauthorized) {
         // Handle 401 Unauthorized error
         authService.logout();
-        toaster.showError('Unauthorized access. Please log in again.');
+        toaster.showError('وصول غير مصرح به. يرجى تسجيل الدخول مرة أخرى.');
         return throwError(() => error);
       }
       return throwError(() => handleError(error));
@@ -29,7 +29,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 };
 
 function handleError(error: HttpErrorResponse): HttpErrorResponse | Error {
-  let errorMessage = 'An unknown error occurred';
+  let errorMessage = 'حدث خطأ غير معروف';
   
   if (error.error instanceof ErrorEvent) {
     // Client-side error

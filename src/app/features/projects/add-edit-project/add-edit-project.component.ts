@@ -57,7 +57,7 @@ export class AddEditProjectComponent {
         this.companies = companies
       },
       error: (error) => {
-        this.toaster.showError('Failed to load companies');
+        this.toaster.showError('فشل في تحميل الشركات');
       }
     });
   }
@@ -78,7 +78,7 @@ export class AddEditProjectComponent {
       finalize(() => this.isLoading = false)
     ).subscribe({
       next: () => {
-        const message = `Project ${this.editMode ? 'updated' : 'created'} successfully`;
+        const message = `تم ${this.editMode ? 'تحديث' : 'إنشاء'} المشروع بنجاح`;
         this.toaster.showSuccess(message);
         this.navigateBack();
       }
@@ -101,7 +101,7 @@ export class AddEditProjectComponent {
           this.inputForm.patchValue({ ...project , companiesIdsList: project?.companyList?.map(c => c.id) });
         },
         error: (error) => {
-          this.toaster.showError('Failed to load project data');
+          this.toaster.showError('فشل في تحميل بيانات المشروع');
         }
       });
     }
