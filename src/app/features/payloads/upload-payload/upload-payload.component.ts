@@ -119,7 +119,8 @@ export class UploadPayloadComponent implements OnInit {
       policyNoControl?.setValue(scannedData);
       if (scanner) {
         setTimeout(() => {
-          scanner.stop();
+          scanner.pause();
+          scanner.isStart = false;
         }, 500);
       }
       if (result[0].data) {
