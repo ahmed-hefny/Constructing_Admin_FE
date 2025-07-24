@@ -12,7 +12,73 @@
   </div>
   <div class="page-content">
     <p-card class="p-0">
-        لم يتم التطبيق بعد.
+      <!-- Filter Form -->
+      <div class="mb-4">
+        <form [formGroup]="inputForm" class="input-form">
+          <!-- Date From Input -->
+          <div class="form-field">
+            <div class="field">
+              <label for="dateFrom" class="field-label">من تاريخ</label>
+              <p-calendar
+                inputId="dateFrom"
+                formControlName="dateFrom"
+                dateFormat="dd/mm/yy"
+                placeholder="اختر التاريخ"
+                styleClass="w-full"
+                [showIcon]="true"
+                iconDisplay="input"
+                readonlyInput
+                inputStyleClass="cursor-pointer"
+              />
+            </div>
+          </div>
+
+          <!-- Date To Input -->
+          <div class="form-field">
+            <div class="field">
+              <label for="dateTo" class="field-label">إلى تاريخ</label>
+              <p-calendar
+                inputId="dateTo"
+                formControlName="dateTo"
+                dateFormat="dd/mm/yy"
+                placeholder="اختر التاريخ"
+                styleClass="w-full"
+                [showIcon]="true"
+                iconDisplay="input"
+                readonlyInput
+                inputStyleClass="cursor-pointer"
+              />
+            </div>
+          </div>
+          <!-- Policy Number Input -->
+          <div class="form-field">
+            <div class="field">
+              <label for="policyNumber" class="field-label">رقم البوليصة</label>
+              <input
+                pInput
+                id="policyNumber"
+                type="text"
+                formControlName="policyNumber"
+                placeholder="أدخل رقم البوليصة"
+                class="w-full"
+              />
+            </div>
+          </div>
+
+          <!-- Apply Button -->
+          <div class="form-actions">
+            <button
+              pButton
+              type="submit"
+              class="btn btn-primary"
+              size="large"
+              label="تطبيق"
+              [loading]="isLoading"
+              (click)="onApplyFilter()"
+            ></button>
+          </div>
+        </form>
+      </div>
     </p-card>
   </div>
 </div>

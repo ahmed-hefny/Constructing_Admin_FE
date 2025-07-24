@@ -16,7 +16,6 @@ const imports = [
   CommonModule,
   CardModule,
   TableModule,
-  AccessControlDirective,
   TooltipModule
 
 ]

@@ -20,9 +20,28 @@
 @import "styles/templates.scss";
 @import "styles/overrides.scss";
 
-html {
-  font-family: "Inter", sans-serif;
-  color: $text-primary;
+// Global Typography
+// -----------------------------------------------------------------------------
+* {
+  font-family: $font-family-primary;
+}
+
+body {
+  font-family: $font-family-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: 1.6;
+}
+
+// Headings
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family-primary;
+  font-weight: $font-weight-semibold;
+}
+
+// Form elements
+input, textarea, select, button {
+  font-family: $font-family-primary;
 }
 
 .truncate-text {
