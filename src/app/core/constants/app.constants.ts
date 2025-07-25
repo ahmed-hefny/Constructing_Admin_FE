@@ -10,9 +10,9 @@ export enum SystemRoles {
 
 
 export const SYSTEM_ROLES_OPTIONS = [
-    { label: 'Admin', value: SystemRoles.ADMIN },
-    { label: 'Supervisor', value: SystemRoles.SUPER_VISOR },
-    { label: 'Employee', value: SystemRoles.EMPLOYEE },
+    { label: 'مسئول', value: SystemRoles.ADMIN },
+    { label: 'مشرف', value: SystemRoles.SUPER_VISOR },
+    { label: 'موظف', value: SystemRoles.EMPLOYEE },
 ]
 
 export const PAGINATION_OPTIONS = [10, 20, 30, 50, 100];
