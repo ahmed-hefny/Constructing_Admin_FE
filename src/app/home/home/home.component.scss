@@ -15,12 +15,12 @@
 
   &.sidebar-active {
     .layout-top-bar {
-      margin-left: $sidebar-width;
+      margin-inline-start: $sidebar-width;
       width: calc(100% - #{$sidebar-width});
     }
 
     .layout-main {
-      margin-left: $sidebar-width;
+      margin-inline-start: $sidebar-width;
       width: calc(100% - #{$sidebar-width});
     }
   }
@@ -45,6 +45,7 @@
   display: flex;
   align-items: center;
   gap: $spacing-lg;
+  margin-left: auto;
 }
 
 .top-bar-menu-button {
@@ -79,6 +80,8 @@
 }
 
 .top-bar-right {
+  margin-inline-start: auto;
+  
   .layout-top-bar-actions {
     list-style: none;
     margin: 0;
@@ -98,10 +101,12 @@
 .layout-sidebar {
   position: fixed;
   top: 0;
-  left: -$sidebar-width;
+  right: -$sidebar-width;
+  left: auto;
   height: 100vh;
   background: $sidebar-bg;
-  border-right: 1px solid $sidebar-border;
+  border-left: 1px solid $sidebar-border;
+  border-right: none;
   @include shadow-md();
   z-index: $z-index-sidebar;
   @include transition();
@@ -109,7 +114,7 @@
   width: $sidebar-width;
 
   &.sidebar-visible {
-    left: 0px;
+    right: 0px;
   }
 }
 
@@ -206,7 +211,8 @@
       }
 
       .p-menuitem-icon {
-        margin-right: $spacing-md;
+        margin-left: $spacing-md;
+        margin-inline-start: 0;
         color: $menu-icon;
         font-size: $font-size-base;
       }
@@ -253,12 +259,14 @@
   .layout-wrapper {
     &.sidebar-active {
       .layout-top-bar {
-        margin-left: 0px;
+        margin-inline-start: 0px;
+        margin-left: 0;
         left: 0;
         width: 100%;
       }
 
       .layout-main {
+        margin-inline-start: 0;
         margin-left: 0;
         width: 100%;
       }
@@ -267,10 +275,11 @@
 
   .layout-sidebar {
     width: 100%;
-    left: -100%;
+    right: -100%;
+    left: auto;
 
     &.sidebar-visible {
-      left: 0;
+      right: 0;
     }
   }
 

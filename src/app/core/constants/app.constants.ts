@@ -23,5 +23,6 @@ export const Default_PAGINATION: PaginationConfig = {
     totalRecords: 0,
     rowsPerPageOptions: PAGINATION_OPTIONS,
     showCurrentPageReport: true,
-    currentPageReportTemplate: 'Showing {first} of {totalRecords}'
+    showFirstLastIcon: false,
+    currentPageReportTemplate: 'عرض {first} إلى {last} من أصل {totalRecords}'
 }

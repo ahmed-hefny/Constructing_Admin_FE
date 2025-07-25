@@ -5,7 +5,12 @@ module.exports = {
   ],
   important: true,
   theme: {
-    extend: {},
+    extend: {
+      // Add RTL-specific utilities
+      spacing: {
+        'rtl': '0',
+      },
+    },
   },
   plugins: [],
 }

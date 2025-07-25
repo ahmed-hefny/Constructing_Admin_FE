@@ -12,5 +12,6 @@ export interface PaginationConfig extends PaginationRequest {
     totalRecords: number;
     rowsPerPageOptions: number[];
     showCurrentPageReport: boolean;
+    showFirstLastIcon: boolean;
     currentPageReportTemplate: string;
 }

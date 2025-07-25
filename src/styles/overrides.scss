@@ -1,6 +1,122 @@
+@import './variables.scss';
+
 .p-datatable.p-datatable-striped .p-datatable-tbody > tr {
   border-block-width: 1px !important;
 }
 .p-card-content {
   padding-block: 0px;
+}
+
+// RTL Overrides for PrimeNG Components
+// -----------------------------------------------------------------------------
+
+// Fix input field padding and text alignment for RTL
+.p-inputtext,
+.p-dropdown-label,
+.p-multiselect-label {
+  text-align: start;
+  padding: 0.75rem;
+  direction: rtl;
+}
+
+// Fix dropdown trigger positioning
+.p-dropdown .p-dropdown-trigger {
+  left: 0;
+  right: auto;
+}
+
+// Fix checkbox and radio button alignment
+.p-checkbox,
+.p-radiobutton {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+// Fix table column headers
+.p-datatable .p-column-header-content {
+  justify-content: flex-end;
+}
+
+// Fix pagination
+.p-paginator {
+  direction: ltr !important;
+}
+
+.p-paginator .p-paginator-pages {
+  direction: ltr;
+}
+
+// Fix calendar popup
+.p-datepicker {
+  direction: rtl;
+}
+
+.p-datepicker table {
+  direction: rtl;
+}
+
+// Fix menu items
+.p-menu .p-menuitem-link {
+  text-align: right;
+  direction: rtl;
+}
+
+// Fix dialog close button
+.p-dialog .p-dialog-header-icon {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+// Fix toast positioning
+.p-toast-top-right {
+  top: 20px;
+  left: 20px;
+  right: auto;
+}
+
+.p-toast-top-left {
+  top: 20px;
+  right: 20px;
+  left: auto;
+}
+
+// Fix sidebar panel positioning
+.p-sidebar-left {
+  right: 0;
+  left: auto;
+}
+
+.p-sidebar-right {
+  left: 0;
+  right: auto;
+}
+
+// Fix toolbar alignment
+.p-toolbar {
+  direction: rtl;
+}
+
+.p-toolbar-group-start {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.p-toolbar-group-end {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+.p-button-loading {
+  .p-button-label {
+    margin-inline-start: 0.5rem;
+  }
+}
+.p-paginator-rpp-options {
+  border: 1px solid $gray-300;
+}
+.p-paginator-page.p-highlight {
+  pointer-events: none;
 }

@@ -8,6 +8,8 @@ import { CardModule } from 'primeng/card';
 import { MessageModule } from 'primeng/message';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RtlDirective } from 'app/shared/directives/rtl.directive';
+import { SystemRoles } from 'app/core/constants/app.constants';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,8 @@ import { ActivatedRoute, Router } from '@angular/router';
     InputTextModule,
     PasswordModule,
     CardModule,
-    MessageModule
+    MessageModule,
+    RtlDirective
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -80,7 +83,11 @@ export class LoginComponent implements OnInit {
   }
 
   private navigateAfterLogin(): void {
-    const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
-    this.router.navigate([returnUrl]);
+    const user = this.authService.user();
+    let returnUrl = '/';
+    if (user?.role === SystemRoles.EMPLOYEE) {
+      returnUrl = `/payloads/${user?.companyId}/${user?.projectId}/upload`;
+    }
+    this.router.navigateByUrl(returnUrl);
   }
 }

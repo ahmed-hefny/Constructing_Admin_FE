@@ -6,7 +6,7 @@ import { errorInterceptor } from './core/interceptors/error.interceptor';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, PrimeNGConfig } from 'primeng/api';
 import { ToasterService } from './shared/services/toaster.service';
 
 export const appConfig: ApplicationConfig = {
@@ -14,6 +14,7 @@ export const appConfig: ApplicationConfig = {
     MessageService,
     ToasterService,
     ConfirmationService,
+    PrimeNGConfig,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(

@@ -17,7 +17,7 @@
       >
         <ng-template pTemplate="header">
           <tr>
-            <th pFrozenColumn>اسم المستخدم</th>
+            <th >اسم المستخدم</th>
             <th>الدور</th>
             <th>الشركة</th>
             <th>الإجراءات</th>
@@ -25,7 +25,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-item>
           <tr>
-            <td pFrozenColumn>{{ item.username }}</td>
+            <td >{{ item.username }}</td>
             <td>{{ item.role }}</td>
             <td>{{ item.companyName || "-" }}</td>
             <td>

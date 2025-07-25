@@ -57,7 +57,7 @@ export class AddEditCompanyComponent {
       finalize(() => this.isLoading = false)
     ).subscribe({
       next: () => {
-        const message = `user ${this.editMode ? 'updated' : 'created'} successfully`;
+        const message = `تم ${this.editMode ? 'تحديث' : 'إنشاء'} الشركة بنجاح`;
         this.toaster.showSuccess(message);
         this.navigateBack();
       }

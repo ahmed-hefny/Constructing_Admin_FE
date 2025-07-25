@@ -69,20 +69,19 @@
     align-items: center;
     .input-with-suffix {
       flex: 1;
-      padding-right: 3rem;
-      border-right: none;
+      padding-inline-end: 3rem;
       width: 100%;
     }
 
     .suffix-button {
       @apply border border-gray-300 rounded-md p-2;
       position: absolute;
-      right: 0;
+      left: 0;
       top: 0;
       bottom: 0;
       width: 2.5rem;
       background: transparent;
-      border-left: none;
+      border-inline-end: none;
       color: $text-secondary;
       transition: $transition-fast;
       border-start-start-radius: 0;

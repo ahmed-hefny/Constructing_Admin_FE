@@ -8,20 +8,20 @@ export class ToasterService {
   private messageService: MessageService = inject(MessageService);
   constructor() { }
 
-  showSuccess(message: string = '', summary: string = 'Success', life: number = 3000): void {
+  showSuccess(message: string = '', summary: string = 'نجاح', life: number = 3000): void {
     this.messageService.add({ severity: 'success', summary, detail: message, life });
   }
-  showError(message: string = '', summary: string = 'Error', life: number = 3000): void {
+  showError(message: string = '', summary: string = 'خطأ', life: number = 3000): void {
     this.messageService.add({ severity: 'error', summary, detail: message, life });
   }
-  showInfo(message: string = '', summary: string = 'Info', life: number = 3000): void {
+  showInfo(message: string = '', summary: string = 'معلومة', life: number = 3000): void {
     this.messageService.add({ severity: 'info', summary, detail: message, life });
   }
-  showWarn(message: string = '', summary: string = 'Warning', life: number = 3000): void {
+  showWarn(message: string = '', summary: string = 'تحذير', life: number = 3000): void {
     this.messageService.add({ severity: 'warn', summary, detail: message, life });
   }
   clear(): void {
     this.messageService.clear();
   }
-  
+
 }

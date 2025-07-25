@@ -1,0 +1,113 @@
+// RTL Utilities
+// -----------------------------------------------------------------------------
+
+// RTL Direction utilities
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+// RTL Margin utilities
+.mr-rtl-0 { margin-right: 0 !important; margin-left: auto !important; }
+.mr-rtl-1 { margin-right: 0.25rem !important; margin-left: auto !important; }
+.mr-rtl-2 { margin-right: 0.5rem !important; margin-left: auto !important; }
+.mr-rtl-3 { margin-right: 0.75rem !important; margin-left: auto !important; }
+.mr-rtl-4 { margin-right: 1rem !important; margin-left: auto !important; }
+.mr-rtl-5 { margin-right: 1.25rem !important; margin-left: auto !important; }
+.mr-rtl-6 { margin-right: 1.5rem !important; margin-left: auto !important; }
+
+.ml-rtl-0 { margin-left: 0 !important; margin-right: auto !important; }
+.ml-rtl-1 { margin-left: 0.25rem !important; margin-right: auto !important; }
+.ml-rtl-2 { margin-left: 0.5rem !important; margin-right: auto !important; }
+.ml-rtl-3 { margin-left: 0.75rem !important; margin-right: auto !important; }
+.ml-rtl-4 { margin-left: 1rem !important; margin-right: auto !important; }
+.ml-rtl-5 { margin-left: 1.25rem !important; margin-right: auto !important; }
+.ml-rtl-6 { margin-left: 1.5rem !important; margin-right: auto !important; }
+
+// RTL Padding utilities
+.pr-rtl-0 { padding-right: 0 !important; padding-left: auto !important; }
+.pr-rtl-1 { padding-right: 0.25rem !important; padding-left: auto !important; }
+.pr-rtl-2 { padding-right: 0.5rem !important; padding-left: auto !important; }
+.pr-rtl-3 { padding-right: 0.75rem !important; padding-left: auto !important; }
+.pr-rtl-4 { padding-right: 1rem !important; padding-left: auto !important; }
+.pr-rtl-5 { padding-right: 1.25rem !important; padding-left: auto !important; }
+.pr-rtl-6 { padding-right: 1.5rem !important; padding-left: auto !important; }
+
+.pl-rtl-0 { padding-left: 0 !important; padding-right: auto !important; }
+.pl-rtl-1 { padding-left: 0.25rem !important; padding-right: auto !important; }
+.pl-rtl-2 { padding-left: 0.5rem !important; padding-right: auto !important; }
+.pl-rtl-3 { padding-left: 0.75rem !important; padding-right: auto !important; }
+.pl-rtl-4 { padding-left: 1rem !important; padding-right: auto !important; }
+.pl-rtl-5 { padding-left: 1.25rem !important; padding-right: auto !important; }
+.pl-rtl-6 { padding-left: 1.5rem !important; padding-right: auto !important; }
+
+// RTL Float utilities
+.float-right-rtl { float: left !important; }
+.float-left-rtl { float: right !important; }
+
+// RTL Position utilities
+.right-rtl-0 { left: 0 !important; right: auto !important; }
+.right-rtl-1 { left: 0.25rem !important; right: auto !important; }
+.right-rtl-2 { left: 0.5rem !important; right: auto !important; }
+.right-rtl-3 { left: 0.75rem !important; right: auto !important; }
+.right-rtl-4 { left: 1rem !important; right: auto !important; }
+
+.left-rtl-0 { right: 0 !important; left: auto !important; }
+.left-rtl-1 { right: 0.25rem !important; left: auto !important; }
+.left-rtl-2 { right: 0.5rem !important; left: auto !important; }
+.left-rtl-3 { right: 0.75rem !important; left: auto !important; }
+.left-rtl-4 { right: 1rem !important; left: auto !important; }
+
+// RTL Text alignment
+.text-left-rtl { text-align: right !important; }
+.text-right-rtl { text-align: left !important; }
+
+// RTL Flexbox utilities
+.justify-start-rtl { justify-content: flex-end !important; }
+.justify-end-rtl { justify-content: flex-start !important; }
+
+// RTL Border utilities
+.border-r-rtl-0 { border-left: 0 !important; }
+.border-l-rtl-0 { border-right: 0 !important; }
+.border-r-rtl { border-left: 1px solid !important; border-right: none !important; }
+.border-l-rtl { border-right: 1px solid !important; border-left: none !important; }
+
+// RTL Transform utilities
+.scale-x-rtl {
+  transform: scaleX(-1);
+}
+
+// Icons that need flipping in RTL
+.icon-flip-rtl {
+  transform: scaleX(-1);
+}
+
+.p-icon-wrapper {
+    right: auto;
+    left: 0.75rem;
+    &:has(.p-dropdown-clear-icon) {
+        position: relative;
+    }
+}
+
+// Specific icon fixes
+.pi-chevron-left {
+  transform: scaleX(-1);
+}
+
+.pi-chevron-right {
+  transform: scaleX(-1);
+}
+
+.pi-arrow-left {
+  transform: scaleX(-1);
+}
+
+.pi-arrow-right {
+  transform: scaleX(-1);
+}

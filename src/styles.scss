@@ -19,6 +19,108 @@
 @import "styles/buttons.scss";
 @import "styles/templates.scss";
 @import "styles/overrides.scss";
+@import "styles/rtl.scss";
+
+// RTL Global Styles
+// -----------------------------------------------------------------------------
+:root {
+  direction: rtl;
+}
+
+html[dir="rtl"], 
+body[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+// RTL utilities
+.rtl-flip {
+  transform: scaleX(-1);
+}
+
+.rtl-margin-left {
+  margin-right: auto !important;
+  margin-left: 0 !important;
+}
+
+.rtl-margin-right {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+.rtl-float-left {
+  float: right !important;
+}
+
+.rtl-float-right {
+  float: left !important;
+}
+
+.rtl-text-left {
+  text-align: right !important;
+}
+
+.rtl-text-right {
+  text-align: left !important;
+}
+
+// PrimeNG RTL Overrides
+// -----------------------------------------------------------------------------
+.p-component {
+  direction: rtl;
+}
+
+// Fix PrimeNG dropdowns and overlays for RTL
+.p-dropdown-panel,
+.p-multiselect-panel,
+.p-calendar-panel,
+.p-overlay {
+  direction: rtl;
+  text-align: right;
+}
+
+// Fix PrimeNG icons for RTL
+.p-dropdown-trigger .pi-chevron-down,
+.p-multiselect-trigger .pi-chevron-down {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+// Fix PrimeNG sidebar for RTL
+.p-sidebar-left {
+  right: 0;
+  left: auto;
+}
+
+.p-sidebar-right {
+  left: 0;
+  right: auto;
+}
+
+// Fix PrimeNG menu items
+.p-menuitem-link {
+  text-align: right;
+}
+
+.p-menuitem-icon {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+// Fix PrimeNG dialog
+.p-dialog .p-dialog-header-icons {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+// Fix PrimeNG table
+.p-datatable .p-datatable-thead > tr > th {
+  text-align: right;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  text-align: right;
+}
 
 // Global Typography
 // -----------------------------------------------------------------------------

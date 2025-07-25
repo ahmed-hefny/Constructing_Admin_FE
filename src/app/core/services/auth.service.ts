@@ -46,7 +46,8 @@ export class AuthService {
                     nameid: decodedToken.nameid,
                     uniqueName: decodedToken.unique_name,
                     role: decodedToken.role,
-                    companyId: decodedToken.CompanyId
+                    companyId: decodedToken.CompanyId,
+                    projectId: decodedToken.ProjectId
                 });
             }
         } else {

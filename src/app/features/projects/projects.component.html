@@ -1,7 +1,11 @@
 <div class="page">
   <div class="page-header">
     <h1 class="page-header-title">المشاريع</h1>
-    <button class="btn btn-primary" (click)="create()" *appAccessControl="[SystemRoles.ADMIN]">
+    <button
+      class="btn btn-primary"
+      (click)="create()"
+      *appAccessControl="[SystemRoles.ADMIN]"
+    >
       <i class="pi pi-plus"></i>
       <span>جديد</span>
     </button>
@@ -20,7 +24,9 @@
             <th>#</th>
             <th>المعرف</th>
             <th>الاسم</th>
-            <th pFrozenColumn *appAccessControl="[SystemRoles.ADMIN]">الإجراءات</th>
+            <th>
+              الإجراءات
+            </th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item let-index="rowIndex">
@@ -28,7 +34,7 @@
             <td>{{ index + 1 }}</td>
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
-            <td pFrozenColumn *appAccessControl="[SystemRoles.ADMIN]">
+            <td >
               <div class="flex gap-10">
                 <button
                   class="btn btn-outline border-0"
@@ -39,6 +45,7 @@
                 <button
                   class="btn btn-outline border-0"
                   (click)="edit(item.id)"
+                  *appAccessControl="[SystemRoles.ADMIN]"
                 >
                   <i class="pi pi-pencil ca-text-info ca-font-bold"></i>
                 </button>

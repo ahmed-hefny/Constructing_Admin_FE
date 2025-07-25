@@ -26,10 +26,6 @@ export default [
     {
         path: 'view/:id',
         loadComponent: () => import('./project-details/project-details.component').then(m => m.ProjectDetailsComponent),
-        canActivate: [hasRoleGuard],
-        data: {
-            roles: [SystemRoles.ADMIN]
-        }
     },
 
 ] as Routes;

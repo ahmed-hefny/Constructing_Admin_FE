@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../core/services';
+import { AuthService, RtlService } from '../../core/services';
 import { ButtonModule } from 'primeng/button';
 import { RouterOutlet } from '@angular/router';
 import { MenuModule } from 'primeng/menu';
@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { MenuItem } from 'primeng/api';
 import { MENU_ITEMS } from 'app/core/config/sidebar.config';
 import { AuthUser } from 'app/core/models';
+import { RtlDirective } from 'app/shared/directives/rtl.directive';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,8 @@ import { AuthUser } from 'app/core/models';
     AvatarModule,
     BadgeModule,
     RippleModule,
-    CommonModule
+    CommonModule,
+    RtlDirective
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

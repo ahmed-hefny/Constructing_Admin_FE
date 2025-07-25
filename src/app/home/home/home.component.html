@@ -1,4 +1,4 @@
-<div class="layout-wrapper" [class.sidebar-active]="sidebarVisible">
+<div class="layout-wrapper" [class.sidebar-active]="sidebarVisible" appRtl>
   <!-- Top Header -->
   <header class="layout-top-bar">
     <div class="top-bar-left">
@@ -26,6 +26,7 @@
             (click)="logout()"
             pTooltip="تسجيل الخروج"
             tooltipPosition="bottom"
+            class="rotate-y-180"
           >
           </p-button>
         </li>
