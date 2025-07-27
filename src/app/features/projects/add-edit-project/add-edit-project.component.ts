@@ -21,7 +21,7 @@ const imports = [
   MultiSelectModule,
   ButtonModule,
   CardModule,
-
+  DropdownModule
 ]
 @Component({
   selector: 'app-add-edit-project',
@@ -36,6 +36,16 @@ export class AddEditProjectComponent {
   editMode: boolean = false;
   id: string | null = null;
 
+  isDeletedOptions = [
+    {
+      id: false,
+      name: 'نشط',
+    },
+    {
+      id: true,
+      name: 'غير نشط',
+    }
+  ]
   private projectsService: ProjectsService = inject(ProjectsService);
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
@@ -70,7 +80,7 @@ export class AddEditProjectComponent {
       return;
     }
     const payload = this.inputForm.value;
-    if(this.editMode) {
+    if (this.editMode) {
       payload['id'] = this.id;
     }
     const action = this.editMode ? this.projectsService.update(payload) : this.projectsService.create(payload);
@@ -88,6 +98,7 @@ export class AddEditProjectComponent {
   private initializeForm(): void {
     this.inputForm = new UntypedFormGroup({
       name: new FormControl<string | null>(null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+      isDeleted: new FormControl<boolean>(false),
       companiesIdsList: new FormControl<string[] | null>(null, [Validators.required]),
     });
   }
@@ -98,7 +109,7 @@ export class AddEditProjectComponent {
       this.editMode = true;
       this.projectsService.getById(this.id).subscribe({
         next: (project) => {
-          this.inputForm.patchValue({ ...project , companiesIdsList: project?.companyList?.map(c => c.id) });
+          this.inputForm.patchValue({ ...project, companiesIdsList: project?.companyList?.map(c => c.id) });
         },
         error: (error) => {
           this.toaster.showError('فشل في تحميل بيانات المشروع');

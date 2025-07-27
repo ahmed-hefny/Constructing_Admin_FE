@@ -24,6 +24,7 @@
             <th>#</th>
             <th>المعرف</th>
             <th>الاسم</th>
+            <th>الحالة</th>
             <th>
               الإجراءات
             </th>
@@ -34,6 +35,14 @@
             <td>{{ index + 1 }}</td>
             <td>{{ item.id }}</td>
             <td>{{ item.name }}</td>
+            <td>
+              @if(item.isDeleted) {
+                <p-tag severity="danger" value="غير نشط" />
+
+              } @else {
+                <p-tag severity="success" value="نشط" />
+              }
+            </td>
             <td >
               <div class="flex gap-10">
                 <button

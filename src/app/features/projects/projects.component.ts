@@ -10,13 +10,15 @@ import { TableModule } from 'primeng/table';
 import { ProjectsService } from './service/projects.service';
 import { Project } from './models/projects.models';
 import { AccessControlDirective } from 'app/shared/directives/access-control.directive';
+import { TagModule } from 'primeng/tag';
 
 const imports = [
   ButtonModule,
   CardModule,
   TableModule,
+  TagModule,
   PaginationComponent,
-  AccessControlDirective
+  AccessControlDirective,
 ]
 @Component({
   selector: 'app-projects',

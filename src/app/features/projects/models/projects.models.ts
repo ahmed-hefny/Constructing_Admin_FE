@@ -4,6 +4,7 @@ export interface Project {
     id: number;
     name: string;
     companyList: CompanyResponse[];
+    isDeleted?: boolean;
     resource?: string;
     allQnt?: string;
 }

@@ -3,9 +3,7 @@
     <button class="btn btn-outline border-0" (click)="navigateBack()">
       <i class="pi pi-angle-right text-2xl"></i>
     </button>
-    <h1 class="page-header-title">
-      {{ editMode ? "تعديل" : "إنشاء" }} مشروع
-    </h1>
+    <h1 class="page-header-title">{{ editMode ? "تعديل" : "إنشاء" }} مشروع</h1>
   </div>
 
   <div class="page-content">
@@ -23,10 +21,21 @@
           />
           <!-- prettier-ignore -->
           @if (inputForm.get('name')?.invalid && inputForm.get('name')?.touched) {
-          <small class="error-message">
-            الاسم مطلوب (3-20 حرف)
-          </small>
+          <small class="error-message"> الاسم مطلوب (3-20 حرف) </small>
           }
+        </div>
+        <div class="form-field">
+          <label for="isDelted" class="field-label">الحالة</label>
+          <div class="field-suffix-container">
+            <p-dropdown
+              id="isDeleted"
+              formControlName="isDeleted"
+              [options]="isDeletedOptions"
+              [filter]="true"
+              optionLabel="name"
+              optionValue="id"
+            />
+          </div>
         </div>
         <div class="form-field">
           <label for="company" class="field-label">الشركة</label>
