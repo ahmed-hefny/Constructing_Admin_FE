@@ -27,9 +27,9 @@ export class HttpService {
   /**
    * POST request
    */
-  post<T>(endpoint: string, body: any, options?: HttpOptions): Observable<T> {
+  post<T>(endpoint: string, body: any, options?: HttpOptions, includeContentType: boolean = true): Observable<T> {
     const url = this.buildUrl(endpoint);
-    const httpOptions = this.buildRequestOptions(options);
+    const httpOptions = this.buildRequestOptions(options, includeContentType);
     return this.http.post<T>(url, body, httpOptions).pipe(
       tap(response => this.logIfEnabled('POST', url, response))
     );

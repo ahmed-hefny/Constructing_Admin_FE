@@ -22,8 +22,8 @@ export class ProjectsService {
     return this.http.get<Project>(`/project/GetById${buildQueryParams({ id })}`).pipe(
       map((res: Project) => ({
         ...res,
-        resource: res.resource || 'Cement',
-        allQnt: res.allQnt || '9',
+        resource: res.resource || 'اسمنت',
+        allQnt: res.allQnt || '0',
       }))
     )
   }

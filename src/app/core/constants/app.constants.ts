@@ -1,4 +1,4 @@
-import { PaginationConfig, PaginationRequest } from "../models";
+import { PaginationConfig } from "../models";
 
 export const LOGIN_URL = '/auth/login';
 
@@ -14,6 +14,11 @@ export const SYSTEM_ROLES_OPTIONS = [
     { label: 'مشرف', value: SystemRoles.SUPER_VISOR },
     { label: 'موظف', value: SystemRoles.EMPLOYEE },
 ]
+
+export enum Suppliers {
+    Arish = 1,
+    Banisuef,
+}
 
 export const PAGINATION_OPTIONS = [10, 20, 30, 50, 100];
 

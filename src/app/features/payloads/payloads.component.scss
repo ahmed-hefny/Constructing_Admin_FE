@@ -1,6 +1,5 @@
 @import "../../../styles/variables";
 :host {
-
   .input-form {
     grid-template-columns: repeat(3, 4fr) 1fr;
   }
@@ -13,6 +12,12 @@
       height: 2.6rem;
       font-size: $font-size-base;
       margin-bottom: 2px;
+    }
+  }
+  ::ng-deep {
+    .p-datatable .p-datatable-tbody > tr > td,
+    .p-datatable .p-datatable-thead > tr > th {
+      min-width: 130px;
     }
   }
 

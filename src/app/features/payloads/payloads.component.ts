@@ -14,6 +14,7 @@ import { ButtonModule } from 'primeng/button';
 import { PayloadConfig } from './models/payloads.models';
 import { PaginationConfig } from 'app/core/models';
 import { PayloadsService } from './service/payloads.service';
+import { PaginationComponent } from 'app/shared/components/pagination/pagination.component';
 
 const imports = [
   CommonModule,
@@ -24,7 +25,8 @@ const imports = [
   TooltipModule,
   InputTextModule,
   CalendarModule,
-  ButtonModule
+  ButtonModule,
+  PaginationComponent
 ]
 
 @Component({

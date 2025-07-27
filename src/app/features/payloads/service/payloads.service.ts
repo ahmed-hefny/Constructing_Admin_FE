@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { PaginationRequest, PaginationResponse } from 'app/core/models';
 import { HttpService } from 'app/core/services';
@@ -11,6 +12,14 @@ export class PayloadsService {
   private http: HttpService = inject(HttpService);
 
   constructor() { }
+
+  create(payload: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Accept': 'application/json'
+    });
+
+    return this.http.post(`/Payload/Create`, payload, { headers }, false);
+  }
 
   getAll(body: any): Observable<PaginationResponse<any>> {
     return this.http.post<PaginationResponse<any>>(`/Payload/GetPayloadsList`, body);

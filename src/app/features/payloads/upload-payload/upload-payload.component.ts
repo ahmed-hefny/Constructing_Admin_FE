@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToasterService } from 'app/shared/services/toaster.service';
 import { ButtonModule } from 'primeng/button';
@@ -10,6 +10,7 @@ import { PayloadsService } from '../service/payloads.service';
 import { PayloadConfig } from '../models/payloads.models';
 import { LOAD_WASM, NgxScannerQrcodeComponent, NgxScannerQrcodeService, ScannerQRCodeConfig, ScannerQRCodeResult, ScannerQRCodeSelectedFiles } from 'ngx-scanner-qrcode';
 import { finalize, take } from 'rxjs';
+import { Suppliers } from 'app/core/constants/app.constants';
 
 
 LOAD_WASM('assets/wasm/ngx-scanner-qrcode.wasm').subscribe();
@@ -100,23 +101,38 @@ export class UploadPayloadComponent implements OnInit {
       this.isLoading = false;
       return;
     }
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 500)
-    console.log({
-      ...this.inputForm.getRawValue(),
-      ...this.payloadConfig
+    const formData = new FormData();
+    Object.entries(this.inputForm.getRawValue()).map(([k, v]) => {
+      console.log({ [k]: v });
+      formData.append(k, v as any);
     })
+    this.payloadsService.create(formData)
+      .pipe(finalize(() => this.isLoading = false))
+      .subscribe({
+        next: (response) => {
+          this.toaster.showSuccess('تم رفع الحمولة بنجاح');
+          this.inputForm.reset();
+          this.navigateBack();
+        },
+        error: (error) => {
+          console.error('Error uploading payload:', error);
+          this.toaster.showError('خطأ في رفع الحمولة: ' + error.message);
+        }
+      });
   }
 
   onScan(result: ScannerQRCodeResult[], scanner: NgxScannerQrcodeComponent): void {
 
     if (Array.isArray(result) && result.length > 0) {
+      const type = result[0]?.typeName
       const scannedData = result[0].value;
       const policyNoControl = this.inputForm.get('policyNumber');
       this.inputForm.patchValue({ policyNumber: scannedData });
       policyNoControl?.disable();
       policyNoControl?.setValue(scannedData);
+      if (type) {
+        this.inputForm.patchValue({ supplier: (type.toLowerCase().includes('qr') ? Suppliers.Banisuef : Suppliers.Arish) });
+      }
       if (scanner) {
         setTimeout(() => {
           scanner.pause();
@@ -163,8 +179,6 @@ export class UploadPayloadComponent implements OnInit {
       .subscribe({
         next: (result: ScannerQRCodeSelectedFiles[]) => {
           if (result && result.length > 0) {
-            const file = result[0].file;
-            this.inputForm.patchValue({ image: file });
             this.result = result[0];
           }
         },
@@ -186,9 +200,11 @@ export class UploadPayloadComponent implements OnInit {
 
   private initializeForm(): void {
     this.inputForm = new UntypedFormGroup({
-      qnt: new UntypedFormControl('', [Validators.required, Validators.min(1)]),
+      quantity: new UntypedFormControl('', [Validators.required, Validators.min(1)]),
       policyNumber: new UntypedFormControl({ value: '', disabled: true }, [Validators.required]),
-      image: new UntypedFormControl(null),
+      image: new UntypedFormControl(null, [Validators.required]),
+      supplier: new FormControl<string | null>(null),
+      shippingName: new FormControl<string | null>(null),
     });
   }
 }
