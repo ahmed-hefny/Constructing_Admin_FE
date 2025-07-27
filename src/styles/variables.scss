@@ -102,10 +102,11 @@ $top-bar-height: 60px;
 
 // Border Radius
 // -----------------------------------------------------------------------------
-$border-radius-sm: 4px;
-$border-radius-md: 8px;
-$border-radius-lg: 12px;
-$border-radius-xl: 16px;
+$border-radius-sm: 0.25rem;      // 4px
+$border-radius-semi-md: 0.375rem; // 6px
+$border-radius-md: 0.5rem;       // 8px
+$border-radius-lg: 0.75rem;      // 12px
+$border-radius-xl: 1rem;         // 16px
 $border-radius-full: 50%;
 
 // Spacing Scale

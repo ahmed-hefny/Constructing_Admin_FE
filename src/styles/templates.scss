@@ -44,8 +44,8 @@
       .p-dropdown,
       .p-multiselect {
         width: 100%;
-        padding: $spacing-sm $spacing-sm;
-        border-radius: $border-radius-sm;
+        padding: $spacing-md;
+        border-radius: $border-radius-semi-md;
         --tw-border-opacity: 1;
         border: 1px solid;
         border-color: rgb(209 213 219 / var(--tw-border-opacity));
