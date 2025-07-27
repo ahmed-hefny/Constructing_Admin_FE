@@ -61,7 +61,9 @@ export class ProjectsComponent {
         };
       },
       error: (err) => {
-        this.toaster.showError('فشل في تحميل المشاريع');
+        if(err.status !== 401) {
+          this.toaster.showError('فشل في تحميل المشاريع');
+        }
       }
     });
   }
