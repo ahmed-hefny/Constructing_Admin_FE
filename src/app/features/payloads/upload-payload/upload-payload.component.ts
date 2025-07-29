@@ -15,8 +15,6 @@ import { Suppliers } from 'app/core/constants/app.constants';
 
 LOAD_WASM('assets/wasm/ngx-scanner-qrcode.wasm').subscribe();
 
-
-
 const imports = [
   CommonModule,
   ReactiveFormsModule,
@@ -24,9 +22,8 @@ const imports = [
   ButtonModule,
   CardModule,
   NgxScannerQrcodeComponent,
-
-
 ]
+
 @Component({
   imports,
   selector: 'app-upload-payload',
@@ -101,9 +98,12 @@ export class UploadPayloadComponent implements OnInit {
       this.isLoading = false;
       return;
     }
+    const payload = {
+      ...this.inputForm.getRawValue(),
+      ...this.payloadConfig
+    }
     const formData = new FormData();
-    Object.entries(this.inputForm.getRawValue()).map(([k, v]) => {
-      console.log({ [k]: v });
+    Object.entries(payload).map(([k, v]) => {
       formData.append(k, v as any);
     })
     this.payloadsService.create(formData)
