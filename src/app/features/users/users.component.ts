@@ -1,9 +1,10 @@
+import { AuthService } from 'app/core/services';
 import { Router } from '@angular/router';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { UsersService } from './service/users.service';
 import { PaginationConfig, PaginationRequest, PaginationResponse } from 'app/core/models';
-import { Default_PAGINATION } from 'app/core/constants/app.constants';
+import { Default_PAGINATION, SystemRoles } from 'app/core/constants/app.constants';
 import { UserResponse } from './models/users.models';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
@@ -11,12 +12,14 @@ import { ToasterService } from 'app/shared/services/toaster.service';
 import { ConfirmDialogConfig } from 'app/shared/models/dialog.models';
 import { DialogService } from 'app/shared/services/dialog.service';
 import { PaginationComponent } from 'app/shared/components/pagination/pagination.component';
+import { AccessControlDirective } from 'app/shared/directives/access-control.directive';
 
 const imports = [
   ButtonModule,
   CardModule,
   TableModule,
-  PaginationComponent
+  PaginationComponent,
+  AccessControlDirective
 ]
 @Component({
   imports,
@@ -27,13 +30,18 @@ const imports = [
 export class UsersComponent implements OnInit {
   public data: UserResponse[] = [];
   public pagination: PaginationConfig = Default_PAGINATION;
+  public Role: typeof SystemRoles = SystemRoles;
+  public currentRole: WritableSignal<SystemRoles> = signal<SystemRoles>(SystemRoles.SUPER_VISOR);
 
   private router: Router = inject(Router);
   private usersService: UsersService = inject(UsersService);
   private toaster: ToasterService = inject(ToasterService);
   private dialogService: DialogService = inject(DialogService);
+  private authService: AuthService = inject(AuthService);
   ngOnInit(): void {
     this.getData();
+    const role = this.authService.user()?.role;
+    if (role) this.currentRole.set(role);
   }
 
   createUser(): void {

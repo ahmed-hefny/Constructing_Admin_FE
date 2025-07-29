@@ -30,15 +30,18 @@
             <td>{{ item.companyName || "-" }}</td>
             <td>
               <div class="flex gap-10">
-                <button
-                  class="btn btn-outline border-0"
-                  (click)="editUser(item.id)"
-                >
-                  <i class="pi pi-pencil ca-text-info ca-font-bold"></i>
-                </button>
+                @if (currentRole() === Role.ADMIN || item.role === Role.EMPLOYEE) {
+                  <button
+                    class="btn btn-outline border-0"
+                    (click)="editUser(item.id)"
+                  >
+                    <i class="pi pi-pencil ca-text-info ca-font-bold"></i>
+                  </button>
+                }
                 <button
                   class="btn btn-outline border-0"
                   (click)="confirmDelete(item.id)"
+                  *appAccessControl="[Role.ADMIN]"
                 >
                   <i class="pi pi-trash ca-text-error ca-font-bold"></i>
                 </button>
