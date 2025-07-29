@@ -15,6 +15,7 @@ import { PayloadConfig } from './models/payloads.models';
 import { PaginationConfig } from 'app/core/models';
 import { PayloadsService } from './service/payloads.service';
 import { PaginationComponent } from 'app/shared/components/pagination/pagination.component';
+import { finalize } from 'rxjs';
 
 const imports = [
   CommonModule,
@@ -46,7 +47,11 @@ export class PayloadsComponent implements OnInit {
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private payloadsService: PayloadsService = inject(PayloadsService);
-
+  private filtration = {
+    policyNumber: undefined,
+    dateFrom: undefined,
+    dateTo: undefined
+  }
   constructor() {
     this.initializeFilterForm();
   }
@@ -74,23 +79,28 @@ export class PayloadsComponent implements OnInit {
     this.router.navigate(['upload'], { relativeTo: this.activatedRoute });
   }
 
-  getData(): void {
+  getData(filtration?: any): void {
+
     const payload = {
       pageNumber: this.pagination.pageNumber,
       pageSize: this.pagination.pageSize,
+      ...this.filtration
     }
-    this.payloadsService.getAll(payload).subscribe({
-      next: (res) => {
-        this.data = res.items;
-        this.pagination = {
-          ...this.pagination,
-          totalRecords: res.count,
-        };
-      },
-      error: (err) => {
-        this.toaster.showError('فشل في تحميل الحمولات');
-      }
-    });
+    this.payloadsService.getAll(payload)
+      .pipe(
+        finalize(() => this.isLoading = false)
+      ).subscribe({
+        next: (res) => {
+          this.data = res.items;
+          this.pagination = {
+            ...this.pagination,
+            totalRecords: res.count,
+          };
+        },
+        error: (err) => {
+          this.toaster.showError('فشل في تحميل الحمولات');
+        }
+      });
   }
 
   onPageChange(event: { pageNumber: number; pageSize: number }): void {
@@ -109,9 +119,13 @@ export class PayloadsComponent implements OnInit {
 
   onApplyFilter(): void {
     this.isLoading = true;
-    console.log('Filter values:', this.inputForm.value);
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1500);
+    this.filtration = {
+      policyNumber: this.inputForm.value?.policyNumber || undefined,
+      dateFrom: this.inputForm.value?.dateFrom?.toISOString() || undefined,
+      dateTo: this.inputForm.value?.dateTo?.toISOString() || undefined
+    }
+    this.pagination.pageNumber = Default_PAGINATION.pageNumber; // Reset to first page on filter
+    this.getData()
+
   }
 }

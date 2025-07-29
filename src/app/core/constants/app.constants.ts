@@ -20,7 +20,7 @@ export enum Suppliers {
     Banisuef,
 }
 
-export const PAGINATION_OPTIONS = [10, 20, 30, 50, 100];
+export const PAGINATION_OPTIONS = [5, 10, 20, 30, 50, 100];
 
 export const Default_PAGINATION: PaginationConfig = {
     pageNumber: 1,

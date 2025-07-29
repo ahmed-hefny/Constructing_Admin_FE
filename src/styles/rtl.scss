@@ -77,15 +77,6 @@
 .border-r-rtl { border-left: 1px solid !important; border-right: none !important; }
 .border-l-rtl { border-right: 1px solid !important; border-left: none !important; }
 
-// RTL Transform utilities
-.scale-x-rtl {
-  transform: scaleX(-1);
-}
-
-// Icons that need flipping in RTL
-.icon-flip-rtl {
-  transform: scaleX(-1);
-}
 
 .p-icon-wrapper {
     right: auto;
@@ -95,19 +86,18 @@
     }
 }
 
-// Specific icon fixes
-.pi-chevron-left {
-  transform: scaleX(-1);
-}
-
+// rotate the icons for RTL
+.scale-x-rtl,
+.icon-flip-rtl,
+.p-datepicker-next-icon,
+.p-datepicker-prev-icon,
+.pi-arrow-right,
+.pi-arrow-left,
+.pi-chevron-left,
 .pi-chevron-right {
   transform: scaleX(-1);
 }
 
-.pi-arrow-left {
-  transform: scaleX(-1);
-}
-
-.pi-arrow-right {
-  transform: scaleX(-1);
+.p-datepicker table th {
+  text-align: center;
 }
