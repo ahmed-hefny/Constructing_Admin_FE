@@ -87,6 +87,8 @@ export class LoginComponent implements OnInit {
     let returnUrl = '/';
     if (user?.role === SystemRoles.EMPLOYEE) {
       returnUrl = `/payloads/${user?.companyId}/${user?.projectId}/upload`;
+    } else if(user?.role === SystemRoles.SUPER_VISOR) {
+      returnUrl = '/companies';
     }
     this.router.navigateByUrl(returnUrl);
   }

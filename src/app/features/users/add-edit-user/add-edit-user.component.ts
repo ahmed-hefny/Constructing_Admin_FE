@@ -13,6 +13,7 @@ import { MessageService } from 'primeng/api';
 import { finalize } from 'rxjs';
 import { ToasterService } from 'app/shared/services/toaster.service';
 import { CompanyResponse } from 'app/shared/models/company.models';
+import { AuthService } from 'app/core/services';
 
 
 const imports = [
@@ -43,10 +44,15 @@ export class CreateUserComponent {
   private usersService: UsersService = inject(UsersService);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  private authService: AuthService = inject(AuthService);
   constructor() {
     this.initializeForm();
     this.listenToRoleChanges();
     this.processEditMode();
+    const role = this.authService.user()?.role;
+    if (role !== SystemRoles.ADMIN) {
+      this.systemRoles = this.systemRoles.filter(r => r.value === SystemRoles.EMPLOYEE);
+    }
   }
 
   navigateBack(): void {

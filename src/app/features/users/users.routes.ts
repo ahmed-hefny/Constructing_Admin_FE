@@ -7,6 +7,7 @@ export default [
     },
     {
         path: 'create',
+        
         loadComponent: () => import('./add-edit-user/add-edit-user.component').then(m => m.CreateUserComponent)
     },
     {
