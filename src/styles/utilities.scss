@@ -114,6 +114,7 @@
 // Responsive Visibility
 @media (max-width: $breakpoint-sm) {
   .ca-hidden-sm { display: none; }
+  .p-toast-message { max-width: 360px;}
 }
 
 @media (max-width: $breakpoint-md) {

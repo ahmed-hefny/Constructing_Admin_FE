@@ -4,12 +4,12 @@
 // RTL Direction utilities
 .rtl {
   direction: rtl;
-  text-align: right;
+  text-align: start;
 }
 
 .ltr {
   direction: ltr;
-  text-align: left;
+  text-align: start;
 }
 
 // RTL Margin utilities
@@ -98,6 +98,3 @@
   transform: scaleX(-1);
 }
 
-.p-datepicker table th {
-  text-align: center;
-}

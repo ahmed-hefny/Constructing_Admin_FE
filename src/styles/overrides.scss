@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import "./variables.scss";
 
 .p-datatable.p-datatable-striped .p-datatable-tbody > tr {
   border-block-width: 1px !important;
@@ -70,8 +70,8 @@
 // Fix toast positioning
 .p-toast-top-right {
   top: 20px;
-  left: 20px;
-  right: auto;
+  left: auto;
+  right: 20px;
 }
 
 .p-toast-top-left {
@@ -119,4 +119,11 @@
 }
 .p-paginator-page.p-highlight {
   pointer-events: none;
+}
+
+.p-datepicker table th {
+  text-align: center;
+}
+.p-toast-message-text {
+  margin-inline-start: 1rem;
 }
