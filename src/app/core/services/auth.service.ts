@@ -24,6 +24,7 @@ export class AuthService {
                 if (response.token) {
                     this.setToken(response.token);
                     this.setUser();
+                    this.redirectToHomePage();
                 }
             }),
             catchError(error => {
@@ -107,6 +108,17 @@ export class AuthService {
         } else {
             return decodedToken?.role === role;
         }
+    }
+
+    public redirectToHomePage(): void {
+        const user = this.user();
+        let returnUrl = '/';
+        if (user?.role === SystemRoles.EMPLOYEE) {
+            returnUrl = `/payloads/${user?.companyId}/${user?.projectId}/upload`;
+        } else if (user?.role === SystemRoles.SUPER_VISOR) {
+            returnUrl = '/companies';
+        }
+        this.router.navigateByUrl(returnUrl);
     }
 
     // Private helper methods

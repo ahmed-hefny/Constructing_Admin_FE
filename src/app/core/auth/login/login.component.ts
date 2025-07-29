@@ -48,10 +48,6 @@ export class LoginComponent implements OnInit {
     const credentials = this.inputForm.value;
 
     this.authService.login(credentials).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this.navigateAfterLogin();
-      },
       error: (error) => {
         console.error('Login failed:', { error });
         this.isLoading = false;
@@ -82,14 +78,5 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private navigateAfterLogin(): void {
-    const user = this.authService.user();
-    let returnUrl = '/';
-    if (user?.role === SystemRoles.EMPLOYEE) {
-      returnUrl = `/payloads/${user?.companyId}/${user?.projectId}/upload`;
-    } else if(user?.role === SystemRoles.SUPER_VISOR) {
-      returnUrl = '/companies';
-    }
-    this.router.navigateByUrl(returnUrl);
-  }
+
 }

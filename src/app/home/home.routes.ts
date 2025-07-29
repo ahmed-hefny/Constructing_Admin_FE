@@ -10,12 +10,12 @@ export default [
         children: [
             {
                 path: '',
-                canActivate: [hasRoleGuard],
-                data: { roles: [SystemRoles.ADMIN, SystemRoles.EMPLOYEE] },
                 loadChildren: () => import('features/projects/projects.routes'),
             },
             {
                 path: 'payloads',
+                canActivate: [hasRoleGuard],
+                data: { roles: [SystemRoles.ADMIN, SystemRoles.EMPLOYEE] },
                 loadChildren: () => import('features/payloads/payloads.routes'),
             },
             {
@@ -27,6 +27,8 @@ export default [
             {
                 path: 'companies',
                 loadChildren: () => import('features/companies/companies.route'),
+                canActivate: [hasRoleGuard],
+                data: { roles: [SystemRoles.ADMIN, SystemRoles.SUPER_VISOR] },
             }
         ]
     }

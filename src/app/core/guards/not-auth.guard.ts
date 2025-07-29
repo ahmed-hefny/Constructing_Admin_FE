@@ -15,6 +15,6 @@ export const NotAuthGuard: CanActivateFn = (route, state) => {
     }
 
     // Token exists, user is authenticated, redirect to home
-    router.navigate(['/']);
+    authService.redirectToHomePage();
     return false;
 };
