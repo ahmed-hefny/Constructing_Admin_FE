@@ -79,12 +79,13 @@ export class PayloadsComponent implements OnInit {
     this.router.navigate(['upload'], { relativeTo: this.activatedRoute });
   }
 
-  getData(filtration?: any): void {
+  getData(): void {
 
     const payload = {
       pageNumber: this.pagination.pageNumber,
       pageSize: this.pagination.pageSize,
-      ...this.filtration
+      ...this.filtration,
+      ...this.payloadConfig
     }
     this.payloadsService.getAll(payload)
       .pipe(

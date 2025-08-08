@@ -15,7 +15,7 @@ export default [
             {
                 path: 'payloads',
                 canActivate: [hasRoleGuard],
-                data: { roles: [SystemRoles.ADMIN, SystemRoles.EMPLOYEE] },
+                data: { roles: [SystemRoles.ADMIN, SystemRoles.EMPLOYEE, SystemRoles.SUPER_VISOR] },
                 loadChildren: () => import('features/payloads/payloads.routes'),
             },
             {

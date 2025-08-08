@@ -4,6 +4,7 @@
     <button
       class="btn btn-primary"
       (click)="create()"
+      *appAccessControl="[SystemRoles.ADMIN, SystemRoles.EMPLOYEE]"
     >
       <i class="pi pi-plus"></i>
       <span>جديد</span>
