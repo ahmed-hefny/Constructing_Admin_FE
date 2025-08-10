@@ -33,7 +33,8 @@
                 "input": "node_modules/ngx-scanner-qrcode/wasm/",
                 "output": "./assets/wasm/"
               },
-              "src/web.config"
+              "src/web.config",
+              "src/.wellknown/pki-validation/B97323AF81014BA85BC259CEB64DDACB.txt"
             ],
             "styles": ["src/styles.scss"],
             "stylePreprocessorOptions": {
