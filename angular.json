@@ -32,7 +32,8 @@
                 "glob": "**/*",
                 "input": "node_modules/ngx-scanner-qrcode/wasm/",
                 "output": "./assets/wasm/"
-              }
+              },
+              "src/web.config"
             ],
             "styles": ["src/styles.scss"],
             "stylePreprocessorOptions": {
