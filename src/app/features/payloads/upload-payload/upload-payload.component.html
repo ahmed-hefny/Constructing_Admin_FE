@@ -1,5 +1,5 @@
 <div class="page">
-  <div class="page-header">
+  <div class="page-header form-header">
     <button class="btn btn-outline border-0" (click)="navigateBack()">
       <i class="pi pi-angle-right text-2xl"></i>
     </button>
@@ -57,7 +57,7 @@
                   #scanner="scanner"
                   [src]="result?.url"
                   (event)="onScan($event, scanner)"
-                  class="w-[400px] rounded-xl overflow-hidden\"
+                  class="w-[350] sm:w-[400px] rounded-xl overflow-hidden\"
                 />
               </div>
             <!-- prettier-ignore -->
@@ -70,7 +70,7 @@
               [config]="qrCodeConfig"
               #scanner="scanner"
               (event)="onScan($event, scanner)"
-              class="w-[400px] rounded-xl overflow-hidden"
+              class="w-[350] sm:w-[400px] rounded-xl overflow-hidden"
             />
             <!-- prettier-ignore -->
             @if (inputForm.get('image')?.invalid && inputForm.get('image')?.touched) {

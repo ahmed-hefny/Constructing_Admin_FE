@@ -135,10 +135,13 @@
       &-title {
         font-size: $font-size-xl;
       }
+      &.form-header {
+        justify-content: start;
+      }
     }
   }
   .input-form {
-    grid-template-columns: 1fr !important;
+    display: block;
     .field {
       &-label {
         font-size: $font-size-base;
@@ -146,6 +149,14 @@
       &-input {
         font-size: $font-size-sm;
       }
+    }
+  }
+}
+@media (max-width: $breakpoint-sm) {
+
+  .input-form {
+    input {
+      width: 100%;
     }
   }
 }
