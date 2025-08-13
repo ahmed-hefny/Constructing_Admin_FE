@@ -42,29 +42,34 @@
     </div>
 
     <div class="sidebar-content">
-      <!-- User Profile Section -->
-      <div class="sidebar-profile">
-        <div class="profile-info">
-          <p-avatar
-            icon="pi pi-user"
-            size="large"
-            shape="circle"
-            styleClass="profile-avatar"
-          >
-          </p-avatar>
-          <div class="profile-details">
-            <div class="profile-name">{{ user?.uniqueName }}</div>
-            <div class="profile-role">{{ user?.role }}</div>
+      <div>
+        <!-- User Profile Section -->
+        <div class="sidebar-profile">
+          <div class="profile-info">
+            <p-avatar
+              icon="pi pi-user"
+              size="large"
+              shape="circle"
+              styleClass="profile-avatar"
+            >
+            </p-avatar>
+            <div class="profile-details">
+              <div class="profile-name">{{ user?.uniqueName }}</div>
+              <div class="profile-role">{{ user?.role }}</div>
+            </div>
           </div>
         </div>
+  
+        <!-- Navigation Menu -->
+        <div class="sidebar-menu">
+          <p-menu
+            [model]="menuItems"
+            styleClass="sidebar-nav-menu"
+          />      
+        </div>
       </div>
-
-      <!-- Navigation Menu -->
-      <div class="sidebar-menu">
-        <p-menu
-          [model]="menuItems"
-          styleClass="sidebar-nav-menu"
-        />      
+      <div class="text-center">
+        v{{version}}
       </div>
     </div>
   </aside>

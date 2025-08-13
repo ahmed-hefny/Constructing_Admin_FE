@@ -11,6 +11,7 @@ import { MenuItem } from 'primeng/api';
 import { MENU_ITEMS } from 'app/core/config/sidebar.config';
 import { AuthUser } from 'app/core/models';
 import { RtlDirective } from 'app/shared/directives/rtl.directive';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,7 @@ export class HomeComponent {
   sidebarVisible: boolean = false;
   menuItems: MenuItem[] = [];
   user: AuthUser | null = this.authService.user();
+  version: string = environment?.version;
   constructor() {
     this.initializeMenuItems();
   }
