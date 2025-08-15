@@ -61,10 +61,20 @@
   direction: rtl;
 }
 
-// Fix dialog close button
+// Fix dialog
 .p-dialog .p-dialog-header-icon {
-  margin-left: 0.5rem;
-  margin-right: 0;
+  justify-content: end;
+}
+.p-dialog-footer {
+  gap: 10px;
+  display: flex;
+  direction: rtl;
+  flex-direction: row-reverse;
+}
+
+.p-confirm-dialog-icon {
+  margin-inline-end: 0.5rem;
+  font-size: 1.3rem;
 }
 
 // Fix toast positioning

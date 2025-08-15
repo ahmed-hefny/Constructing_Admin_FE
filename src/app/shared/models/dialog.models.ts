@@ -17,6 +17,8 @@ export interface ConfirmDialogConfig {
     contentStyleClass?: string;
     contentStyle?: any;
     showHeader?: boolean;
+    blockScroll?: boolean;
+    dismissableMask?: boolean;
     closeOnEscape?: boolean;
     onAccept?: () => void;
     onReject?: () => void;
