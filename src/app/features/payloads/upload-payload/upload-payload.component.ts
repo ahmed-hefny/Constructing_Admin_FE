@@ -44,7 +44,7 @@ export class UploadPayloadComponent implements OnInit {
     }
   }
   showScanner = true;
-  result!: ScannerQRCodeSelectedFiles;
+  result: ScannerQRCodeSelectedFiles | null = null;
 
 
   private router: Router = inject(Router);
@@ -167,14 +167,11 @@ export class UploadPayloadComponent implements OnInit {
   }
 
   onUploadPolicyNoImage(files: any): void {
-    this.showScanner = false;
+    this.result = null;
 
     this.qrCode.loadFiles(files)
       .pipe(
         take(1),  // Ensure we only take the first emission
-        finalize(() => {
-          this.showScanner = true;
-        })
       )
       .subscribe({
         next: (result: ScannerQRCodeSelectedFiles[]) => {
