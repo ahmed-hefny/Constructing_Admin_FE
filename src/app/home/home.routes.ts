@@ -28,7 +28,7 @@ export default [
                 path: 'companies',
                 loadChildren: () => import('features/companies/companies.route'),
                 canActivate: [hasRoleGuard],
-                data: { roles: [SystemRoles.ADMIN, SystemRoles.SUPER_VISOR] },
+                data: { roles: [SystemRoles.ADMIN] },
             }
         ]
     }

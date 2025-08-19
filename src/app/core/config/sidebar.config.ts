@@ -10,7 +10,7 @@ export const MENU_ITEMS = [
         label: 'الشركات',
         icon: 'pi pi-building',
         routerLink: ['/companies'],
-        roles: [SystemRoles.ADMIN, SystemRoles.SUPER_VISOR],
+        roles: [SystemRoles.ADMIN],
     },
     {
         label: 'المستخدمين',
