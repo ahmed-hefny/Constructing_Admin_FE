@@ -130,7 +130,8 @@ export class PayloadsComponent implements OnInit {
       : undefined;
     if (dateFrom || dateTo) {
       this.shouldShowExportButton = true;
-    } else {
+    } else if(!dateFrom && !dateTo) {
+      this.shouldShowExportButton = false;
     }
     this.filtration = {
       policyNumber: this.inputForm.value?.policyNumber || undefined,
