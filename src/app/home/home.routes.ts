@@ -15,14 +15,14 @@ export default [
             {
                 path: 'payloads',
                 canActivate: [hasRoleGuard],
-                data: { roles: [SystemRoles.ADMIN, SystemRoles.EMPLOYEE, SystemRoles.SUPER_VISOR] },
+                data: { roles: [SystemRoles.ADMIN, SystemRoles.EMPLOYEE, SystemRoles.Supervisor] },
                 loadChildren: () => import('features/payloads/payloads.routes'),
             },
             {
                 path: 'users',
                 loadChildren: () => import('features/users/users.routes'),
                 canActivate: [hasRoleGuard],
-                data: { roles: [SystemRoles.ADMIN, SystemRoles.SUPER_VISOR] },
+                data: { roles: [SystemRoles.ADMIN, SystemRoles.Supervisor] },
             },
             {
                 path: 'companies',

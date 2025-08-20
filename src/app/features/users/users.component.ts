@@ -31,7 +31,7 @@ export class UsersComponent implements OnInit {
   public data: UserResponse[] = [];
   public pagination: PaginationConfig = Default_PAGINATION;
   public Role: typeof SystemRoles = SystemRoles;
-  public currentRole: WritableSignal<SystemRoles> = signal<SystemRoles>(SystemRoles.SUPER_VISOR);
+  public currentRole: WritableSignal<SystemRoles> = signal<SystemRoles>(SystemRoles.Supervisor);
 
   private router: Router = inject(Router);
   private usersService: UsersService = inject(UsersService);

@@ -115,7 +115,7 @@ export class AuthService {
         let returnUrl = '/';
         if (user?.role === SystemRoles.EMPLOYEE) {
             returnUrl = `/payloads/${user?.projectId}/${user?.companyId}/upload`;
-        } else if (user?.role === SystemRoles.SUPER_VISOR) {
+        } else if (user?.role === SystemRoles.Supervisor) {
             returnUrl = `/view/${user?.projectId}`;
         }
         this.router.navigateByUrl(returnUrl);

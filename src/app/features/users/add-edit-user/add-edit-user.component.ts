@@ -158,7 +158,7 @@ export class CreateUserComponent {
         if (value === SystemRoles.EMPLOYEE && this.companies?.length === 0) {
           this.getCompanies();
         } else if (
-          value === SystemRoles.SUPER_VISOR &&
+          value === SystemRoles.Supervisor &&
           this.projects?.length === 0
         ) {
           this.getProjects();
@@ -178,7 +178,7 @@ export class CreateUserComponent {
     // Add validators based on role
     if (role === SystemRoles.EMPLOYEE) {
       companyIdControl?.setValidators([Validators.required]);
-    } else if (role === SystemRoles.SUPER_VISOR) {
+    } else if (role === SystemRoles.Supervisor) {
       projectIdControl?.setValidators([Validators.required]);
     }
 

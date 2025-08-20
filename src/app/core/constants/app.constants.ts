@@ -4,14 +4,14 @@ export const LOGIN_URL = '/auth/login';
 
 export enum SystemRoles {
     ADMIN = 'admin',
-    SUPER_VISOR = 'supervisor',
+    Supervisor = 'supervisor',
     EMPLOYEE = 'employee',
 }
 
 
 export const SYSTEM_ROLES_OPTIONS = [
     { label: 'مسئول', value: SystemRoles.ADMIN },
-    { label: 'مشرف', value: SystemRoles.SUPER_VISOR },
+    { label: 'مشرف', value: SystemRoles.Supervisor },
     { label: 'موظف', value: SystemRoles.EMPLOYEE },
 ]
 

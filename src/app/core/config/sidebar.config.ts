@@ -4,7 +4,7 @@ export const MENU_ITEMS = [
         label: 'المشاريع',
         icon: 'pi pi-briefcase',
         routerLink: ['/'],
-        roles: [SystemRoles.ADMIN, SystemRoles.SUPER_VISOR, SystemRoles.EMPLOYEE],
+        roles: [SystemRoles.ADMIN, SystemRoles.Supervisor, SystemRoles.EMPLOYEE],
     },
     {
         label: 'الشركات',
@@ -16,7 +16,7 @@ export const MENU_ITEMS = [
         label: 'المستخدمين',
         icon: 'pi pi-users',
         routerLink: ['/users'],
-        roles: [SystemRoles.ADMIN, SystemRoles.SUPER_VISOR],
+        roles: [SystemRoles.ADMIN, SystemRoles.Supervisor],
     },
 
 ]
