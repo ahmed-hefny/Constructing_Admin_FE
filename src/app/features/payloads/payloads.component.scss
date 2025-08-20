@@ -1,6 +1,7 @@
 @import "../../../styles/variables";
 :host {
   .input-form {
+    display: grid;
     grid-template-columns: repeat(3, 4fr) 1fr;
   }
   .form-actions {
@@ -21,7 +22,7 @@
     }
   }
 
-  @media screen and (max-width: $breakpoint-sm) {
+  @media screen and (max-width: $breakpoint-md) {
     .input-form {
       grid-template-columns: 1fr;
       & > :nth-child(4) {

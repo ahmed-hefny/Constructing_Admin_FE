@@ -76,6 +76,17 @@
               [loading]="isLoading"
               (click)="onApplyFilter()"
             ></button>
+            @if(shouldShowExportButton) {
+              <button
+                pButton
+                type="submit"
+                class="btn btn-accent"
+                size="large"
+                label="تحميل"
+                [loading]="isExporting"
+                (click)="export()"
+              ></button>
+            }
           </div>
         </form>
       </div>

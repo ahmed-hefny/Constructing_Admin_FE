@@ -1,22 +1,26 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Default_PAGINATION, SystemRoles } from 'app/core/constants/app.constants';
-import { AccessControlDirective } from 'app/shared/directives/access-control.directive';
-import { ToasterService } from 'app/shared/services/toaster.service';
-import { CardModule } from 'primeng/card';
-import { TableModule } from 'primeng/table';
-import { TooltipModule } from 'primeng/tooltip';
-import { InputTextModule } from 'primeng/inputtext';
-import { CalendarModule } from 'primeng/calendar';
-import { ButtonModule } from 'primeng/button';
-import { PayloadConfig, PayloadsFiltration } from './models/payloads.models';
-import { PaginationConfig } from 'app/core/models';
-import { PayloadsService } from './service/payloads.service';
-import { PaginationComponent } from 'app/shared/components/pagination/pagination.component';
-import { finalize } from 'rxjs';
-import moment from 'moment'
+import { CommonModule } from "@angular/common";
+import { Component, inject, OnInit } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { FormGroup, FormControl, ReactiveFormsModule } from "@angular/forms";
+import {
+  Default_PAGINATION,
+  SystemRoles,
+} from "app/core/constants/app.constants";
+import { AccessControlDirective } from "app/shared/directives/access-control.directive";
+import { ToasterService } from "app/shared/services/toaster.service";
+import { CardModule } from "primeng/card";
+import { TableModule } from "primeng/table";
+import { TooltipModule } from "primeng/tooltip";
+import { InputTextModule } from "primeng/inputtext";
+import { CalendarModule } from "primeng/calendar";
+import { ButtonModule } from "primeng/button";
+import { PayloadConfig, PayloadsFiltration } from "./models/payloads.models";
+import { PaginationConfig } from "app/core/models";
+import { PayloadsService } from "./service/payloads.service";
+import { PaginationComponent } from "app/shared/components/pagination/pagination.component";
+import { finalize } from "rxjs";
+import moment from "moment";
+import { saveFile } from "app/shared/helpers/filesave";
 const imports = [
   CommonModule,
   ReactiveFormsModule,
@@ -27,14 +31,14 @@ const imports = [
   InputTextModule,
   CalendarModule,
   ButtonModule,
-  PaginationComponent
-]
+  PaginationComponent,
+];
 
 @Component({
   imports,
-  selector: 'app-payloads',
-  templateUrl: './payloads.component.html',
-  styleUrl: './payloads.component.scss'
+  selector: "app-payloads",
+  templateUrl: "./payloads.component.html",
+  styleUrl: "./payloads.component.scss",
 })
 export class PayloadsComponent implements OnInit {
   SystemRoles = SystemRoles;
@@ -43,6 +47,8 @@ export class PayloadsComponent implements OnInit {
   pagination: PaginationConfig = Default_PAGINATION;
   inputForm!: FormGroup;
   isLoading: boolean = false;
+  isExporting: boolean = false;
+  shouldShowExportButton: boolean = false;
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -50,10 +56,10 @@ export class PayloadsComponent implements OnInit {
   private filtration: PayloadsFiltration = {
     policyNumber: undefined,
     dateFrom: undefined,
-    dateTo: undefined
-  }
+    dateTo: undefined,
+  };
 
-  private dateFormat: string = 'YYYY-MM-DD'
+  private dateFormat: string = "YYYY-MM-DD";
   constructor() {
     this.initializeFilterForm();
   }
@@ -66,7 +72,7 @@ export class PayloadsComponent implements OnInit {
   loadPayloads(): void {
     const { projectId, companyId } = this.activatedRoute.snapshot.params;
     if (!projectId || !companyId) {
-      this.toaster.showError('معرف المشروع أو معرف الشركة مفقود');
+      this.toaster.showError("معرف المشروع أو معرف الشركة مفقود");
       this.navigateBack();
       return;
     }
@@ -74,25 +80,19 @@ export class PayloadsComponent implements OnInit {
   }
 
   navigateBack(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(["/"]);
   }
 
   create(): void {
-    this.router.navigate(['upload'], { relativeTo: this.activatedRoute });
+    this.router.navigate(["upload"], { relativeTo: this.activatedRoute });
   }
 
   getData(): void {
-
-    const payload = {
-      pageNumber: this.pagination.pageNumber,
-      pageSize: this.pagination.pageSize,
-      ...this.filtration,
-      ...this.payloadConfig
-    }
-    this.payloadsService.getAll(payload)
-      .pipe(
-        finalize(() => this.isLoading = false)
-      ).subscribe({
+    const payload = this.getPayloadFiltrationObject();
+    this.payloadsService
+      .getAll(payload)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
         next: (res) => {
           this.data = res.items;
           this.pagination = {
@@ -101,8 +101,8 @@ export class PayloadsComponent implements OnInit {
           };
         },
         error: (err) => {
-          this.toaster.showError('فشل في تحميل الحمولات');
-        }
+          this.toaster.showError("فشل في تحميل الحمولات");
+        },
       });
   }
 
@@ -116,21 +116,61 @@ export class PayloadsComponent implements OnInit {
     this.inputForm = new FormGroup({
       policyNumber: new FormControl<string | null>(null),
       dateFrom: new FormControl<Date | null>(null),
-      dateTo: new FormControl<Date | null>(null)
+      dateTo: new FormControl<Date | null>(null),
     });
   }
 
   onApplyFilter(): void {
     this.isLoading = true;
-    const dateFrom = moment(this.inputForm.value?.dateFrom).format(this.dateFormat);
-    const dateTo = moment(this.inputForm.value?.dateTo).add(1, 'd').format(this.dateFormat);
+    const dateFrom = this.inputForm.value?.dateFrom
+      ? moment(this.inputForm.value?.dateFrom).format(this.dateFormat)
+      : undefined;
+    const dateTo = this.inputForm.value?.dateTo
+      ? moment(this.inputForm.value?.dateTo).add(1, "d").format(this.dateFormat)
+      : undefined;
+    if (dateFrom || dateTo) {
+      this.shouldShowExportButton = true;
+    } else {
+    }
     this.filtration = {
       policyNumber: this.inputForm.value?.policyNumber || undefined,
-      dateFrom: dateFrom || undefined,
-      dateTo: dateTo || undefined
-    }
+      dateFrom: dateFrom,
+      dateTo: dateTo,
+    };
     this.pagination.pageNumber = Default_PAGINATION.pageNumber; // Reset to first page on filter
-    this.getData()
+    this.getData();
+  }
 
+  export(): void {
+    const payload = this.getPayloadFiltrationObject();
+    this.isExporting = true;
+    this.payloadsService
+      .exportPayloads(payload)
+      .pipe(finalize(() => (this.isExporting = false)))
+      .subscribe({
+        next: (res) => {
+          if (!(res instanceof Blob)) {
+            this.toaster.showError("فشل في تصدير الحمولات");
+            return;
+          }
+          let name = 'الحمولات ';
+          if(payload.dateFrom) name += `من ${payload.dateFrom} `;
+          if(payload.dateTo) name += `إلى ${payload.dateTo} `;
+          saveFile(res, name)
+          this.toaster.showSuccess("تم تصدير الحمولات بنجاح");
+        },
+        error: (err) => {
+          this.toaster.showError("فشل في تصدير الحمولات");
+        },
+      });
+  }
+
+  private getPayloadFiltrationObject() {
+    return {
+      pageNumber: this.pagination.pageNumber,
+      pageSize: this.pagination.pageSize,
+      ...this.filtration,
+      ...this.payloadConfig,
+    };
   }
 }

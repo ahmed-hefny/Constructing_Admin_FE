@@ -84,7 +84,7 @@ export class HttpService {
   /**
    * Download file
    */
-  download(endpoint: string, filename?: string, options?: HttpOptions): Observable<Blob> {
+  download(endpoint: string, body: any, options?: HttpOptions): Observable<Blob> {
     const url = this.buildUrl(endpoint);
     
     const baseOptions = this.buildRequestOptions(options);
@@ -94,12 +94,10 @@ export class HttpService {
       withCredentials: baseOptions.withCredentials,
       responseType: 'blob' as 'blob'
     };
-    
-    return this.http.get(url, downloadOptions).pipe(
-      tap((blob: Blob) => {
-        if (filename) {
-          saveAs(blob, filename);
-        }
+
+    return this.http.post(url, body, downloadOptions).pipe(
+      tap(() => {
+        
         this.logIfEnabled('DOWNLOAD', url, 'File downloaded successfully');
       })
     );
