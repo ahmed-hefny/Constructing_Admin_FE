@@ -11,12 +11,12 @@ import { TooltipModule } from 'primeng/tooltip';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
-import { PayloadConfig } from './models/payloads.models';
+import { PayloadConfig, PayloadsFiltration } from './models/payloads.models';
 import { PaginationConfig } from 'app/core/models';
 import { PayloadsService } from './service/payloads.service';
 import { PaginationComponent } from 'app/shared/components/pagination/pagination.component';
 import { finalize } from 'rxjs';
-
+import moment from 'moment'
 const imports = [
   CommonModule,
   ReactiveFormsModule,
@@ -47,11 +47,13 @@ export class PayloadsComponent implements OnInit {
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private payloadsService: PayloadsService = inject(PayloadsService);
-  private filtration = {
+  private filtration: PayloadsFiltration = {
     policyNumber: undefined,
     dateFrom: undefined,
     dateTo: undefined
   }
+
+  private dateFormat: string = 'YYYY-MM-DD'
   constructor() {
     this.initializeFilterForm();
   }
@@ -120,10 +122,12 @@ export class PayloadsComponent implements OnInit {
 
   onApplyFilter(): void {
     this.isLoading = true;
+    const dateFrom = moment(this.inputForm.value?.dateFrom).format(this.dateFormat);
+    const dateTo = moment(this.inputForm.value?.dateTo).add(1, 'd').format(this.dateFormat);
     this.filtration = {
       policyNumber: this.inputForm.value?.policyNumber || undefined,
-      dateFrom: this.inputForm.value?.dateFrom?.toISOString() || undefined,
-      dateTo: this.inputForm.value?.dateTo?.toISOString() || undefined
+      dateFrom: dateFrom || undefined,
+      dateTo: dateTo || undefined
     }
     this.pagination.pageNumber = Default_PAGINATION.pageNumber; // Reset to first page on filter
     this.getData()
