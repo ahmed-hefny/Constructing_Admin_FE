@@ -62,6 +62,12 @@
               placeholder="اختر دور"
             />
           </div>
+          <!-- prettier-ignore -->
+          @if(inputForm.get('role')?.invalid && inputForm.get('role')?.touched) {
+            <small class="error-message">
+              الدور مطلوب
+            </small>
+          }
         </div>
 
         <!-- Company Field -->
@@ -85,6 +91,28 @@
           @if(inputForm.get('companyId')?.invalid &&
           inputForm.get('companyId')?.touched) {
           <small class="error-message"> الشركة مطلوبة </small>
+          }
+        </div>
+        }
+        @else if(inputForm.get('role')?.value === ROLES_ENUM.SUPER_VISOR && projects.length) {
+        <div class="form-field">
+          <label for="project" class="field-label">المشروع</label>
+          <div class="field-suffix-container">
+            <p-dropdown
+              class="w-full"
+              id="project"
+              formControlName="projectId"
+              [options]="projects"
+              optionLabel="name"
+              optionValue="id"
+              [showClear]="true"
+              placeholder="اختر مشروع"
+              [filter]="true"
+            />
+          </div>
+          <!-- prettier-ignore -->
+          @if(inputForm.get('projectId')?.invalid && inputForm.get('projectId')?.touched) {
+            <small class="error-message"> برجاء اختيار مشروع </small>
           }
         </div>
         }
