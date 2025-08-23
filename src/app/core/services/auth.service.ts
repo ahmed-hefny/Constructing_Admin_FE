@@ -114,7 +114,7 @@ export class AuthService {
         const user = this.user();
         let returnUrl = '/';
         if (user?.role === SystemRoles.EMPLOYEE) {
-            returnUrl = `/payloads/${user?.projectId}/${user?.companyId}/upload`;
+            returnUrl = `/payloads/${user?.projectId}/${user?.companyId}`;
         } else if (user?.role === SystemRoles.Supervisor) {
             returnUrl = `/view/${user?.projectId}`;
         }

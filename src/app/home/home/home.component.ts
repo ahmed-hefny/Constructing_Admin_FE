@@ -43,20 +43,6 @@ export class HomeComponent {
     this.initializeMenuItems();
   }
 
-  private initializeMenuItems(): void {
-    this.menuItems = [
-      {
-        items: MENU_ITEMS?.map((item) => {
-          return {
-            ...item,
-            visible: this.authService.hasRole(item?.roles || []),
-            command: () => this.toggleSidebar(),
-            routerLinkActiveOptions: { exact: true },
-          };
-        }),
-      },
-    ];
-  }
 
   toggleSidebar(): void {
     this.sidebarVisible = !this.sidebarVisible;
@@ -79,5 +65,26 @@ export class HomeComponent {
       },
     };
     this.dialogService.confirmDialog(config);
+  }
+
+    private initializeMenuItems(): void {
+    this.menuItems = [
+      {
+        items: MENU_ITEMS?.map((item) => {
+          let url = item?.routerLink;
+          if(item?.routerLink[0].includes('payloads')) {
+           const user = this.authService.user();
+           url = [`/payloads/${user?.projectId}/${user?.companyId}`]
+          }
+          return {
+            ...item,
+            visible: this.authService.hasRole(item?.roles || []),
+            command: () => this.toggleSidebar(),
+            routerLinkActiveOptions: { exact: true },
+            routerLink: url,
+          };
+        }),
+      },
+    ];
   }
 }
