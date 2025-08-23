@@ -15,8 +15,12 @@
 .p-dropdown-label,
 .p-multiselect-label {
   text-align: start;
-  padding: 0.75rem;
+  padding: 0.75rem !important;
   direction: rtl;
+}
+
+.p-dropdown-filter.p-inputtext {
+  padding-inline: 35px !important;
 }
 
 // Fix dropdown trigger positioning
