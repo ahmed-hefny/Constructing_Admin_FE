@@ -5,7 +5,6 @@ import { ToasterService } from 'app/shared/services/toaster.service';
 import { ProjectsService } from '../service/projects.service';
 import { CardModule } from "primeng/card";
 import { TableModule } from 'primeng/table';
-import { PaginationComponent } from 'app/shared/components/pagination/pagination.component';
 import { AccessControlDirective } from 'app/shared/directives/access-control.directive';
 import { Project } from '../models/projects.models';
 import { TooltipModule } from 'primeng/tooltip';

@@ -1,19 +1,35 @@
 .project-details {
-    .project-info {
-        &-wrapper {
-            display: flex;
-            gap: 1rem;
-            @media screen and (max-width: 768px) {
+  .project-info {
+    display: flex;
+    &-wrapper {
+      display: flex;
+      gap: 1rem;
+      @media screen and (max-width: 768px) {
+        flex-direction: column;
+        gap: 0;
+        &:not(:first-child) {
+          margin-top: 1rem;
+        }
+      }
+    }
+    .project-info-head {
+      min-width: 180px;
+      font-weight: 600;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+    .project-details {
+        .project-info {
+            flex-direction: column;
+            &-wrapper {
                 flex-direction: column;
                 gap: 0;
                 &:not(:first-child) {
                     margin-top: 1rem;
                 }
             }
-        }
-        .project-info-head {
-            min-width: 180px;
-            font-weight: 600;
         }
     }
 }

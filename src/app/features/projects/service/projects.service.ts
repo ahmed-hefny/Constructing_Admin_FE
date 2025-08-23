@@ -23,7 +23,6 @@ export class ProjectsService {
       map((res: Project) => ({
         ...res,
         resource: res.resource || 'اسمنت',
-        allQnt: res.allQnt || '0',
       }))
     )
   }

@@ -10,6 +10,9 @@
       <div class="project-details">
         <div class="project-info">
           <div class="w-full md:w-1/2">
+            <h2 class="font-bold my-3 md:mt-0">
+              عامة:
+            </h2>
             <div class="project-info-wrapper">
               <p class="project-info-head">الاسم:</p>
               <p
@@ -34,12 +37,29 @@
               <p class="project-info-head">إجمالي الكمية:</p>
               <p
                 class="truncate-text"
-                [pTooltip]="project?.allQnt"
+                [pTooltip]="project?.totalQuantity"
                 tooltipPosition="bottom"
               >
-                {{ project?.allQnt }}
+                {{ project?.totalQuantity }}
               </p>
             </div>
+          </div>
+          <div class="w-full md:w-1/2">
+            <h2 class="font-bold my-3 md:mt-0">
+              الموردون:
+            </h2>
+            @for (item of project?.supplierList; track $index) {
+            <div class="project-info-wrapper">
+              <p class="project-info-head">{{ item.name === 'Arish' ? 'العريش' : 'بنى سويف'}}:</p>
+              <p
+                class="truncate-text"
+                [pTooltip]="item?.quantity?.toString()"
+                tooltipPosition="bottom"
+              >
+                {{ item?.quantity }}
+              </p>
+            </div>
+            }
           </div>
         </div>
       </div>
@@ -69,7 +89,12 @@
             <td>{{ item.id || "-" }}</td>
             <td>
               <div class="flex gap-10">
-                <button class="btn btn-outline border-0" (click)="navigateToPayloads(item.id)">قائمة الحمولات</button>
+                <button
+                  class="btn btn-outline border-0"
+                  (click)="navigateToPayloads(item.id)"
+                >
+                  قائمة الحمولات
+                </button>
               </div>
             </td>
           </tr>

@@ -6,11 +6,17 @@ export interface Project {
     companyList: CompanyResponse[];
     isDeleted?: boolean;
     resource?: string;
-    allQnt?: string;
+    totalQuantity?: string;
+    supplierList: ProjectSupplier[];
 }
 
 export interface ProjectPayload {
     id?: number;
     name: string;
     companiesIdsList: string[];
+}
+
+export interface ProjectSupplier {
+    quantity: number;
+    name: string;
 }

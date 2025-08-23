@@ -49,6 +49,7 @@ export class PayloadsComponent implements OnInit {
   isLoading: boolean = false;
   isExporting: boolean = false;
   shouldShowExportButton: boolean = false;
+  shouldShowCreateButton: boolean = false;
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -94,7 +95,10 @@ export class PayloadsComponent implements OnInit {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (res) => {
-          this.data = res.items;
+          this.data = res?.items || [];
+          if(this.data?.length) {
+            this.shouldShowCreateButton = this.data[0]?.isActiveProject
+          }
           this.pagination = {
             ...this.pagination,
             totalRecords: res.count,
