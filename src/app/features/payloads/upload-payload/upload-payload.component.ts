@@ -176,8 +176,10 @@ export class UploadPayloadComponent implements OnInit {
       .subscribe({
         next: (result: ScannerQRCodeSelectedFiles[]) => {
           if (result && result.length > 0) {
+            this.inputForm.patchValue({ image: result[0].file });
             this.result = result[0];
           }
+          console.log({values: this.inputForm.value})
         },
         error: (error) => {
           this.toaster.showError('خطأ في تحميل الملفات: ' + error.message);
@@ -200,7 +202,7 @@ export class UploadPayloadComponent implements OnInit {
       quantity: new UntypedFormControl('', [Validators.required, Validators.min(1)]),
       policyNumber: new UntypedFormControl({ value: '', disabled: true }, [Validators.required]),
       image: new UntypedFormControl(null, [Validators.required]),
-      supplier: new FormControl<string | null>(null),
+      supplier: new FormControl<Suppliers>(Suppliers.Banisuef),
       shippingName: new FormControl<string | null>(null),
     });
   }
