@@ -138,3 +138,6 @@ dist
 # angular cache
 .angular
 .editorconfig
+
+# vscode
+.vs

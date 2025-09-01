@@ -111,7 +111,10 @@
           <tr>
             <td class="company-name-cell">{{ item?.company || "غير معرف" }}</td>
             <td>{{ item.date | date: 'dd/MM/yyyy' }}</td>
-            <td>{{ item.policyNumber || "-" }}</td>
+            <td class="flex gap-2" [ngClass]="{'items-center': item.image}">
+              <p-image [src]="item.image" class="min-w-10" imageClass="rounded-lg w-10 h-10" [alt]="item.policyNumber" [preview]="item.image ? true : false"/>
+              {{ item.policyNumber || "-" }}
+            </td>
             <td>{{ item.quantity || 0 }}</td>
           </tr>
         </ng-template>

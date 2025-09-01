@@ -1,9 +1,9 @@
 <div class="page">
-  <div class="page-header form-header">
-    <button class="btn btn-outline border-0" (click)="navigateBack()">
-      <i class="pi pi-angle-right text-2xl"></i>
-    </button>
+  <div class="page-header">
     <h1 class="page-header-title">إضافة بيانات حمولة</h1>
+    <button class="btn btn-primary" (click)="navigateBack()">
+      قائمة الحمولات
+    </button>
   </div>
 </div>
 <div class="page-content">
@@ -41,52 +41,37 @@
       <div class="form-field">
         <div>
           <label for="qrCode" class="field-label">مسح رقم البوليصة</label>
-
+          @if(showCameraDevicesDropDown) {
+          <div class="field-suffix-container">
+            <p-dropdown
+              class="w-full py-[8px]"
+              id="role"
+              [formControl]="selectedCamera"
+              [options]="cameraDevices"
+              optionValue="id"
+              optionLabel="label"
+              placeholder="برجاء اختيار الكاميرا لبدء المسح"
+            />
+          </div>
+          }
           <div>
-            <input
-              #file
-              type="file"
-              (change)="onUploadPolicyNoImage(file.files)"
-              [accept]="'.jpg, .png, .gif, .jpeg'"
-            />
-            <hr class="my-3" />
-            @if(result) {
-              <div>
-                <ngx-scanner-qrcode
-                  [config]="qrCodeConfig"
-                  #scanner="scanner"
-                  [src]="result?.url"
-                  (event)="onScan($event, scanner)"
-                  class="w-[350] sm:w-[400px] rounded-xl overflow-hidden\"
-                />
-              </div>
+            <!-- QR Code Scanner wrapper-->
+            <div id="reader" class="reader-scanner-wrapper rounded-lg"></div>
             <!-- prettier-ignore -->
             @if (inputForm.get('image')?.invalid && inputForm.get('image')?.touched) {
-            <small class="error-message"> يرجى رفع او مسح صورة البوليصة </small>
+              <!-- QR Code Scanner Error-->
+            <small class="error-message block">لم يتم مسح رقم البوليصة. </small>
             }
-            <!-- prettier-ignore -->
-            } @else if(!result) {
-            <ngx-scanner-qrcode
-              [config]="qrCodeConfig"
-              #scanner="scanner"
-              (event)="onScan($event, scanner)"
-              class="w-[350] sm:w-[400px] rounded-xl overflow-hidden"
-            />
-            <!-- prettier-ignore -->
-            @if (inputForm.get('image')?.invalid && inputForm.get('image')?.touched) {
-            <small class="error-message"> يرجى رفع او مسح صورة البوليصة </small>
-            }
-            <br />
+            
+            <!-- Scanner action button -->
             <button
               pButton
-              type="button"
-              class="btn btn-primary mt-3"
+              type="submit"
+              class="btn btn-primary mt-2"
               size="large"
-              [label]="scanner.isStart ? 'إيقاف الكاميرا' : 'بدء الكاميرا'"
-              [loading]="scanner.isLoading"
-              (click)="scannerActionTaken(scanner)"
+              [label]="getScannerLabel()"
+              (click)="getScannerAction()"
             ></button>
-            }
           </div>
         </div>
       </div>
@@ -101,16 +86,16 @@
                 class="input-with-suffix"
                 placeholder="أدخل رقم البوليصة"
               />
-              <button
+              <!-- <button
                 type="button"
                 class="suffix-button"
                 (click)="onEditPolicyNo()"
               >
                 <i class="pi pi-pencil"></i>
-              </button>
+              </button> -->
             </div>
             <!-- prettier-ignore -->
-            @if (inputForm.get('policyNumber')?.invalid && inputForm.get('policyNumber')?.touched) {
+            @if (inputForm.get('image')?.invalid && inputForm.get('image')?.touched) {
             <small class="error-message"> رقم البوليصة مطلوب. </small>
             }
           </div>

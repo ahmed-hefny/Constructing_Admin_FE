@@ -21,6 +21,8 @@ import { PaginationComponent } from "app/shared/components/pagination/pagination
 import { finalize } from "rxjs";
 import moment from "moment";
 import { saveFile } from "app/shared/helpers/filesave";
+import { ImageModule } from 'primeng/image';
+
 const imports = [
   CommonModule,
   ReactiveFormsModule,
@@ -32,6 +34,7 @@ const imports = [
   CalendarModule,
   ButtonModule,
   PaginationComponent,
+  ImageModule
 ];
 
 @Component({

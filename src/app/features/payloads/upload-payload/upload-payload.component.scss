@@ -1,0 +1,14 @@
+:host {
+  ::ng-deep {
+    .p-dropdown.p-component.p-inputwrapper {
+      padding-block: 8px;
+    }
+  }
+  .reader-scanner-wrapper {
+    width: 100%;
+    max-width: 300px;
+    max-height: 400px;
+    overflow: hidden;
+    margin-block: 10px;
+  }
+}

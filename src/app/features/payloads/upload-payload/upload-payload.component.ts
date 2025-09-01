@@ -1,19 +1,29 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, ReactiveFormsModule, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ToasterService } from 'app/shared/services/toaster.service';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-import { PayloadsService } from '../service/payloads.service';
-import { PayloadConfig } from '../models/payloads.models';
-import { LOAD_WASM, NgxScannerQrcodeComponent, NgxScannerQrcodeService, ScannerQRCodeConfig, ScannerQRCodeResult, ScannerQRCodeSelectedFiles } from 'ngx-scanner-qrcode';
-import { finalize, take } from 'rxjs';
-import { Suppliers } from 'app/core/constants/app.constants';
-
-
-LOAD_WASM('assets/wasm/ngx-scanner-qrcode.wasm').subscribe();
+import { CommonModule } from "@angular/common";
+import { Component, inject, OnDestroy, OnInit } from "@angular/core";
+import {
+  FormControl,
+  ReactiveFormsModule,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
+import { ToasterService } from "app/shared/services/toaster.service";
+import { ButtonModule } from "primeng/button";
+import { CardModule } from "primeng/card";
+import { InputTextModule } from "primeng/inputtext";
+import { PayloadsService } from "../service/payloads.service";
+import { PayloadConfig } from "../models/payloads.models";
+import { finalize } from "rxjs";
+import { Suppliers } from "app/core/constants/app.constants";
+import {
+  CameraDevice,
+  Html5Qrcode,
+  Html5QrcodeCameraScanConfig,
+  Html5QrcodeResult,
+  Html5QrcodeScannerState,
+} from "html5-qrcode";
+import { DropdownModule } from "primeng/dropdown";
 
 const imports = [
   CommonModule,
@@ -21,74 +31,111 @@ const imports = [
   InputTextModule,
   ButtonModule,
   CardModule,
-  NgxScannerQrcodeComponent,
-]
+  DropdownModule,
+];
 
 @Component({
   imports,
-  selector: 'app-upload-payload',
-  templateUrl: './upload-payload.component.html',
-  styleUrl: './upload-payload.component.scss'
+  selector: "app-upload-payload",
+  templateUrl: "./upload-payload.component.html",
+  styleUrl: "./upload-payload.component.scss",
 })
-export class UploadPayloadComponent implements OnInit {
+export class UploadPayloadComponent implements OnInit, OnDestroy {
   inputForm!: UntypedFormGroup;
   isLoading = false;
   payloadConfig: PayloadConfig | null = null;
-  qrCodeConfig: ScannerQRCodeConfig = {
-    isBeep: false,
-    constraints: {
-      video: {
-        width: window?.innerWidth,
-        facingMode: 'environment'
-      }
-    }
-  }
-  showScanner = true;
-  result: ScannerQRCodeSelectedFiles | null = null;
 
-
+  cameraDevices: CameraDevice[] = [];
+  cameraConfig: Html5QrcodeCameraScanConfig = {
+    fps: 10,
+    qrbox: { width: 250, height: 200 },
+    aspectRatio: 1.777778,
+  };
+  selectedCamera = new FormControl<string | null>(null);
+  showCameraDevicesDropDown = false;
+  html5QrCode?: Html5Qrcode;
+  scanState: typeof Html5QrcodeScannerState = Html5QrcodeScannerState;
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
-  private qrCode: NgxScannerQrcodeService = inject(NgxScannerQrcodeService);
   private payloadsService: PayloadsService = inject(PayloadsService);
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.initializeForm();
     this.configurePage();
+    this.getCameraDevices();
   }
 
-
+  ngOnDestroy(): void {
+    if (this.html5QrCode && this.html5QrCode.isScanning) {
+      this.html5QrCode
+        .stop()
+        .catch((err) => console.error("خطأ فى ايقاف الكاميرا:", err));
+    }
+  }
 
   navigateBack(): void {
-    if (!this.payloadConfig?.companyId || !this.payloadConfig?.projectId) return;
-    this.router.navigate(['payloads', this.payloadConfig?.projectId, this.payloadConfig?.companyId]);
+    if (!this.payloadConfig?.companyId || !this.payloadConfig?.projectId)
+      return;
+    this.router.navigate([
+      "payloads",
+      this.payloadConfig?.projectId,
+      this.payloadConfig?.companyId,
+    ]);
   }
 
-  scannerActionTaken(scanner: NgxScannerQrcodeComponent): void {
-    const policyNoControl = this.inputForm.get('policyNumber');
-
-    if (scanner.isStart) {
-      scanner.stop();
-
-    } else {
-
-      scanner.start().pipe(take(1)).subscribe({
-        next: (result: ScannerQRCodeResult[]) => {
-          if (policyNoControl) {
-            policyNoControl?.disable();
-            policyNoControl?.setValue('');
-          }
-        },
-        error: (error) => {
-          this.toaster.showError('خطأ في بدء الماسح الضوئي: ' + error.message);
-          policyNoControl?.enable();
-        }
-      })
+  async getCameraDevices() {
+    this.html5QrCode = new Html5Qrcode("reader");
+    try {
+      const devices = await Html5Qrcode?.getCameras();
+      if (devices && devices.length) {
+        this.cameraDevices = devices;
+        this.selectedCamera.setValue(
+          devices.find((device) => device.label.toLowerCase().includes("back"))
+            ?.id || devices[0].id
+        );
+        this.showCameraDevicesDropDown = false;
+        this.startCamera();
+      }
+    } catch (error) {
+      this.showCameraDevicesDropDown = true;
+      this.toaster.showError("خطأ في الحصول على أجهزة الكاميرا");
     }
+  }
+
+  startCamera() {
+    if (this.html5QrCode && this.selectedCamera.value) {
+      this.resetPolicyNumber();
+      this.html5QrCode?.clear();
+      this.showCameraDevicesDropDown = false;
+      this.html5QrCode.start(
+        this.selectedCamera.value || { facingMode: "environment" },
+        this.cameraConfig,
+        (decodedText, file) => {
+          this.editPolicyNumberValue(file);
+          this.html5QrCode?.pause(true);
+          this.captureImage();
+          this.showCameraDevicesDropDown = true;
+        },
+        (errorMsg) => {
+          // scanning errors are ignored
+        }
+      );
+    }
+  }
+
+  stopCamera() {
+    this.resetPolicyNumber();
+    this.showCameraDevicesDropDown = true;
+    this.html5QrCode?.stop();
+  }
+
+  resumeCamera() {
+    this.resetPolicyNumber();
+    this.showCameraDevicesDropDown = false;
+    this.html5QrCode?.resume();
   }
 
   onSaveClick(): void {
@@ -100,65 +147,100 @@ export class UploadPayloadComponent implements OnInit {
     }
     const payload = {
       ...this.inputForm.getRawValue(),
-      ...this.payloadConfig
-    }
+      ...this.payloadConfig,
+    };
     const formData = new FormData();
     Object.entries(payload).map(([k, v]) => {
       formData.append(k, v as any);
-    })
-    this.payloadsService.create(formData)
-      .pipe(finalize(() => this.isLoading = false))
+    });
+    this.payloadsService
+      .create(formData)
+      .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (response) => {
-          this.toaster.showSuccess('تم رفع الحمولة بنجاح');
+          this.toaster.showSuccess("تم رفع الحمولة بنجاح");
           this.inputForm.reset();
           this.navigateBack();
         },
         error: (error) => {
-          console.error('Error uploading payload:', error);
-          this.toaster.showError('خطأ في رفع الحمولة: ' + error.message);
-        }
+          console.error("Error uploading payload:", error);
+          this.toaster.showError("خطأ في رفع الحمولة: " + error.message);
+        },
       });
   }
 
-  onScan(result: ScannerQRCodeResult[], scanner: NgxScannerQrcodeComponent): void {
+  captureImage(): void {
+    // Grab the video element inside html5-qrcode
+    const videoElement = document.querySelector(
+      "#reader video"
+    ) as HTMLVideoElement;
+    if (!videoElement) return;
 
-    if (Array.isArray(result) && result.length > 0) {
-      const type = result[0]?.typeName
-      const scannedData = result[0].value;
-      const policyNoControl = this.inputForm.get('policyNumber');
-      this.inputForm.patchValue({ policyNumber: scannedData });
-      policyNoControl?.disable();
-      policyNoControl?.setValue(scannedData);
-      if (type) {
-        this.inputForm.patchValue({ supplier: (type.toLowerCase().includes('qr') ? Suppliers.Banisuef : Suppliers.Arish) });
-      }
-      if (scanner) {
-        setTimeout(() => {
-          scanner.pause();
-          scanner.isStart = false;
-        }, 500);
-      }
-      if (result[0].data) {
-        const uint8Array = new Uint8Array(result[0].data);
-        const blob = new Blob([uint8Array], { type: 'image/png' });
-        const file = new File([blob], `scanned-image-${Date.now()}.png`, {
-          type: 'image/png',
-          lastModified: Date.now()
-        });
-        this.inputForm.patchValue({ image: file });
-      }
+    const canvas = document.createElement("canvas");
+    canvas.width = videoElement.videoWidth;
+    canvas.height = videoElement.videoHeight;
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob((blob) => {
+        if (blob) {
+          this.inputForm.get("image")?.setValue(blob);
+        }
+      });
+    }
+  }
+
+  editPolicyNumberValue(file: Html5QrcodeResult): void {
+    const isQrCode = file.result.format?.formatName
+      ?.toLowerCase()
+      ?.includes("qr");
+
+    this.inputForm.patchValue({
+      policyNumber: file?.decodedText,
+      supplier: isQrCode ? Suppliers.Banisuef : Suppliers.Arish,
+    });
+  }
+
+  getScannerAction(): void {
+    const state = this.html5QrCode?.getState();
+    switch (state) {
+      case this.scanState.PAUSED:
+      this.resumeCamera();
+      break;
+      case this.scanState.SCANNING:
+      this.stopCamera();
+      break;
+      default:
+      this.startCamera();
+      break;
+    }
+  }
+
+  /**
+   * Returns the appropriate label for the scanner action button based on the current state.
+   */
+  getScannerLabel(): string {
+    const state = this.html5QrCode?.getState();
+    switch (state) {
+      case this.scanState.PAUSED:
+      return "استئناف المسح";
+      case this.scanState.SCANNING:
+      return "إيقاف الكاميرا";
+      default:
+      return "بدء المسح";
     }
   }
 
   onEditPolicyNo(): void {
-    const policyNoControl = this.inputForm.get('policyNumber');
+    const policyNoControl = this.inputForm.get("policyNumber");
     if (policyNoControl) {
       policyNoControl.enable();
-      policyNoControl.setValue('');
+      policyNoControl.setValue("");
       // Focus the input field
       setTimeout(() => {
-        const inputElement = document.getElementById('policyNumber') as HTMLInputElement;
+        const inputElement = document.getElementById(
+          "policyNumber"
+        ) as HTMLInputElement;
         if (inputElement) {
           inputElement.focus();
         }
@@ -166,31 +248,10 @@ export class UploadPayloadComponent implements OnInit {
     }
   }
 
-  onUploadPolicyNoImage(files: any): void {
-    this.result = null;
-
-    this.qrCode.loadFiles(files)
-      .pipe(
-        take(1),  // Ensure we only take the first emission
-      )
-      .subscribe({
-        next: (result: ScannerQRCodeSelectedFiles[]) => {
-          if (result && result.length > 0) {
-            this.inputForm.patchValue({ image: result[0].file });
-            this.result = result[0];
-          }
-          console.log({values: this.inputForm.value})
-        },
-        error: (error) => {
-          this.toaster.showError('خطأ في تحميل الملفات: ' + error.message);
-        }
-      });
-  }
-
   private configurePage(): void {
     const { projectId, companyId } = this.activatedRoute.snapshot.params;
     if (!projectId || !companyId) {
-      this.toaster.showError('معرف المشروع أو معرف الشركة مفقود');
+      this.toaster.showError("معرف المشروع أو معرف الشركة مفقود");
       this.navigateBack();
       return;
     }
@@ -199,11 +260,24 @@ export class UploadPayloadComponent implements OnInit {
 
   private initializeForm(): void {
     this.inputForm = new UntypedFormGroup({
-      quantity: new UntypedFormControl('', [Validators.required, Validators.min(1)]),
-      policyNumber: new UntypedFormControl({ value: '', disabled: true }, [Validators.required]),
+      quantity: new UntypedFormControl("", [
+        Validators.required,
+        Validators.min(1),
+      ]),
+      policyNumber: new UntypedFormControl({ value: "", disabled: true }, [
+        Validators.required,
+      ]),
       image: new UntypedFormControl(null, [Validators.required]),
       supplier: new FormControl<Suppliers>(Suppliers.Banisuef),
       shippingName: new FormControl<string | null>(null),
+    });
+  }
+
+  private resetPolicyNumber() {
+    this.inputForm.patchValue({
+      image: null,
+      policyNumber: null,
+      supplier: Suppliers.Banisuef,
     });
   }
 }
