@@ -2,7 +2,7 @@ export const environment = {
   production: false,
   apiUrl: 'https://admin.ca-admin.com/api',
   appName: 'Constructing Admin FE',
-  version: '1.0.0',
+  version: '1.1.0',
   enableLogging: true,
   enableDebugMode: true,
 };
