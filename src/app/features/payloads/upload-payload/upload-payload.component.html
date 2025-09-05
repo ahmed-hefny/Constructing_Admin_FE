@@ -28,14 +28,24 @@
         }
       </div>
       <div class="form-field">
-        <label for="shippingName" class="field-label">شركة الشحن</label>
+        <label for="image" class="field-label cursor-pointer">
+          صورة البوليصة
+        </label>
         <input
-          pInputNumber
-          id="shippingName"
-          formControlName="shippingName"
+          type="file"
+          accept="image/*"
+          id="image"
+          (change)="onUploadImage($event)"
           class="w-full"
-          placeholder="أدخل شركة الشحن"
+          placeholder="صورة البوليصة"
         />
+          <!-- prettier-ignore -->
+        @if (inputForm.get('image')?.invalid && inputForm.get('image')?.touched) {
+          <!-- QR Code Scanner Error-->
+        <small class="error-message block">
+          لم يتم رفع صورة البوليصة.
+        </small>
+        }
       </div>
       <!-- QR Code Scanner -->
       <div class="form-field">
@@ -57,16 +67,11 @@
           <div>
             <!-- QR Code Scanner wrapper-->
             <div id="reader" class="reader-scanner-wrapper rounded-lg"></div>
-            <!-- prettier-ignore -->
-            @if (inputForm.get('image')?.invalid && inputForm.get('image')?.touched) {
-              <!-- QR Code Scanner Error-->
-            <small class="error-message block">لم يتم مسح رقم البوليصة. </small>
-            }
             
             <!-- Scanner action button -->
             <button
               pButton
-              type="submit"
+              type="button"
               class="btn btn-primary mt-2"
               size="large"
               [label]="getScannerLabel()"

@@ -116,7 +116,6 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
         (decodedText, file) => {
           this.editPolicyNumberValue(file);
           this.html5QrCode?.pause(true);
-          this.captureImage();
           this.showCameraDevicesDropDown = true;
         },
         (errorMsg) => {
@@ -167,27 +166,6 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
           this.toaster.showError("خطأ في رفع الحمولة: " + error.message);
         },
       });
-  }
-
-  captureImage(): void {
-    // Grab the video element inside html5-qrcode
-    const videoElement = document.querySelector(
-      "#reader video"
-    ) as HTMLVideoElement;
-    if (!videoElement) return;
-
-    const canvas = document.createElement("canvas");
-    canvas.width = videoElement.videoWidth;
-    canvas.height = videoElement.videoHeight;
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-      canvas.toBlob((blob) => {
-        if (blob) {
-          this.inputForm.get("image")?.setValue(blob);
-        }
-      });
-    }
   }
 
   editPolicyNumberValue(file: Html5QrcodeResult): void {
@@ -248,6 +226,15 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
     }
   }
 
+  onUploadImage(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.inputForm.get("image")?.setValue(file);
+    } else {
+      this.inputForm.get("image")?.setValue(null);
+    }
+  }
+
   private configurePage(): void {
     const { projectId, companyId } = this.activatedRoute.snapshot.params;
     if (!projectId || !companyId) {
@@ -269,13 +256,11 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
       ]),
       image: new UntypedFormControl(null, [Validators.required]),
       supplier: new FormControl<Suppliers>(Suppliers.Banisuef),
-      shippingName: new FormControl<string | null>(null),
     });
   }
 
   private resetPolicyNumber() {
     this.inputForm.patchValue({
-      image: null,
       policyNumber: null,
       supplier: Suppliers.Banisuef,
     });

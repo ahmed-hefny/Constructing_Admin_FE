@@ -1,4 +1,5 @@
 input {
+  min-height: 50px;
   @apply border border-gray-300 rounded-md p-2;
 }
 input:focus {
