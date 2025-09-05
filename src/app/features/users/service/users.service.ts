@@ -41,7 +41,8 @@ export class UsersService {
   getProjects(): Observable<Project[]> {
     const query = {
       pageNumber: 1,
-      pageSize: 1000
+      pageSize: 1000,
+      hasProject: true
     }
     return this.http.get<PaginationResponse<Project>>(`/project/GetProjects${buildQueryParams(query)}`).pipe(map((res: PaginationResponse<Project>) => res.items));
   }

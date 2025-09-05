@@ -28,11 +28,6 @@
                 "glob": "**/*",
                 "input": "public"
               },
-              {
-                "glob": "**/*",
-                "input": "node_modules/ngx-scanner-qrcode/wasm/",
-                "output": "./assets/wasm/"
-              },
               "src/web.config",
               "src/.well-known/pki-validation/B97323AF81014BA85BC259CEB64DDACB.txt"
             ],
@@ -44,6 +39,7 @@
           },
           "configurations": {
             "production": {
+              "outputPath": "dist/constructing-admin-fe-prod",
               "budgets": [
                 {
                   "type": "initial",
@@ -97,11 +93,6 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              },
-              {
-                "glob": "**/*",
-                "input": "node_modules/ngx-scanner-qrcode/wasm/",
-                "output": "./assets/wasm/"
               }
             ],
             "styles": ["src/styles.scss"],
