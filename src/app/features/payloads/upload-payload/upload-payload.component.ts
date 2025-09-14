@@ -31,6 +31,8 @@ import {
   ScannerQRCodeConfig,
   ScannerQRCodeResult,
 } from "ngx-scanner-qrcode";
+import { DialogService } from "app/shared/services/dialog.service";
+import { ConfirmDialogConfig } from "app/shared/models/dialog.models";
 
 LOAD_WASM("assets/wasm/ngx-scanner-qrcode.wasm").subscribe();
 
@@ -87,6 +89,7 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   };
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
+  private dialogService: DialogService = inject(DialogService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private payloadsService: PayloadsService = inject(PayloadsService);
   private platformService: PlatformService = inject(PlatformService);
@@ -184,28 +187,7 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
       this.isLoading = false;
       return;
     }
-    const payload = {
-      ...this.inputForm.getRawValue(),
-      ...this.payloadConfig,
-    };
-    const formData = new FormData();
-    Object.entries(payload).map(([k, v]) => {
-      formData.append(k, v as any);
-    });
-    this.payloadsService
-      .create(formData)
-      .pipe(finalize(() => (this.isLoading = false)))
-      .subscribe({
-        next: (response) => {
-          this.toaster.showSuccess("تم رفع الحمولة بنجاح");
-          this.inputForm.reset();
-          this.navigateBack();
-        },
-        error: (error) => {
-          console.error("Error uploading payload:", error);
-          this.toaster.showError("خطأ في رفع الحمولة: " + error.message);
-        },
-      });
+    this.confirmPolicyNumber();
   }
 
   editPolicyNumberValue(file: Html5QrcodeResult): void {
@@ -366,5 +348,49 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
       policyNumber: null,
       supplier: Suppliers.Banisuef,
     });
+  }
+
+  private confirmPolicyNumber(): void {
+        const config: ConfirmDialogConfig = {
+          header: "تأكيد",
+          closeOnEscape: true,
+          icon: "pi pi-exclamation-triangle",
+          acceptButtonStyleClass: "btn btn-action",
+          rejectButtonStyleClass: "btn btn-accent mr-2",
+          acceptLabel: "تأكيد",
+          acceptIcon: "pi pi-check",
+          rejectLabel: "إلغاء",
+          rejectIcon: "pi pi-times",
+          message: `هل أنت متأكد من رقم البوليصة: ${this.inputForm.get("policyNumber")?.value}؟`,
+          onAccept: () => {
+            this.uploadPayload();
+          },
+        };
+        this.dialogService.confirmDialog(config);
+  }
+
+  private uploadPayload(): void {
+    const payload = {
+      ...this.inputForm.getRawValue(),
+      ...this.payloadConfig,
+    };
+    const formData = new FormData();
+    Object.entries(payload).map(([k, v]) => {
+      formData.append(k, v as any);
+    });
+    this.payloadsService
+      .create(formData)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (response) => {
+          this.toaster.showSuccess("تم رفع الحمولة بنجاح");
+          this.inputForm.reset();
+          this.navigateBack();
+        },
+        error: (error) => {
+          console.error("Error uploading payload:", error);
+          this.toaster.showError("خطأ في رفع الحمولة: " + error.message);
+        },
+      });
   }
 }
