@@ -10,3 +10,10 @@ export interface PayloadsFiltration {
     projectId?: string;
     companyId?: string;
 }
+
+export enum ScanState {
+    StartScan = 'بدء المسح',
+    ResumeScan = 'استئناف المسح',
+    StopScan = 'إيقاف الكاميرا',
+    LoadingScan = 'جاري التحميل...'
+}

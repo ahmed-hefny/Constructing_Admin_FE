@@ -51,33 +51,48 @@
       <div class="form-field">
         <div>
           <label for="qrCode" class="field-label">مسح رقم البوليصة</label>
+                    <!-- Non-iOS Scanner using html5-qrcode -->
           @if(showCameraDevicesDropDown) {
-          <div class="field-suffix-container">
-            <p-dropdown
-              class="w-full py-[8px]"
-              id="role"
-              [formControl]="selectedCamera"
-              [options]="cameraDevices"
-              optionValue="id"
-              optionLabel="label"
-              placeholder="برجاء اختيار الكاميرا لبدء المسح"
-            />
-          </div>
+            <div class="field-suffix-container">
+              <p-dropdown
+                class="w-full py-[8px]"
+                id="role"
+                [formControl]="selectedCamera"
+                [options]="cameraDevices"
+                optionValue="id"
+                optionLabel="label"
+                placeholder="برجاء اختيار الكاميرا لبدء المسح"
+              />
+            </div>
           }
-          <div>
-            <!-- QR Code Scanner wrapper-->
-            <div id="reader" class="reader-scanner-wrapper rounded-lg"></div>
-            
-            <!-- Scanner action button -->
-            <button
-              pButton
-              type="button"
-              class="btn btn-primary mt-2"
-              size="large"
-              [label]="getScannerLabel()"
-              (click)="getScannerAction()"
-            ></button>
-          </div>
+          <!-- iOS Scanner using ngx-scanner-qrcode -->
+          @if(isIOSDevice) {
+            <div class="ios-scanner-wrapper">
+              <ngx-scanner-qrcode
+                #ngxScannerQrcode
+                [config]="qrCodeConfig"
+                (event)="onScanSuccess($event)"
+                class="w-[350] sm:w-[400px] rounded-lg overflow-hidden"
+              />
+            </div>
+          } @else {
+
+            <div>
+              <!-- QR Code Scanner wrapper-->
+              <div id="reader" class="reader-scanner-wrapper rounded-lg"></div>
+            </div>
+          }
+          
+          <!-- Scanner action button (works for both iOS and non-iOS) -->
+          <button
+            pButton
+            type="button"
+            class="btn btn-primary mt-2"
+            size="large"
+            [label]="getScannerLabel()"
+            (click)="getScannerAction()"
+            [loading]="isScanning"
+          ></button>
         </div>
       </div>
       <div class="form-field">

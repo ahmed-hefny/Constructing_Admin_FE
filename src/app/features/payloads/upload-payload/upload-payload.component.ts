@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject, OnDestroy, OnInit } from "@angular/core";
+import { Component, inject, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import {
   FormControl,
   ReactiveFormsModule,
@@ -9,12 +9,13 @@ import {
 } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ToasterService } from "app/shared/services/toaster.service";
+import { PlatformService } from "app/shared/services/platform.service";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { InputTextModule } from "primeng/inputtext";
 import { PayloadsService } from "../service/payloads.service";
-import { PayloadConfig } from "../models/payloads.models";
-import { finalize } from "rxjs";
+import { PayloadConfig, ScanState } from "../models/payloads.models";
+import { finalize, take } from "rxjs";
 import { Suppliers } from "app/core/constants/app.constants";
 import {
   CameraDevice,
@@ -24,6 +25,14 @@ import {
   Html5QrcodeScannerState,
 } from "html5-qrcode";
 import { DropdownModule } from "primeng/dropdown";
+import {
+  LOAD_WASM,
+  NgxScannerQrcodeComponent,
+  ScannerQRCodeConfig,
+  ScannerQRCodeResult,
+} from "ngx-scanner-qrcode";
+
+LOAD_WASM("assets/wasm/ngx-scanner-qrcode.wasm").subscribe();
 
 const imports = [
   CommonModule,
@@ -32,6 +41,7 @@ const imports = [
   ButtonModule,
   CardModule,
   DropdownModule,
+  NgxScannerQrcodeComponent,
 ];
 
 @Component({
@@ -41,10 +51,13 @@ const imports = [
   styleUrl: "./upload-payload.component.scss",
 })
 export class UploadPayloadComponent implements OnInit, OnDestroy {
+  @ViewChild("ngxScannerQrcode") ngxScannerQrcode!: NgxScannerQrcodeComponent;
+
   inputForm!: UntypedFormGroup;
   isLoading = false;
   payloadConfig: PayloadConfig | null = null;
 
+  // HTML5-QRCode properties (for non-iOS devices)
   cameraDevices: CameraDevice[] = [];
   cameraConfig: Html5QrcodeCameraScanConfig = {
     fps: 10,
@@ -55,21 +68,48 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   showCameraDevicesDropDown = false;
   html5QrCode?: Html5Qrcode;
   scanState: typeof Html5QrcodeScannerState = Html5QrcodeScannerState;
+  isScanning: boolean = false;
+  // NGX Scanner properties (for iOS devices)
+  isIOSDevice = false;
+
+  qrCodeConfig: ScannerQRCodeConfig = {
+    fps: 30,
+    isBeep: false,
+    isMasked: true,
+    constraints: {
+      video: {
+        width: window?.innerWidth,
+        height: window?.innerHeight,
+        facingMode: "environment",
+      },
+      audio: false,
+    },
+  };
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private payloadsService: PayloadsService = inject(PayloadsService);
+  private platformService: PlatformService = inject(PlatformService);
 
   constructor() {}
 
   ngOnInit(): void {
     this.initializeForm();
     this.configurePage();
-    this.getCameraDevices();
+    this.isIOSDevice = this.platformService.isIOS();
+    if (!this.isIOSDevice) {
+      setTimeout(() => {
+        this.getCameraDevices();
+      }, 0);
+    }
   }
 
   ngOnDestroy(): void {
-    if (this.html5QrCode && this.html5QrCode.isScanning) {
+    if (this.isIOSDevice && this.ngxScannerQrcode) {
+      // Stop ngx-scanner-qrcode
+      this.ngxScannerQrcode.stop();
+    } else if (this.html5QrCode && this.html5QrCode.isScanning) {
+      // Stop html5-qrcode
       this.html5QrCode
         .stop()
         .catch((err) => console.error("خطأ فى ايقاف الكاميرا:", err));
@@ -180,17 +220,29 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   }
 
   getScannerAction(): void {
-    const state = this.html5QrCode?.getState();
-    switch (state) {
-      case this.scanState.PAUSED:
-      this.resumeCamera();
-      break;
-      case this.scanState.SCANNING:
-      this.stopCamera();
-      break;
-      default:
-      this.startCamera();
-      break;
+    if (this.isIOSDevice) {
+      // Handle ngx-scanner-qrcode actions
+      if (this.ngxScannerQrcode?.isPause) {
+        this.resumeIOSScanner();
+      } else if (this.ngxScannerQrcode?.isStart) {
+        this.stopIOSScanner();
+      } else {
+        this.startIOSScanner();
+      }
+    } else {
+      // Handle html5-qrcode actions
+      const state = this.html5QrCode?.getState();
+      switch (state) {
+        case this.scanState.PAUSED:
+          this.resumeCamera();
+          break;
+        case this.scanState.SCANNING:
+          this.stopCamera();
+          break;
+        default:
+          this.startCamera();
+          break;
+      }
     }
   }
 
@@ -198,14 +250,64 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
    * Returns the appropriate label for the scanner action button based on the current state.
    */
   getScannerLabel(): string {
-    const state = this.html5QrCode?.getState();
-    switch (state) {
-      case this.scanState.PAUSED:
-      return "استئناف المسح";
-      case this.scanState.SCANNING:
-      return "إيقاف الكاميرا";
-      default:
-      return "بدء المسح";
+    this.isScanning = false;
+    if (this.isIOSDevice) {
+      let msg = ScanState.StartScan;
+      switch (true) {
+        case this.ngxScannerQrcode?.isPause:
+          msg = ScanState.ResumeScan;
+          break;
+        case this.ngxScannerQrcode?.isLoading:
+          msg = ScanState.LoadingScan;
+          this.isScanning = true;
+          break;
+        case this.ngxScannerQrcode?.isStart:
+          msg = ScanState.StopScan;
+          break;
+      }
+      return msg;
+    } else {
+      const state = this.html5QrCode?.getState();
+      switch (state) {
+        case this.scanState.PAUSED:
+          return ScanState.ResumeScan;
+        case this.scanState.SCANNING:
+          return ScanState.StopScan;
+        default:
+          return ScanState.StartScan;
+      }
+    }
+  }
+
+  // NGX Scanner methods for iOS
+  startIOSScanner(): void {
+    this.resetPolicyNumber();
+    if (this.ngxScannerQrcode) {
+      this.ngxScannerQrcode.start().pipe(take(1)).subscribe();
+    }
+  }
+
+  stopIOSScanner(): void {
+    if (this.ngxScannerQrcode) {
+      this.ngxScannerQrcode.stop();
+    }
+  }
+
+  resumeIOSScanner(): void {
+    this.resetPolicyNumber();
+    this.ngxScannerQrcode.play();
+  }
+
+  onScanSuccess(event: ScannerQRCodeResult[]): void {
+    if (event && event.length > 0) {
+      const scannedData = event[0]?.value || event[0];
+      const isQrCode = event[0]?.typeName?.toLowerCase()?.includes("qr");
+      this.inputForm.patchValue({
+        policyNumber: scannedData,
+        supplier: isQrCode ? Suppliers.Banisuef : Suppliers.Arish, // Default to Banisuef for iOS QR codes
+      });
+      this.ngxScannerQrcode.pause();
+      this.toaster.showSuccess("تم مسح الباركود بنجاح");
     }
   }
 
