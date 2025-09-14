@@ -3,7 +3,9 @@ import { inject, Injectable } from "@angular/core";
 import { PaginationRequest, PaginationResponse } from "app/core/models";
 import { HttpService } from "app/core/services";
 import { buildQueryParams } from "app/shared/helpers/queryParamBuilder";
+import { Project } from "app/shared/models/company.models";
 import { map, Observable, tap } from "rxjs";
+import { Payload } from "../models/payloads.models";
 
 @Injectable({
   providedIn: "root",
@@ -21,22 +23,24 @@ export class PayloadsService {
     return this.http.post(`/Payload/Create`, payload, { headers }, false);
   }
 
-  getAll(body: any): Observable<PaginationResponse<any>> {
-    return this.http.post<PaginationResponse<any>>(
-      `/Payload/GetPayloadsList`,
-      body
-    ).pipe(
-      tap(res => res.items.forEach(item =>{
-        item.image = `data:image/jpeg;base64,${item?.image}`
-      }))
-    )
+  getAll(body: any): Observable<PaginationResponse<Payload>> {
+    return this.http
+      .post<PaginationResponse<Payload>>(`/Payload/GetPayloadsList`, body)
+      .pipe(
+        tap((res) =>
+          res.items.forEach((item) => {
+            item.image = `data:image/jpeg;base64,${item?.image}`;
+          })
+        )
+      );
   }
 
   exportPayloads(body: any): Observable<Blob> {
-    
-    return this.http.download(
-      `/Payload/ExportPayloads`,
-      body
-    );
+    return this.http.download(`/Payload/ExportPayloads`, body);
+  }
+
+  getProjectDetails(id: string): Observable<Project> {
+    return this.http
+      .get<Project>(`/project/GetById${buildQueryParams({ id })}`)
   }
 }

@@ -21,20 +21,19 @@ import { PaginationComponent } from "app/shared/components/pagination/pagination
 import { finalize } from "rxjs";
 import moment from "moment";
 import { saveFile } from "app/shared/helpers/filesave";
-import { ImageModule } from 'primeng/image';
+import { ImageModule } from "primeng/image";
 
 const imports = [
   CommonModule,
   ReactiveFormsModule,
   CardModule,
   TableModule,
-  AccessControlDirective,
   TooltipModule,
   InputTextModule,
   CalendarModule,
   ButtonModule,
   PaginationComponent,
-  ImageModule
+  ImageModule,
 ];
 
 @Component({
@@ -81,6 +80,11 @@ export class PayloadsComponent implements OnInit {
       return;
     }
     this.payloadConfig = { projectId, companyId };
+    this.payloadsService.getProjectDetails(projectId).subscribe({
+      next: (project) => {
+        this.shouldShowCreateButton = !project.isDeleted;
+      },
+    });
   }
 
   navigateBack(): void {
@@ -99,9 +103,6 @@ export class PayloadsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.data = res?.items || [];
-          if(this.data?.length) {
-            this.shouldShowCreateButton = this.data[0]?.isActiveProject
-          }
           this.pagination = {
             ...this.pagination,
             totalRecords: res.count,
@@ -137,7 +138,7 @@ export class PayloadsComponent implements OnInit {
       : undefined;
     if (dateFrom || dateTo) {
       this.shouldShowExportButton = true;
-    } else if(!dateFrom && !dateTo) {
+    } else if (!dateFrom && !dateTo) {
       this.shouldShowExportButton = false;
     }
     this.filtration = {
@@ -161,10 +162,10 @@ export class PayloadsComponent implements OnInit {
             this.toaster.showError("فشل في تصدير الحمولات");
             return;
           }
-          let name = 'الحمولات ';
-          if(payload.dateFrom) name += `من ${payload.dateFrom} `;
-          if(payload.dateTo) name += `إلى ${payload.dateTo} `;
-          saveFile(res, name)
+          let name = "الحمولات ";
+          if (payload.dateFrom) name += `من ${payload.dateFrom} `;
+          if (payload.dateTo) name += `إلى ${payload.dateTo} `;
+          saveFile(res, name);
           this.toaster.showSuccess("تم تصدير الحمولات بنجاح");
         },
         error: (err) => {
