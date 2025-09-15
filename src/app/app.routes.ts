@@ -1,11 +1,16 @@
 import { Routes } from '@angular/router';
 import { AuthGuard, NotAuthGuard } from './core/guards';
+import { EnhancedScannerComponent } from './shared/components/enhanced-scanner.component';
 
 export const routes: Routes = [
     {
         path: '',
         canActivate: [AuthGuard],
         loadChildren: () => import('./home/home.routes')
+    },
+    {
+        path: 'poc',
+        loadComponent: () => EnhancedScannerComponent
     },
     {
         path: 'auth',
