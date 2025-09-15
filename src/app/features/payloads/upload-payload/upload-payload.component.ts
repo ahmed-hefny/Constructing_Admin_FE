@@ -62,8 +62,7 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   // HTML5-QRCode properties (for non-iOS devices)
   cameraDevices: CameraDevice[] = [];
   cameraConfig: Html5QrcodeCameraScanConfig = {
-    fps: 10,
-    qrbox: { width: 250, height: 200 },
+    fps: 30,
     aspectRatio: 1.777778,
   };
   selectedCamera = new FormControl<string | null>(null);
