@@ -90,7 +90,6 @@ export class CreateUserComponent {
   }
   onSaveClick(): void {
     this.isLoading = true;
-    console.log(this.inputForm.controls)
     if (this.inputForm.invalid) {
       this.inputForm.markAllAsTouched();
       this.isLoading = false;
@@ -125,7 +124,6 @@ export class CreateUserComponent {
       this.editMode = true;
       this.usersService.getUserById(id).subscribe({
         next: (user) => {
-          console.log({ user });
           this.inputForm.patchValue(user);
           this.inputForm.get("password")?.setValidators([]);
           this.inputForm.get("password")?.updateValueAndValidity();

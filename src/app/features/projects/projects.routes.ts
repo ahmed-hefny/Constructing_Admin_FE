@@ -5,7 +5,11 @@ import { hasRoleGuard } from "app/core/guards";
 export default [
     {
         path: '',
-        loadComponent: () => import('./projects.component').then(m => m.ProjectsComponent)
+        loadComponent: () => import('./projects.component').then(m => m.ProjectsComponent),
+        canActivate: [hasRoleGuard],
+        data: {
+            roles: [SystemRoles.ADMIN]
+        }
     },
     {
         path: 'create',

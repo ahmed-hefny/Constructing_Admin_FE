@@ -8,6 +8,10 @@ export default [
         loadComponent: () => import('./payloads.component').then(m => m.PayloadsComponent),
     },
     {
+        path: ':projectId',
+        loadComponent: () => import('./payloads.component').then(m => m.PayloadsComponent),
+    },
+    {
         path: ':projectId/:companyId/upload',
         canActivate: [hasRoleGuard],
         loadComponent: () => import('./upload-payload/upload-payload.component').then(m => m.UploadPayloadComponent),

@@ -4,7 +4,13 @@ export const MENU_ITEMS = [
         label: 'المشاريع',
         icon: 'pi pi-briefcase',
         routerLink: ['/'],
-        roles: [SystemRoles.ADMIN, SystemRoles.Supervisor, SystemRoles.EMPLOYEE],
+        roles: [SystemRoles.ADMIN, SystemRoles.EMPLOYEE],
+    },
+    {
+        label: 'تفاصيل المشروع',
+        icon: 'pi pi-briefcase',
+        routerLink: ['/view'],
+        roles: [SystemRoles.Supervisor],
     },
     {
         label: 'الشركات',

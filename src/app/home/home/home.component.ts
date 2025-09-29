@@ -14,6 +14,7 @@ import { RtlDirective } from "app/shared/directives/rtl.directive";
 import { environment } from "environments/environment";
 import { DialogService } from "app/shared/services/dialog.service";
 import { ConfirmDialogConfig } from "app/shared/models/dialog.models";
+import { SystemRoles } from "app/core/constants/app.constants";
 
 @Component({
   selector: "app-home",
@@ -67,14 +68,22 @@ export class HomeComponent {
     this.dialogService.confirmDialog(config);
   }
 
-    private initializeMenuItems(): void {
+  private initializeMenuItems(): void {
     this.menuItems = [
       {
         items: MENU_ITEMS?.map((item) => {
           let url = item?.routerLink;
           if(item?.routerLink[0].includes('payloads')) {
            const user = this.authService.user();
-           url = [`/payloads/${user?.projectId}/${user?.companyId}`]
+           if(user?.role === SystemRoles.EMPLOYEE) {
+             url = [`/payloads/${user?.projectId}/${user?.companyId}`]
+           } else {
+             url = [`/payloads/${user?.projectId}`]
+           }
+          }
+          if(item?.routerLink[0].includes('view')) {
+           const user = this.authService.user();
+             url = [`/view/${user?.projectId}`]
           }
           return {
             ...item,

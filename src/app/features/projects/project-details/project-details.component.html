@@ -1,9 +1,20 @@
 <div class="page">
-  <div class="page-header form-header">
-    <button class="btn btn-outline border-0" (click)="navigateBack()">
-      <i class="pi pi-angle-right text-2xl"></i>
+  <div class="page-header">
+    <div class="flex items-center">
+      <button class="btn btn-outline border-0" (click)="navigateBack()">
+        <i class="pi pi-angle-right text-2xl"></i>
+      </button>
+      <h1 class="page-header-title">
+        تفاصيل المشروع
+      </h1>
+    </div>
+    <button
+      *appAccessControl="[SystemRoles.ADMIN, SystemRoles.Supervisor]"
+        class="btn btn-primary"
+        (click)="navigateToPayloadsPerProject()"
+      >
+        <span>حمولات المشروع</span>
     </button>
-    <h1 class="page-header-title">تفاصيل المشروع</h1>
   </div>
   <div class="page-content">
     <p-card class="px-0">

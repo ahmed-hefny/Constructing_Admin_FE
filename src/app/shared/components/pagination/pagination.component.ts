@@ -21,7 +21,6 @@ export class PaginationComponent {
 
   onPaginationChange(event: any): void {
     const { rows, page } = event;
-    console.log({event})
     this.onPageChange.emit({ pageNumber: page + 1, pageSize: rows });
   }
 }

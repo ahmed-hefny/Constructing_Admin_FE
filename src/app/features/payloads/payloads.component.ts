@@ -52,6 +52,7 @@ export class PayloadsComponent implements OnInit {
   isExporting: boolean = false;
   shouldShowExportButton: boolean = false;
   shouldShowCreateButton: boolean = false;
+  payloadsPerProject: boolean = false;
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -74,10 +75,12 @@ export class PayloadsComponent implements OnInit {
 
   loadPayloads(): void {
     const { projectId, companyId } = this.activatedRoute.snapshot.params;
-    if (!projectId || !companyId) {
+    if (!projectId && !companyId) {
       this.toaster.showError("معرف المشروع أو معرف الشركة مفقود");
       this.navigateBack();
       return;
+    } else if (projectId && !companyId) {
+      this.payloadsPerProject = true;
     }
     this.payloadConfig = { projectId, companyId };
     this.payloadsService.getProjectDetails(projectId).subscribe({
@@ -109,7 +112,7 @@ export class PayloadsComponent implements OnInit {
           };
         },
         error: (err) => {
-          this.toaster.showError("فشل في تحميل الحمولات");
+          if(err.status !== 400) this.toaster.showError("فشل في تحميل الحمولات");
         },
       });
   }
