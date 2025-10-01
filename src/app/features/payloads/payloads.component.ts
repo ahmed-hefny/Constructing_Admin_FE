@@ -91,7 +91,7 @@ export class PayloadsComponent implements OnInit {
   }
 
   navigateBack(): void {
-    this.router.navigate(["/"]);
+    this.router.navigate(["/view", this.payloadConfig?.projectId || ""]);
   }
 
   create(): void {

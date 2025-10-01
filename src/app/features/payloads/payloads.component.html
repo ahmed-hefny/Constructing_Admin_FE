@@ -1,6 +1,11 @@
 <div class="page">
   <div class="page-header">
-    <h1 class="page-header-title">الحمولات المرفوعة</h1>
+    <div class="flex items-center">
+      <button class="btn btn-outline border-0" (click)="navigateBack()">
+        <i class="pi pi-angle-right text-2xl"></i>
+      </button>
+      <h1 class="page-header-title">الحمولات المرفوعة</h1>
+    </div>
     @if(shouldShowCreateButton && !payloadsPerProject) {
       <button
         class="btn btn-primary"

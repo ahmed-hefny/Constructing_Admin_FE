@@ -4,7 +4,7 @@ export const MENU_ITEMS = [
         label: 'المشاريع',
         icon: 'pi pi-briefcase',
         routerLink: ['/'],
-        roles: [SystemRoles.ADMIN, SystemRoles.EMPLOYEE],
+        roles: [SystemRoles.ADMIN],
     },
     {
         label: 'تفاصيل المشروع',
@@ -28,7 +28,8 @@ export const MENU_ITEMS = [
         label: 'قائمة الحمولات',
         icon: 'pi pi-truck',
         routerLink: ['/payloads'],
-        roles: [SystemRoles.Supervisor, SystemRoles.EMPLOYEE],
+        // roles: [SystemRoles.Supervisor, SystemRoles.EMPLOYEE],
+        roles: [SystemRoles.EMPLOYEE],
     },
 
 ]
