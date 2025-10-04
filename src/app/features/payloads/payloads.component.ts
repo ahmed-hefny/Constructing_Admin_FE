@@ -136,19 +136,24 @@ export class PayloadsComponent implements OnInit {
 
   onApplyFilter(): void {
     this.isLoading = true;
-    const dateFrom = this.inputForm.value?.dateFrom
-      ? moment(this.inputForm.value?.dateFrom).format(this.dateFormat)
-      : undefined;
-    const dateTo = this.inputForm.value?.dateTo
-      ? moment(this.inputForm.value?.dateTo).add(1, "d").format(this.dateFormat)
-      : undefined;
+    const policyNumber = this.inputForm.value?.policyNumber;
+    let dateFrom = this.inputForm.value?.dateFrom && moment(this.inputForm.value?.dateFrom).format(this.dateFormat);
+    let dateTo = this.inputForm.value?.dateTo && moment(this.inputForm.value?.dateTo).add(1, "d").format(this.dateFormat);
+  
     if (dateFrom || dateTo) {
       this.shouldShowExportButton = true;
     } else if (!dateFrom && !dateTo) {
       this.shouldShowExportButton = false;
     }
+
+    if(policyNumber) {
+      dateFrom = undefined;
+      dateTo = undefined;
+      this.inputForm.patchValue({ dateFrom: null, dateTo: null }, { emitEvent: false });
+      this.shouldShowExportButton = false;
+    }
     this.filtration = {
-      policyNumber: this.inputForm.value?.policyNumber || undefined,
+      policyNumber,
       dateFrom: dateFrom,
       dateTo: dateTo,
     };
