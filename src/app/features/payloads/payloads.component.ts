@@ -22,6 +22,7 @@ import { finalize } from "rxjs";
 import moment from "moment";
 import { saveFile } from "app/shared/helpers/filesave";
 import { ImageModule } from "primeng/image";
+import { Project } from "app/shared/models/company.models";
 
 const imports = [
   CommonModule,
@@ -53,6 +54,7 @@ export class PayloadsComponent implements OnInit {
   shouldShowExportButton: boolean = false;
   shouldShowCreateButton: boolean = false;
   payloadsPerProject: boolean = false;
+  project: Project | null = null;
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -85,6 +87,7 @@ export class PayloadsComponent implements OnInit {
     this.payloadConfig = { projectId, companyId };
     this.payloadsService.getProjectDetails(projectId).subscribe({
       next: (project) => {
+        this.project = project;
         this.shouldShowCreateButton = !project.isDeleted;
       },
     });
