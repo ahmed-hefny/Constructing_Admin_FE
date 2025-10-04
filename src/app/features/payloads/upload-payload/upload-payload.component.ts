@@ -99,11 +99,13 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
     this.initializeForm();
     this.configurePage();
     this.isIOSDevice = this.platformService.isIOS();
+    setTimeout(() => {
     if (!this.isIOSDevice) {
-      setTimeout(() => {
         this.getCameraDevices();
-      }, 0);
-    }
+      } else {
+        this.startIOSScanner()
+      }
+    }, 0);
   }
 
   ngOnDestroy(): void {
