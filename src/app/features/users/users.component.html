@@ -20,6 +20,7 @@
             <th >اسم المستخدم</th>
             <th>الدور</th>
             <th>الشركة</th>
+            <th>المشروع</th>
             <th>الإجراءات</th>
           </tr>
         </ng-template>
@@ -28,6 +29,7 @@
             <td >{{ item.username }}</td>
             <td>{{ item.role }}</td>
             <td>{{ item.companyName || "-" }}</td>
+            <td>{{ item.projectName || "-" }}</td>
             <td>
               <div class="flex gap-10">
                 @if (currentRole() === Role.ADMIN || item.role === Role.EMPLOYEE) {

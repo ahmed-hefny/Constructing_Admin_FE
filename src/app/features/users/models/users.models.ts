@@ -12,4 +12,5 @@ export interface UserResponse {
     role: string,
     companyId: number | null,
     companyName: string | null,
+    projectName: string | null,
 }
