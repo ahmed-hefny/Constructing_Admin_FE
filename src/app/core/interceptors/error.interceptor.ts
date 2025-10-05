@@ -13,8 +13,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       if(error.status === 400) {
         // Handle 400 Bad Request error
-        console.error('Bad Request:', error.error);
-        toaster.showError(error.error || 'طلب غير صالح');
+        console.error('Bad Request:', error?.error?.message);
+        toaster.showError(error?.error?.message || 'طلب غير صالح');
         return throwError(() => error)
       } 
       else if (error.status === HttpStatusCode.Unauthorized) {
@@ -33,13 +33,13 @@ function handleError(error: HttpErrorResponse): HttpErrorResponse | Error {
   
   if (error.error instanceof ErrorEvent) {
     // Client-side error
-    errorMessage = `Client Error: ${error.error.message}`;
+    errorMessage = `Client Error: ${error?.error?.message}`;
   } else {
     // Server-side error
-    errorMessage = `Server Error: ${error.status} - ${error.message}`;
+    errorMessage = `Server Error: ${error?.status} - ${error?.message}`;
     
     if (error.error?.message) {
-      errorMessage = error.error.message;
+      errorMessage = error?.error?.message;
     }
   }
 

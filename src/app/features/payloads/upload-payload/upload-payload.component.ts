@@ -391,7 +391,7 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
         error: (error) => {
           if(error?.status !== 400) {
             console.error("Error uploading payload:", error);
-            this.toaster.showError("خطأ في رفع الحمولة: " + error.error);
+            this.toaster.showError("خطأ في رفع الحمولة: " + error?.error?.message);
           }
         },
       });
