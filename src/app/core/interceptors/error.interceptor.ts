@@ -17,7 +17,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         toaster.showError(error?.error?.message || 'طلب غير صالح');
         return throwError(() => error)
       } 
-      else if (error.status === HttpStatusCode.Unauthorized) {
+      else if (error.status === HttpStatusCode.Unauthorized && !req.url.includes('login')) {
         // Handle 401 Unauthorized error
         authService.logout();
         toaster.showError('وصول غير مصرح به. يرجى تسجيل الدخول مرة أخرى.');
