@@ -55,7 +55,8 @@ export class PayloadsComponent implements OnInit {
   shouldShowCreateButton: boolean = false;
   payloadsPerProject: boolean = false;
   project: Project | null = null;
-  endDateMaxDate: Date = moment().toDate();
+
+  todayMaxDate: Date = moment().toDate();
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
