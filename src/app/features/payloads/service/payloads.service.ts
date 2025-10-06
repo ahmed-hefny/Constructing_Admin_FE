@@ -26,13 +26,6 @@ export class PayloadsService {
   getAll(body: any): Observable<PaginationResponse<Payload>> {
     return this.http
       .post<PaginationResponse<Payload>>(`/Payload/GetPayloadsList`, body)
-      .pipe(
-        tap((res) =>
-          res.items.forEach((item) => {
-            item.image = `data:image/jpeg;base64,${item?.image}`;
-          })
-        )
-      );
   }
 
   exportPayloads(body: any): Observable<Blob> {
