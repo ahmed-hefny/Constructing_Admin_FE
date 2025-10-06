@@ -6,7 +6,6 @@ import {
   Default_PAGINATION,
   SystemRoles,
 } from "app/core/constants/app.constants";
-import { AccessControlDirective } from "app/shared/directives/access-control.directive";
 import { ToasterService } from "app/shared/services/toaster.service";
 import { CardModule } from "primeng/card";
 import { TableModule } from "primeng/table";
@@ -23,6 +22,8 @@ import moment from "moment";
 import { saveFile } from "app/shared/helpers/filesave";
 import { ImageModule } from "primeng/image";
 import { Project } from "app/shared/models/company.models";
+import { DialogModule } from "primeng/dialog";
+import { GalleriaModule } from "primeng/galleria";
 
 const imports = [
   CommonModule,
@@ -35,6 +36,8 @@ const imports = [
   ButtonModule,
   PaginationComponent,
   ImageModule,
+  DialogModule,
+  GalleriaModule,
 ];
 
 @Component({
@@ -57,6 +60,8 @@ export class PayloadsComponent implements OnInit {
   project: Project | null = null;
 
   todayMaxDate: Date = moment().toDate();
+  policyNumberImages: string[] = [];
+  visible: boolean = false;
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -111,13 +116,17 @@ export class PayloadsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.data = res?.items || [];
+          this.policyNumberImages = this.data
+            ?.filter((item) => item?.image)
+            .map((item) => item?.image);
           this.pagination = {
             ...this.pagination,
             totalRecords: res.count,
           };
         },
         error: (err) => {
-          if(err.status !== 400) this.toaster.showError("فشل في تحميل الحمولات");
+          if (err.status !== 400)
+            this.toaster.showError("فشل في تحميل الحمولات");
         },
       });
   }
@@ -139,19 +148,26 @@ export class PayloadsComponent implements OnInit {
   onApplyFilter(): void {
     this.isLoading = true;
     const policyNumber = this.inputForm.value?.policyNumber;
-    let dateFrom = this.inputForm.value?.dateFrom && moment(this.inputForm.value?.dateFrom).format(this.dateFormat);
-    let dateTo = this.inputForm.value?.dateTo && moment(this.inputForm.value?.dateTo).add(1, "d").format(this.dateFormat);
-  
+    let dateFrom =
+      this.inputForm.value?.dateFrom &&
+      moment(this.inputForm.value?.dateFrom).format(this.dateFormat);
+    let dateTo =
+      this.inputForm.value?.dateTo &&
+      moment(this.inputForm.value?.dateTo).add(1, "d").format(this.dateFormat);
+
     if (dateFrom || dateTo) {
       this.shouldShowExportButton = true;
     } else if (!dateFrom && !dateTo) {
       this.shouldShowExportButton = false;
     }
 
-    if(policyNumber) {
+    if (policyNumber) {
       dateFrom = undefined;
       dateTo = undefined;
-      this.inputForm.patchValue({ dateFrom: null, dateTo: null }, { emitEvent: false });
+      this.inputForm.patchValue(
+        { dateFrom: null, dateTo: null },
+        { emitEvent: false }
+      );
       this.shouldShowExportButton = false;
     }
     this.filtration = {
@@ -185,6 +201,10 @@ export class PayloadsComponent implements OnInit {
           this.toaster.showError("فشل في تصدير الحمولات");
         },
       });
+  }
+
+  openGallery(): void {
+    this.visible = true;
   }
 
   private getPayloadFiltrationObject() {
