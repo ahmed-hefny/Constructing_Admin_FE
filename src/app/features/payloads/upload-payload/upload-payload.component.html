@@ -103,8 +103,9 @@
               <input
                 id="policyNumber"
                 formControlName="policyNumber"
-                class="input-with-suffix"
+                class="input-with-suffix policy-number-input"
                 placeholder="أدخل رقم البوليصة"
+                readonly
               />
               <!-- <button
                 type="button"
@@ -115,8 +116,8 @@
               </button> -->
             </div>
             <!-- prettier-ignore -->
-            @if (inputForm.get('image')?.invalid && inputForm.get('image')?.touched) {
-            <small class="error-message"> رقم البوليصة مطلوب. </small>
+            @if (inputForm.get('policyNumber')?.invalid && inputForm.get('policyNumber')?.touched) {
+              <small class="error-message"> رقم البوليصة مطلوب. </small>
             }
           </div>
         </div>

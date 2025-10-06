@@ -1,8 +1,16 @@
+@import "../../../../styles/variables.scss";
+
 :host {
   ::ng-deep {
     .p-dropdown.p-component.p-inputwrapper {
       padding-block: 8px;
     }
+  }
+  .policy-number-input:focus, 
+  .policy-number-input:active {
+    @apply border border-gray-300;
+    outline: none;
+    box-shadow: none;
   }
   .reader-scanner-wrapper {
     width: 100%;

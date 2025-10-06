@@ -336,7 +336,7 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.min(1),
       ]),
-      policyNumber: new UntypedFormControl({ value: "", disabled: true }, [
+      policyNumber: new UntypedFormControl("", [
         Validators.required,
       ]),
       image: new UntypedFormControl(null, [Validators.required]),
