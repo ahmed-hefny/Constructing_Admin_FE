@@ -67,7 +67,7 @@ export class AddEditCompanyComponent {
   private initializeForm(): void {
     this.inputForm = new UntypedFormGroup({
       id: new FormControl<number | null>(null),
-      name: new FormControl<string | null>(null, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
+      name: new FormControl<string | null>(null, [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
     });
   }
 
