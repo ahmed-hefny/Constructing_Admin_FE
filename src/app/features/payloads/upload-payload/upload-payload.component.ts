@@ -182,10 +182,8 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   }
 
   onSaveClick(): void {
-    this.isLoading = true;
     if (this.inputForm.invalid) {
       this.inputForm.markAllAsTouched();
-      this.isLoading = false;
       return;
     }
     this.confirmPolicyNumber();
@@ -371,6 +369,7 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   }
 
   private uploadPayload(): void {
+    this.isLoading = true;
     const payload = {
       ...this.inputForm.getRawValue(),
       ...this.payloadConfig,
