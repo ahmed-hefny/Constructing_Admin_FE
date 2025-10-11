@@ -102,6 +102,7 @@
               size="large"
               label="استعراض"
               [loading]="isLoading"
+              [disabled]="policyNumberImages.length === 0"
               (click)="openGallery()"
             ></button>
           </div>
@@ -120,6 +121,11 @@
             <th>التاريخ</th>
             <th>رقم البوليصة</th>
             <th>الكمية</th>
+            @if(!payloadsPerProject) {
+            <th *appAccessControl="[SystemRoles.ADMIN, SystemRoles.Supervisor]">
+              الإجراءات
+            </th>
+            }
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
@@ -137,6 +143,24 @@
               {{ item.policyNumber || "-" }}
             </td>
             <td>{{ item.quantity || 0 }}</td>
+            @if(!payloadsPerProject) {
+            <td *appAccessControl="[SystemRoles.ADMIN, SystemRoles.Supervisor]">
+              <div class="flex gap-10">
+                <button
+                  class="btn btn-outline border-0"
+                  (click)="edit(item.id)"
+                >
+                  <i class="pi pi-pencil ca-text-info ca-font-bold"></i>
+                </button>
+                <button
+                  class="btn btn-outline border-0"
+                  (click)="confirmDelete(item)"
+                >
+                  <i class="pi pi-trash ca-text-error ca-font-bold"></i>
+                </button>
+              </div>
+            </td>
+            }
           </tr>
         </ng-template>
         <ng-template pTemplate="empty">
@@ -161,16 +185,16 @@
   [closable]="true"
   styleClass="dialog-container"
 >
-    <p-galleria
-      [value]="policyNumberImages"
-      containerClass="max-w-full"
-      [numVisible]="5"
-      [circular]="true"
-      [showItemNavigators]="true"
-      [showThumbnails]="false"
-    >
-      <ng-template pTemplate="item" let-item>
-        <img [src]="item" class="gallery-image"/>
-      </ng-template>
-    </p-galleria>
+  <p-galleria
+    [value]="policyNumberImages"
+    containerClass="max-w-full"
+    [numVisible]="5"
+    [circular]="true"
+    [showItemNavigators]="true"
+    [showThumbnails]="false"
+  >
+    <ng-template pTemplate="item" let-item>
+      <img [src]="item" class="gallery-image" />
+    </ng-template>
+  </p-galleria>
 </p-dialog>

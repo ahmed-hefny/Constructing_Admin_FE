@@ -14,7 +14,11 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { InputTextModule } from "primeng/inputtext";
 import { PayloadsService } from "../service/payloads.service";
-import { PayloadConfig, ScanState } from "../models/payloads.models";
+import {
+  PayloadConfig,
+  PayloadModel,
+  ScanState,
+} from "../models/payloads.models";
 import { finalize, take } from "rxjs";
 import { Suppliers } from "app/core/constants/app.constants";
 import {
@@ -33,6 +37,7 @@ import {
 } from "ngx-scanner-qrcode";
 import { DialogService } from "app/shared/services/dialog.service";
 import { ConfirmDialogConfig } from "app/shared/models/dialog.models";
+import { ImageModule } from "primeng/image";
 
 LOAD_WASM("assets/wasm/ngx-scanner-qrcode.wasm").subscribe();
 
@@ -44,6 +49,7 @@ const imports = [
   CardModule,
   DropdownModule,
   NgxScannerQrcodeComponent,
+  ImageModule,
 ];
 
 @Component({
@@ -86,6 +92,9 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
       audio: false,
     },
   };
+
+  editMode: boolean = false;
+  payloadDetails: PayloadModel | null = null;
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private dialogService: DialogService = inject(DialogService);
@@ -98,14 +107,16 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializeForm();
     this.configurePage();
-    this.isIOSDevice = this.platformService.isIOS();
-    setTimeout(() => {
-    if (!this.isIOSDevice) {
-        this.getCameraDevices();
-      } else {
-        this.startIOSScanner()
-      }
-    }, 0);
+    if (!this.editMode) {
+      this.isIOSDevice = this.platformService.isIOS();
+      setTimeout(() => {
+        if (!this.isIOSDevice) {
+          this.getCameraDevices();
+        } else {
+          this.startIOSScanner();
+        }
+      }, 0);
+    }
   }
 
   ngOnDestroy(): void {
@@ -319,13 +330,17 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   }
 
   private configurePage(): void {
-    const { projectId, companyId } = this.activatedRoute.snapshot.params;
+    const { projectId, companyId, id } = this.activatedRoute.snapshot.params;
+    this.payloadConfig = { projectId, companyId, id };
     if (!projectId || !companyId) {
       this.toaster.showError("معرف المشروع أو معرف الشركة مفقود");
       this.navigateBack();
       return;
     }
-    this.payloadConfig = { projectId, companyId };
+    if (!!id) {
+      this.editMode = true;
+      this.loadPayloadData(id);
+    }
   }
 
   private initializeForm(): void {
@@ -334,9 +349,7 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.min(1),
       ]),
-      policyNumber: new UntypedFormControl("", [
-        Validators.required,
-      ]),
+      policyNumber: new UntypedFormControl("", [Validators.required]),
       image: new UntypedFormControl(null, [Validators.required]),
       supplier: new FormControl<Suppliers>(Suppliers.Banisuef),
     });
@@ -350,22 +363,24 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   }
 
   private confirmPolicyNumber(): void {
-        const config: ConfirmDialogConfig = {
-          header: "تأكيد",
-          closeOnEscape: true,
-          icon: "pi pi-exclamation-triangle",
-          acceptButtonStyleClass: "btn btn-action",
-          rejectButtonStyleClass: "btn btn-accent mr-2",
-          acceptLabel: "تأكيد",
-          acceptIcon: "pi pi-check",
-          rejectLabel: "إلغاء",
-          rejectIcon: "pi pi-times",
-          message: `هل أنت متأكد من رقم البوليصة: ${this.inputForm.get("policyNumber")?.value}؟`,
-          onAccept: () => {
-            this.uploadPayload();
-          },
-        };
-        this.dialogService.confirmDialog(config);
+    const config: ConfirmDialogConfig = {
+      header: "تأكيد",
+      closeOnEscape: true,
+      icon: "pi pi-exclamation-triangle",
+      acceptButtonStyleClass: "btn btn-action",
+      rejectButtonStyleClass: "btn btn-accent mr-2",
+      acceptLabel: "تأكيد",
+      acceptIcon: "pi pi-check",
+      rejectLabel: "إلغاء",
+      rejectIcon: "pi pi-times",
+      message: `هل أنت متأكد من رقم البوليصة: ${
+        this.inputForm.get("policyNumber")?.value
+      }؟`,
+      onAccept: () => {
+        this.uploadPayload();
+      },
+    };
+    this.dialogService.confirmDialog(config);
   }
 
   private uploadPayload(): void {
@@ -378,20 +393,45 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
     Object.entries(payload).map(([k, v]) => {
       formData.append(k, v as any);
     });
-    this.payloadsService
-      .create(formData)
+    const action = this.editMode ? "edit" : "create";
+    this.payloadsService[action](formData)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (response) => {
-          this.toaster.showSuccess("تم رفع الحمولة بنجاح");
+          const message = this.editMode
+            ? "تم تعديل الحمولة بنجاح"
+            : "تم رفع الحمولة بنجاح";
+          this.toaster.showSuccess(message);
           this.inputForm.reset();
           this.navigateBack();
         },
         error: (error) => {
-          if(error?.status !== 400) {
-            console.error("Error uploading payload:", error);
-            this.toaster.showError("خطأ في رفع الحمولة: " + error?.error?.message);
+          if (error?.status !== 400) {
+            const message = this.editMode
+              ? "خطأ في تعديل الحمولة"
+              : "خطأ في رفع الحمولة";
+            this.toaster.showError(message + ": " + error?.error?.message);
           }
+        },
+      });
+  }
+
+  private loadPayloadData(id: string): void {
+    if (!this.payloadConfig) return;
+    this.isLoading = true;
+    this.payloadsService
+      .getPayloadDetails(id)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe({
+        next: (payload) => {
+          this.payloadDetails = payload;
+          this.inputForm.patchValue({
+            quantity: payload.quantity,
+            policyNumber: payload.policyNumber,
+          });
+          this.inputForm.get("policyNumber")?.enable();
+          this.inputForm.get("image")?.clearValidators();
+          this.inputForm.get("image")?.updateValueAndValidity();
         },
       });
   }

@@ -14,5 +14,9 @@ export default [
     {
         path: ':projectId/:companyId/upload',
         loadComponent: () => import('./upload-payload/upload-payload.component').then(m => m.UploadPayloadComponent),
+    },
+    {
+        path: ':projectId/:companyId/edit/:id',
+        loadComponent: () => import('./upload-payload/upload-payload.component').then(m => m.UploadPayloadComponent),
     }
 ];

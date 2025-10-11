@@ -13,7 +13,7 @@ import { TooltipModule } from "primeng/tooltip";
 import { InputTextModule } from "primeng/inputtext";
 import { CalendarModule } from "primeng/calendar";
 import { ButtonModule } from "primeng/button";
-import { PayloadConfig, PayloadsFiltration } from "./models/payloads.models";
+import { Payload, PayloadConfig, PayloadsFiltration } from "./models/payloads.models";
 import { PaginationConfig } from "app/core/models";
 import { PayloadsService } from "./service/payloads.service";
 import { PaginationComponent } from "app/shared/components/pagination/pagination.component";
@@ -24,6 +24,9 @@ import { ImageModule } from "primeng/image";
 import { Project } from "app/shared/models/company.models";
 import { DialogModule } from "primeng/dialog";
 import { GalleriaModule } from "primeng/galleria";
+import { AccessControlDirective } from "app/shared/directives/access-control.directive";
+import { ConfirmDialogConfig } from "app/shared/models/dialog.models";
+import { DialogService } from "app/shared/services/dialog.service";
 
 const imports = [
   CommonModule,
@@ -38,6 +41,7 @@ const imports = [
   ImageModule,
   DialogModule,
   GalleriaModule,
+  AccessControlDirective
 ];
 
 @Component({
@@ -49,7 +53,7 @@ const imports = [
 export class PayloadsComponent implements OnInit {
   SystemRoles = SystemRoles;
   payloadConfig: PayloadConfig | null = null;
-  data: any[] = [];
+  data: Payload[] = [];
   pagination: PaginationConfig = Default_PAGINATION;
   inputForm!: FormGroup;
   isLoading: boolean = false;
@@ -65,6 +69,7 @@ export class PayloadsComponent implements OnInit {
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
+  private dialogService: DialogService = inject(DialogService);
   private payloadsService: PayloadsService = inject(PayloadsService);
   private filtration: PayloadsFiltration = {
     policyNumber: undefined,
@@ -110,6 +115,7 @@ export class PayloadsComponent implements OnInit {
 
   getData(): void {
     const payload = this.getPayloadFiltrationObject();
+    this.policyNumberImages = [];
     this.payloadsService
       .getAll(payload)
       .pipe(finalize(() => (this.isLoading = false)))
@@ -205,6 +211,48 @@ export class PayloadsComponent implements OnInit {
 
   openGallery(): void {
     this.visible = true;
+  }
+
+  edit(payloadId: number): void {
+    if (!payloadId) {
+      this.toaster.showError("معرف الحمولة مفقود يرحى المحاولة مرة اخرى");
+      return;
+    }
+    this.router.navigate(
+      ["edit", payloadId],
+      { relativeTo: this.activatedRoute }
+    );
+  }
+
+  confirmDelete(payload: Payload): void {
+    const config: ConfirmDialogConfig = {
+      header: 'تأكيد',
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonStyleClass: 'btn btn-error',
+      rejectButtonStyleClass: 'btn btn-accent mr-2',
+      acceptLabel: 'حذف',
+      acceptIcon: 'pi pi-check',
+      rejectLabel: 'إلغاء',
+      rejectIcon: 'pi pi-times',
+      message: `هل أنت متأكد من أنك تريد حذف حمولة رقم ${payload?.policyNumber}؟`,
+      onAccept: () => {
+        this.delete(payload.id);
+      }
+    }
+    this.dialogService.confirmDialog(config);
+  }
+  delete(payloadId: number = 1): void {
+
+    this.payloadsService.delete(payloadId).subscribe({
+      next: () => {
+        this.toaster.showSuccess("تم حذف الحمولة بنجاح");
+        this.getData();
+      },
+      error: () => {
+        this.toaster.showError("فشل في حذف الحمولة");
+      },
+    });
   }
 
   private getPayloadFiltrationObject() {

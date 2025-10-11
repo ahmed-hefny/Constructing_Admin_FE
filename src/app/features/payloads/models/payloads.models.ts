@@ -1,6 +1,17 @@
 export interface PayloadConfig {
+  id?: number;
   projectId: string;
   companyId: string;
+}
+
+export interface PayloadModel {
+  id: number;
+  quantity: number;
+  policyNumber: string;
+  date: string;
+  company: string;
+  isActiveProject: boolean;
+  image: string;
 }
 
 export interface PayloadsFiltration {
@@ -12,6 +23,7 @@ export interface PayloadsFiltration {
 }
 
 export interface Payload {
+  id: number;
   quantity: number;
   policyNumber: string;
   date: Date;
