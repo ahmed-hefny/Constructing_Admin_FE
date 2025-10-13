@@ -1,7 +1,7 @@
 <div class="page">
   <div class="page-header">
     <h1 class="page-header-title">المستخدمون</h1>
-    <button class="btn btn-primary" (click)="createUser()">
+    <button class="btn btn-primary" (click)="createUser()" *appAccessControl="[Role.ADMIN]">
       <i class="pi pi-plus"></i>
       <span>جديد</span>
     </button>
@@ -21,7 +21,7 @@
             <th>الدور</th>
             <th>الشركة</th>
             <th>المشروع</th>
-            <th>الإجراءات</th>
+            <th *appAccessControl="[Role.ADMIN]">الإجراءات</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
@@ -30,20 +30,17 @@
             <td>{{ item.role }}</td>
             <td>{{ item.companyName || "-" }}</td>
             <td>{{ item.projectName || "-" }}</td>
-            <td>
+            <td *appAccessControl="[Role.ADMIN]">
               <div class="flex gap-10">
-                @if (currentRole() === Role.ADMIN || item.role === Role.EMPLOYEE) {
                   <button
                     class="btn btn-outline border-0"
                     (click)="editUser(item.id)"
                   >
                     <i class="pi pi-pencil ca-text-info ca-font-bold"></i>
                   </button>
-                }
                 <button
                   class="btn btn-outline border-0"
                   (click)="confirmDelete(item.id)"
-                  *appAccessControl="[Role.ADMIN]"
                 >
                   <i class="pi pi-trash ca-text-error ca-font-bold"></i>
                 </button>
