@@ -8,15 +8,13 @@
         تفاصيل المشروع
       </h1>
     </div>
-    @if(false) {
-      <button
-        *appAccessControl="[SystemRoles.ADMIN, SystemRoles.Supervisor]"
-          class="btn btn-primary"
-          (click)="navigateToPayloadsPerProject()"
-        >
-          <span>حمولات المشروع</span>
-      </button>
-    }
+    <button
+      *appAccessControl="[SystemRoles.ADMIN, SystemRoles.Supervisor]"
+        class="btn btn-primary"
+        (click)="navigateToPayloadsPerProject()"
+      >
+        <span>حمولات المشروع</span>
+    </button>
   </div>
   <div class="page-content">
     <p-card class="px-0">
