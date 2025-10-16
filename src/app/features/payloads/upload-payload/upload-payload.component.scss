@@ -24,4 +24,22 @@
       object-fit: cover;
     }
   }
+
+  .custom-file-upload {
+    @apply border border-gray-300;
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    width: 100%;
+    padding: 8px 8px;
+    border-radius: 0.375rem;
+    border-radius: $border-radius-semi-md;
+  
+    .file-name {
+      color: $gray-500;
+      font-size: $font-size-sm;
+      flex: 1;
+      @include text-truncate;
+    }
+  }
 }

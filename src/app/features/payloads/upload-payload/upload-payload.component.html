@@ -1,11 +1,7 @@
 <div class="page">
   <div class="page-header">
     <h1 class="page-header-title">
-      @if(editMode) {
-        تعديل بيانات حمولة
-      } @else {
-        إضافة بيانات حمولة
-      }
+      @if(editMode) { تعديل بيانات حمولة } @else { إضافة بيانات حمولة }
     </h1>
     <button class="btn btn-primary" (click)="navigateBack()">
       قائمة الحمولات
@@ -25,6 +21,8 @@
           formControlName="quantity"
           class="w-full"
           placeholder="أدخل الكمية"
+          (keydown)="onNumberInputKeydown($event)"
+          (paste)="onNumberInputPaste($event)"
         />
         <!-- prettier-ignore -->
         @if (inputForm.get('quantity')?.invalid && inputForm.get('quantity')?.touched) {
@@ -34,75 +32,82 @@
         }
       </div>
       @if(!editMode) {
-        <div class="form-field">
-          <label for="image" class="field-label cursor-pointer">
-            صورة البوليصة
-          </label>
+      <div class="form-field">
+        <label for="image" class="field-label"> صورة البوليصة </label>
+        <div class="custom-file-upload">
           <input
             type="file"
             accept="image/*;capture=environment"
             id="image"
+            #fileInput
             (change)="onUploadImage($event)"
-            class="w-full"
-            placeholder="صورة البوليصة"
+            hidden
           />
-            <!-- prettier-ignore -->
-          @if (inputForm.get('image')?.invalid && inputForm.get('image')?.touched) {
-            <!-- QR Code Scanner Error-->
-          <small class="error-message block">
-            لم يتم رفع صورة البوليصة.
-          </small>
-          }
+          <button
+            pButton
+            type="button"
+            class="btn btn-primary py-1"
+            size="large"
+            label="اختيار صورة"
+            (click)="fileInput.click()"
+          ></button>
+          <span class="file-name">{{ getFileName() }}</span>
         </div>
+        <!-- prettier-ignore -->
+        @if (inputForm.get('image')?.invalid && inputForm.get('image')?.touched) {
+        <!-- QR Code Scanner Error-->
+        <small class="error-message block"> لم يتم رفع صورة البوليصة. </small>
+        }
+      </div>
       <!-- QR Code Scanner -->
-        <div class="form-field">
-          <div>
-            <label for="qrCode" class="field-label">مسح رقم البوليصة</label>
-                      <!-- Non-iOS Scanner using html5-qrcode -->
-            @if(showCameraDevicesDropDown) {
-              <div class="field-suffix-container">
-                <p-dropdown
-                  class="w-full py-[8px]"
-                  id="role"
-                  [formControl]="selectedCamera"
-                  [options]="cameraDevices"
-                  optionValue="id"
-                  optionLabel="label"
-                  placeholder="برجاء اختيار الكاميرا لبدء المسح"
-                />
-              </div>
-            }
-            <!-- iOS Scanner using ngx-scanner-qrcode -->
-            @if(isIOSDevice) {
-              <div class="ios-scanner-wrapper">
-                <ngx-scanner-qrcode
-                  #ngxScannerQrcode
-                  [config]="qrCodeConfig"
-                  (event)="onScanSuccess($event)"
-                  class="w-[250] sm:w-[200px] rounded-lg overflow-hidden"
-                />
-              </div>
-            } @else {
-
-              <div>
-                <!-- QR Code Scanner wrapper-->
-                <div id="reader" class="reader-scanner-wrapper rounded-lg"></div>
-              </div>
-            }
-            
-            <!-- Scanner action button (works for both iOS and non-iOS) -->
-            <button
-              pButton
-              type="button"
-              class="btn btn-primary mt-2"
-              size="large"
-              [label]="getScannerLabel()"
-              (click)="getScannerAction()"
-              [loading]="isScanning"
-            ></button>
+      <div class="form-field">
+        <div>
+          <label for="qrCode" class="field-label">مسح رقم البوليصة</label>
+          <!-- Non-iOS Scanner using html5-qrcode -->
+          @if(showCameraDevicesDropDown) {
+          <div class="field-suffix-container">
+            <p-dropdown
+              class="w-full py-[8px]"
+              id="role"
+              [formControl]="selectedCamera"
+              [options]="cameraDevices"
+              optionValue="id"
+              optionLabel="label"
+              placeholder="برجاء اختيار الكاميرا لبدء المسح"
+            />
           </div>
+          }
+          <!-- iOS Scanner using ngx-scanner-qrcode -->
+          @if(isIOSDevice) {
+          <div class="ios-scanner-wrapper">
+            <ngx-scanner-qrcode
+              #ngxScannerQrcode
+              [config]="qrCodeConfig"
+              (event)="onScanSuccess($event)"
+              class="w-[250] sm:w-[200px] rounded-lg overflow-hidden"
+            />
+          </div>
+          } @else {
+
+          <div>
+            <!-- QR Code Scanner wrapper-->
+            <div id="reader" class="reader-scanner-wrapper rounded-lg"></div>
+          </div>
+          }
+
+          <!-- Scanner action button (works for both iOS and non-iOS) -->
+          <button
+            pButton
+            type="button"
+            class="btn btn-primary mt-2"
+            size="large"
+            [label]="getScannerLabel()"
+            (click)="getScannerAction()"
+            [loading]="isScanning"
+          ></button>
         </div>
-       }
+      </div>
+      }
       <div class="form-field">
         <div>
           <div class="form-field">
@@ -126,26 +131,26 @@
             </div>
             <!-- prettier-ignore -->
             @if (inputForm.get('policyNumber')?.invalid && inputForm.get('policyNumber')?.touched) {
-              <small class="error-message"> رقم البوليصة مطلوب. </small>
+            <small class="error-message"> رقم البوليصة مطلوب. </small>
             }
           </div>
         </div>
       </div>
       @if(editMode && payloadDetails) {
-        <div class="form-field" >
-          <label for="image" class="field-label cursor-pointer">
-            صورة البوليصة
-          </label>
-          <div>
-            <p-image
-              [src]="payloadDetails?.image"
-              class="min-w-10"
-              imageClass="rounded-lg w-20 h-20"
-              [alt]="payloadDetails?.policyNumber"
-              [preview]="!!payloadDetails.image"
-              />
-          </div>
+      <div class="form-field">
+        <label for="image" class="field-label cursor-pointer">
+          صورة البوليصة
+        </label>
+        <div>
+          <p-image
+            [src]="payloadDetails.image"
+            class="min-w-10"
+            imageClass="rounded-lg w-20 h-20"
+            [alt]="payloadDetails.policyNumber"
+            [preview]="!!payloadDetails.image"
+          />
         </div>
+      </div>
       }
     </form>
 

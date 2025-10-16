@@ -329,6 +329,61 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
     }
   }
 
+  getFileName(): string {
+    const file = this.inputForm.get("image")?.value;
+    return file ? file.name : 'يرجى اختيار صورة بجودة واضحة';
+  }
+
+  onNumberInputKeydown(event: KeyboardEvent): void {
+    const inputElement = event.target as HTMLInputElement;
+    const currentValue = inputElement.value;
+
+    // Allow: backspace, delete, tab, escape, enter, home, end
+    if ([8, 9, 27, 13, 46, 35, 36].indexOf(event.keyCode) !== -1 ||
+        // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+        (event.keyCode === 65 && event.ctrlKey === true) || // Ctrl+A
+        (event.keyCode === 67 && event.ctrlKey === true) || // Ctrl+C
+        (event.keyCode === 86 && event.ctrlKey === true) || // Ctrl+V
+        (event.keyCode === 88 && event.ctrlKey === true) || // Ctrl+X
+        // Allow: left, right, up, down arrows
+        (event.keyCode >= 37 && event.keyCode <= 40)) {
+      return;
+    }
+
+    // Allow decimal point (.) only if there isn't one already
+    if ((event.keyCode === 190 || event.keyCode === 110) && currentValue.indexOf('.') === -1) {
+      return;
+    }
+
+    // Ensure that it's a number (0-9) and stop the keypress if not
+    if ((event.shiftKey || (event.keyCode < 48 || event.keyCode > 57)) && (event.keyCode < 96 || event.keyCode > 105)) {
+      event.preventDefault();
+    }
+  }
+
+  onNumberInputPaste(event: ClipboardEvent): void {
+    const pastedData = event.clipboardData?.getData('text/plain') || '';
+    
+    // Check if the pasted data contains only numbers and at most one decimal point
+    const numberRegex = /^[0-9]*\.?[0-9]*$/;
+    
+    if (!numberRegex.test(pastedData) || (pastedData.match(/\./g) || []).length > 1) {
+      event.preventDefault();
+      this.toaster.showError('يُسمح فقط بإدخال أرقام إنجليزية ونقطة عشرية واحدة كحد أقصى');
+      return;
+    }
+
+    // Additional check: if current input already has a decimal point, don't allow pasting another decimal
+    const inputElement = event.target as HTMLInputElement;
+    const currentValue = inputElement.value;
+    
+    if (currentValue.includes('.') && pastedData.includes('.')) {
+      event.preventDefault();
+      this.toaster.showError('لا يُسمح بأكثر من نقطة عشرية واحدة');
+      return;
+    }
+  }
+
   private configurePage(): void {
     const { projectId, companyId, id } = this.activatedRoute.snapshot.params;
     this.payloadConfig = { projectId, companyId, id };

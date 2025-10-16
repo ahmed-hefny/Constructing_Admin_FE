@@ -10,6 +10,7 @@
     padding-top: 0px;
     margin-top: 0px;
     button {
+      min-width: max-content;
       height: 2.6rem;
       font-size: $font-size-base;
       margin-bottom: 2px;
