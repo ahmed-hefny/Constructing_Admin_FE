@@ -5,10 +5,11 @@ import { ToastModule } from 'primeng/toast';
 import { PrimeNGConfig } from 'primeng/api';
 import { RtlService } from './core/services/rtl.service';
 import { RtlDirective } from './shared/directives/rtl.directive';
+import { FloatingSupportComponent } from './shared/components/floating-support/floating-support.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ToastModule, ConfirmDialogModule, RtlDirective],
+  imports: [RouterOutlet, ToastModule, ConfirmDialogModule, RtlDirective, FloatingSupportComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
