@@ -1,0 +1,39 @@
+@import "../../../../styles/variables.scss";
+
+.app-footer {
+  background: $top-bar-bg;
+  border-top: 1px solid $surface-border;
+  padding: $spacing-md $spacing-lg;
+  margin-top: auto;
+  
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    
+    .footer-text {
+      text-align: center;
+      
+      .copyright {
+        margin: 0;
+        font-size: $font-size-sm;
+        color: $surface-white;
+        font-weight: $font-weight-normal;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-md) {
+  .app-footer {
+    padding: $spacing-sm $spacing-md;
+    
+    .footer-content {
+      .footer-text {
+        .copyright {
+          font-size: $font-size-xs;
+        }
+      }
+    }
+  }
+}

@@ -15,6 +15,7 @@ import { environment } from "environments/environment";
 import { DialogService } from "app/shared/services/dialog.service";
 import { ConfirmDialogConfig } from "app/shared/models/dialog.models";
 import { SystemRoles } from "app/core/constants/app.constants";
+import { FooterComponent } from "app/shared/components/footer/footer.component";
 
 @Component({
   selector: "app-home",
@@ -27,6 +28,7 @@ import { SystemRoles } from "app/core/constants/app.constants";
     RippleModule,
     CommonModule,
     RtlDirective,
+    FooterComponent,
   ],
   templateUrl: "./home.component.html",
   styleUrl: "./home.component.scss",
