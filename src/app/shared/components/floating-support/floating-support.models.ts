@@ -79,7 +79,7 @@ export type FloatingSupportCssClass =
  * Default configuration values
  */
 export const FLOATING_SUPPORT_DEFAULTS = {
-  PHONE_NUMBER: '123456',
+  PHONE_NUMBER: '201064881832',
   MESSAGE: 'مرحباً، أحتاج إلى المساعدة',
   TOOLTIP_TEXT: 'دعم فني',
   POSITION: 'bottom-left' as FloatingSupportPosition,
