@@ -1,13 +1,18 @@
 {
   "name": "constructing-admin-fe",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "version:patch": "node scripts/update-version.js --patch --yes",
+    "version:minor": "node scripts/update-version.js --minor --yes",
+    "version:major": "node scripts/update-version.js --major --yes",
+    "version:update": "node scripts/update-version.js",
+    "version:interactive": "node scripts/update-version.js"
   },
   "private": true,
   "dependencies": {
