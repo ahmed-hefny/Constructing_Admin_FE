@@ -11,7 +11,9 @@ export interface PayloadModel {
   date: string;
   company: string;
   isActiveProject: boolean;
-  image: string;
+  image: string;  
+  isManual?: boolean;
+  isModified?: boolean;
 }
 
 export interface PayloadsFiltration {
@@ -22,10 +24,7 @@ export interface PayloadsFiltration {
   companyId?: string;
 }
 
-export interface Payload extends PayloadModel {
-  isManual?: boolean;
-  isModified?: boolean;
-}
+export interface Payload extends PayloadModel { }
 
 export enum ScanState {
   StartScan = "بدء المسح",

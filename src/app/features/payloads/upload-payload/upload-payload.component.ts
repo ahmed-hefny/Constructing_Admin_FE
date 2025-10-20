@@ -475,6 +475,7 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
           this.inputForm.get("policyNumber")?.enable();
           this.inputForm.get("image")?.clearValidators();
           this.inputForm.get("image")?.updateValueAndValidity();
+          this.isAutomated = !payload.isManual;
         },
       });
   }
