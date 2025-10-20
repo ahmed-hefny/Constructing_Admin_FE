@@ -119,6 +119,7 @@
           <tr>
             <th class="company-name-cell">الشركة</th>
             <th>التاريخ</th>
+            <th>تم التعديل</th>
             <th>رقم البوليصة</th>
             <th>الكمية</th>
             @if(!payloadsPerProject) {
@@ -129,9 +130,16 @@
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
-          <tr>
+          <tr [ngClass]="{ 'bg-red-50': item?.isManual }">
             <td class="company-name-cell">{{ item?.company || "غير معرف" }}</td>
             <td>{{ item.date | date : "dd/MM/yyyy" }}</td>
+            <td class="ps-12 ">
+              @if (item?.isModified) {
+                <i class="pi pi-check-circle text-green-500 text-xl"></i>
+              } @else {
+                -
+              }
+            </td>
             <td class="flex gap-2" [ngClass]="{ 'items-center': item.image }">
               <p-image
                 [src]="item.image"

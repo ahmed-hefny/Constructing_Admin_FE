@@ -22,14 +22,9 @@ export interface PayloadsFiltration {
   companyId?: string;
 }
 
-export interface Payload {
-  id: number;
-  quantity: number;
-  policyNumber: string;
-  date: Date;
-  company: string;
-  isActiveProject: boolean;
-  image: string;
+export interface Payload extends PayloadModel {
+  isManual?: boolean;
+  isModified?: boolean;
 }
 
 export enum ScanState {
