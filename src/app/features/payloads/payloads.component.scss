@@ -40,6 +40,12 @@
       max-width: 640px;
       max-height: 480px;
     }
+
+    .export-btn {
+      .p-button-icon {
+        margin-inline: 0px;
+      }
+    }
   }
 
   @media screen and (max-width: $breakpoint-md) {

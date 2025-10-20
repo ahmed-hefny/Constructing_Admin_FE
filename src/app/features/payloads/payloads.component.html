@@ -10,10 +10,13 @@
       </h1>
     </div>
     @if(shouldShowCreateButton && !payloadsPerProject) {
-    <button class="btn btn-primary" (click)="create()">
-      <i class="pi pi-plus"></i>
-      <span>جديد</span>
-    </button>
+      <div>
+        <button class="btn btn-primary gap-3" (click)="menu.toggle($event)">
+          <span class="font-bold text-md">جديد</span>
+          <i class="pi pi-angle-down pt-1"></i>
+        </button>
+        <p-menu #menu [model]="createNewPayloadItems" [popup]="true" />
+      </div>
     }
   </div>
   <div class="page-content">
@@ -85,19 +88,23 @@
               (click)="onApplyFilter()"
             ></button>
             @if(shouldShowExportButton) {
-            <button
-              pButton
-              type="submit"
-              class="btn btn-accent"
-              size="large"
-              label="تحميل اكسيل"
-              [loading]="isExporting"
-              (click)="export()"
-            ></button>
+            <div class="w-full flex items-baseline">
+              <button
+                pButton
+                type="button"
+                class="btn btn-accent gap-3 export-btn"
+                size="large"
+                label="تحميل اكسيل"
+                (click)="export.toggle($event)"
+                icon="pi pi-angle-down"
+                iconPos="right"
+              ></button>
+              <p-menu #export [model]="exportTypes" [popup]="true" />
+            </div>
             }
             <button
               pButton
-              type="submit"
+              type="button"
               class="btn btn-primary"
               size="large"
               label="استعراض"
@@ -112,7 +119,7 @@
       <p-table
         [value]="data"
         [responsiveLayout]="'scroll'"
-        styleClass="p-datatable-striped mt-10"
+        styleClass="mt-10"
         [scrollable]="true"
       >
         <ng-template pTemplate="header">

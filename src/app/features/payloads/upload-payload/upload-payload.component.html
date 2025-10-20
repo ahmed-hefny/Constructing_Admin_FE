@@ -59,54 +59,75 @@
         <small class="error-message block"> لم يتم رفع صورة البوليصة. </small>
         }
       </div>
-      <!-- QR Code Scanner -->
-      <div class="form-field">
-        <div>
-          <label for="qrCode" class="field-label">مسح رقم البوليصة</label>
-          <!-- Non-iOS Scanner using html5-qrcode -->
-          @if(showCameraDevicesDropDown) {
+        <!-- prettier-ignore -->
+        @if(isAutomated) {
+          <!-- QR Code Scanner -->
+          <div class="form-field">
+            <div>
+              <label for="qrCode" class="field-label">مسح رقم البوليصة</label>
+              <!-- Non-iOS Scanner using html5-qrcode -->
+              @if(showCameraDevicesDropDown) {
+              <div class="field-suffix-container">
+                <p-dropdown
+                  class="w-full py-[8px]"
+                  id="role"
+                  [formControl]="selectedCamera"
+                  [options]="cameraDevices"
+                  optionValue="id"
+                  optionLabel="label"
+                  placeholder="برجاء اختيار الكاميرا لبدء المسح"
+                />
+              </div>
+              }
+              <!-- iOS Scanner using ngx-scanner-qrcode -->
+              @if(isIOSDevice) {
+              <div class="ios-scanner-wrapper">
+                <ngx-scanner-qrcode
+                  #ngxScannerQrcode
+                  [config]="qrCodeConfig"
+                  (event)="onScanSuccess($event)"
+                  class="w-[250] sm:w-[200px] rounded-lg overflow-hidden"
+                />
+              </div>
+              } @else {
+
+              <div>
+                <!-- QR Code Scanner wrapper-->
+                <div id="reader" class="reader-scanner-wrapper rounded-lg"></div>
+              </div>
+              }
+
+              <!-- Scanner action button (works for both iOS and non-iOS) -->
+              <button
+                pButton
+                type="button"
+                class="btn btn-primary mt-2"
+                size="large"
+                [label]="getScannerLabel()"
+                (click)="getScannerAction()"
+                [loading]="isScanning"
+              ></button>
+            </div>
+          </div>
+        }
+        <!-- prettier-ignore -->
+      }
+      @else {
+      <!-- Supplier Field -->
+        <div class="form-field">
+          <label for="supplier" class="field-label">شركة الشحن</label>
           <div class="field-suffix-container">
             <p-dropdown
-              class="w-full py-[8px]"
-              id="role"
-              [formControl]="selectedCamera"
-              [options]="cameraDevices"
-              optionValue="id"
+              class="w-full"
+              id="supplier"
+              formControlName="supplier"
+              [options]="suppliers"
+              optionValue="value"
               optionLabel="label"
-              placeholder="برجاء اختيار الكاميرا لبدء المسح"
+              placeholder="اختر شركة الشحن"
             />
           </div>
-          }
-          <!-- iOS Scanner using ngx-scanner-qrcode -->
-          @if(isIOSDevice) {
-          <div class="ios-scanner-wrapper">
-            <ngx-scanner-qrcode
-              #ngxScannerQrcode
-              [config]="qrCodeConfig"
-              (event)="onScanSuccess($event)"
-              class="w-[250] sm:w-[200px] rounded-lg overflow-hidden"
-            />
-          </div>
-          } @else {
-
-          <div>
-            <!-- QR Code Scanner wrapper-->
-            <div id="reader" class="reader-scanner-wrapper rounded-lg"></div>
-          </div>
-          }
-
-          <!-- Scanner action button (works for both iOS and non-iOS) -->
-          <button
-            pButton
-            type="button"
-            class="btn btn-primary mt-2"
-            size="large"
-            [label]="getScannerLabel()"
-            (click)="getScannerAction()"
-            [loading]="isScanning"
-          ></button>
         </div>
-      </div>
       }
       <div class="form-field">
         <div>
@@ -119,15 +140,8 @@
                 formControlName="policyNumber"
                 class="input-with-suffix policy-number-input"
                 placeholder="أدخل رقم البوليصة"
-                [readonly]="!editMode"
+                [readonly]="isAutomated"
               />
-              <!-- <button
-                type="button"
-                class="suffix-button"
-                (click)="onEditPolicyNo()"
-              >
-                <i class="pi pi-pencil"></i>
-              </button> -->
             </div>
             <!-- prettier-ignore -->
             @if (inputForm.get('policyNumber')?.invalid && inputForm.get('policyNumber')?.touched) {

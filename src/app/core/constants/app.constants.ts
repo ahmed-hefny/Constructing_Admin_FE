@@ -8,13 +8,6 @@ export enum SystemRoles {
     EMPLOYEE = 'employee',
 }
 
-
-export const SYSTEM_ROLES_OPTIONS = [
-    { label: 'مسئول', value: SystemRoles.ADMIN },
-    { label: 'مشرف', value: SystemRoles.Supervisor },
-    { label: 'موظف', value: SystemRoles.EMPLOYEE },
-]
-
 export enum Suppliers {
     Arish = 1,
     Banisuef,
@@ -31,3 +24,14 @@ export const Default_PAGINATION: PaginationConfig = {
     showFirstLastIcon: false,
     currentPageReportTemplate: 'عرض {first} إلى {last} من أصل {totalRecords}'
 }
+
+export const SYSTEM_ROLES_OPTIONS = [
+    { label: 'مسئول', value: SystemRoles.ADMIN },
+    { label: 'مشرف', value: SystemRoles.Supervisor },
+    { label: 'موظف', value: SystemRoles.EMPLOYEE },
+]
+
+export const SUPPLIERS_OPTIONS = [
+    { label: 'العريش', value: Suppliers.Arish },
+    { label: 'بني سويف', value: Suppliers.Banisuef },
+]

@@ -13,7 +13,7 @@ import { TooltipModule } from "primeng/tooltip";
 import { InputTextModule } from "primeng/inputtext";
 import { CalendarModule } from "primeng/calendar";
 import { ButtonModule } from "primeng/button";
-import { Payload, PayloadConfig, PayloadsFiltration } from "./models/payloads.models";
+import { ExportType, Payload, PayloadConfig, PayloadsFiltration } from "./models/payloads.models";
 import { PaginationConfig } from "app/core/models";
 import { PayloadsService } from "./service/payloads.service";
 import { PaginationComponent } from "app/shared/components/pagination/pagination.component";
@@ -27,6 +27,8 @@ import { GalleriaModule } from "primeng/galleria";
 import { AccessControlDirective } from "app/shared/directives/access-control.directive";
 import { ConfirmDialogConfig } from "app/shared/models/dialog.models";
 import { DialogService } from "app/shared/services/dialog.service";
+import { Menu, MenuModule } from "primeng/menu";
+import { MenuItem } from "primeng/api";
 
 const imports = [
   CommonModule,
@@ -41,7 +43,8 @@ const imports = [
   ImageModule,
   DialogModule,
   GalleriaModule,
-  AccessControlDirective
+  AccessControlDirective,
+  MenuModule
 ];
 
 @Component({
@@ -62,10 +65,36 @@ export class PayloadsComponent implements OnInit {
   shouldShowCreateButton: boolean = false;
   payloadsPerProject: boolean = false;
   project: Project | null = null;
-
   todayMaxDate: Date = moment().toDate();
   policyNumberImages: string[] = [];
   visible: boolean = false;
+  createNewPayloadItems: MenuItem[] = [
+    {
+      label: 'يدوى',
+      icon: 'pi pi-plus',
+      command: () => this.create('manual')
+    },
+    {
+      label: 'مسح ضوئي',
+      icon: 'pi pi-camera',
+      command: () => this.create()
+    }
+  ]
+  exportTypes : MenuItem[] = [
+    {
+      label: 'الكل',
+      command: () => this.export()
+    },
+    {
+      label: 'العريش',
+      command: () => this.export(ExportType.Arish)
+    },
+    {
+      label: 'بني سويف',
+      command: () => this.export(ExportType.Bennisuif)
+    }
+  ]
+
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
@@ -109,8 +138,8 @@ export class PayloadsComponent implements OnInit {
     this.router.navigate(["/view", this.payloadConfig?.projectId || ""]);
   }
 
-  create(): void {
-    this.router.navigate(["upload"], { relativeTo: this.activatedRoute });
+  create(url: string = 'upload'): void {
+    this.router.navigate([url], { relativeTo: this.activatedRoute });
   }
 
   getData(): void {
@@ -185,8 +214,12 @@ export class PayloadsComponent implements OnInit {
     this.getData();
   }
 
-  export(): void {
-    const payload = this.getPayloadFiltrationObject();
+  export(supplierFilter: ExportType | null = null): void {
+    const payload = {
+      ...this.getPayloadFiltrationObject(),
+      supplierFilter
+    };
+
     this.isExporting = true;
     this.payloadsService
       .exportPayloads(payload)

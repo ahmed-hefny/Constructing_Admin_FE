@@ -20,7 +20,7 @@ import {
   ScanState,
 } from "../models/payloads.models";
 import { finalize, take } from "rxjs";
-import { Suppliers } from "app/core/constants/app.constants";
+import { Suppliers, SUPPLIERS_OPTIONS } from "app/core/constants/app.constants";
 import {
   CameraDevice,
   Html5Qrcode,
@@ -94,7 +94,10 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   };
 
   editMode: boolean = false;
+  isAutomated: boolean = false;
   payloadDetails: PayloadModel | null = null;
+  suppliers = SUPPLIERS_OPTIONS;
+
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
   private dialogService: DialogService = inject(DialogService);
@@ -105,9 +108,10 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   constructor() {}
 
   ngOnInit(): void {
+    this.isAutomated = this.activatedRoute.snapshot.data['isAutomated'] || false;
     this.initializeForm();
     this.configurePage();
-    if (!this.editMode) {
+    if (this.isAutomated) {
       this.isIOSDevice = this.platformService.isIOS();
       setTimeout(() => {
         if (!this.isIOSDevice) {
@@ -303,23 +307,6 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
     }
   }
 
-  onEditPolicyNo(): void {
-    const policyNoControl = this.inputForm.get("policyNumber");
-    if (policyNoControl) {
-      policyNoControl.enable();
-      policyNoControl.setValue("");
-      // Focus the input field
-      setTimeout(() => {
-        const inputElement = document.getElementById(
-          "policyNumber"
-        ) as HTMLInputElement;
-        if (inputElement) {
-          inputElement.focus();
-        }
-      }, 0);
-    }
-  }
-
   onUploadImage(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -407,6 +394,7 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
       policyNumber: new UntypedFormControl("", [Validators.required]),
       image: new UntypedFormControl(null, [Validators.required]),
       supplier: new FormControl<Suppliers>(Suppliers.Banisuef),
+      isManual: new FormControl<boolean>(!this.isAutomated),
     });
   }
 

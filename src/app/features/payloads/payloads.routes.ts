@@ -1,22 +1,28 @@
-import { Routes } from "@angular/router";
-import { SystemRoles } from "app/core/constants/app.constants";
-import { hasRoleGuard } from "app/core/guards";
+const payloadsComponent = () => import('./payloads.component').then(m => m.PayloadsComponent);
+const newPayloadComponent = () => import('./upload-payload/upload-payload.component').then(m => m.UploadPayloadComponent);
 
 export default [
     {
         path: ':projectId/:companyId',
-        loadComponent: () => import('./payloads.component').then(m => m.PayloadsComponent),
+        loadComponent: payloadsComponent,
     },
     {
         path: ':projectId',
-        loadComponent: () => import('./payloads.component').then(m => m.PayloadsComponent),
+        loadComponent: payloadsComponent,
     },
     {
         path: ':projectId/:companyId/upload',
-        loadComponent: () => import('./upload-payload/upload-payload.component').then(m => m.UploadPayloadComponent),
+        loadComponent: newPayloadComponent,
+        data: { 
+            isAutomated: true,
+        },
+    },
+    {
+        path: ':projectId/:companyId/manual',
+        loadComponent: newPayloadComponent,
     },
     {
         path: ':projectId/:companyId/edit/:id',
-        loadComponent: () => import('./upload-payload/upload-payload.component').then(m => m.UploadPayloadComponent),
+        loadComponent: newPayloadComponent,
     }
 ];

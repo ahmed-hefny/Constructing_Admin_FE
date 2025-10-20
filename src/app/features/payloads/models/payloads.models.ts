@@ -33,3 +33,8 @@ export enum ScanState {
   StopScan = "إيقاف الكاميرا",
   LoadingScan = "جاري التحميل...",
 }
+
+export enum ExportType {
+  Arish = 1,
+  Bennisuif = 2
+}
