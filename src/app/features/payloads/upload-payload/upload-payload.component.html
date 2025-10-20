@@ -32,33 +32,33 @@
         }
       </div>
       @if(!editMode) {
-      <div class="form-field">
-        <label for="image" class="field-label"> صورة البوليصة </label>
-        <div class="custom-file-upload">
-          <input
-            type="file"
-            accept="image/*;capture=environment"
-            id="image"
-            #fileInput
-            (change)="onUploadImage($event)"
-            hidden
-          />
-          <button
-            pButton
-            type="button"
-            class="btn btn-primary py-1"
-            size="large"
-            label="اختيار صورة"
-            (click)="fileInput.click()"
-          ></button>
-          <span class="file-name">{{ getFileName() }}</span>
+        <div class="form-field">
+          <label for="image" class="field-label"> صورة البوليصة </label>
+          <div class="custom-file-upload">
+            <input
+              type="file"
+              accept="image/*;capture=environment"
+              id="image"
+              #fileInput
+              (change)="onUploadImage($event)"
+              hidden
+            />
+            <button
+              pButton
+              type="button"
+              class="btn btn-primary py-1"
+              size="large"
+              label="اختيار صورة"
+              (click)="fileInput.click()"
+            ></button>
+            <span class="file-name">{{ getFileName() }}</span>
+          </div>
+          <!-- prettier-ignore -->
+          @if (inputForm.get('image')?.invalid && inputForm.get('image')?.touched) {
+          <!-- QR Code Scanner Error-->
+          <small class="error-message block"> لم يتم رفع صورة البوليصة. </small>
+          }
         </div>
-        <!-- prettier-ignore -->
-        @if (inputForm.get('image')?.invalid && inputForm.get('image')?.touched) {
-        <!-- QR Code Scanner Error-->
-        <small class="error-message block"> لم يتم رفع صورة البوليصة. </small>
-        }
-      </div>
         <!-- prettier-ignore -->
         @if(isAutomated) {
           <!-- QR Code Scanner -->
@@ -112,7 +112,7 @@
         }
         <!-- prettier-ignore -->
       }
-      @else {
+      @if(!isAutomated) {
       <!-- Supplier Field -->
         <div class="form-field">
           <label for="supplier" class="field-label">شركة الشحن</label>
