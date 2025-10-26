@@ -406,6 +406,15 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
   }
 
   private confirmPolicyNumber(): void {
+    let message = `هل أنت متأكد من رقم البوليصة: ${
+        this.inputForm.get("policyNumber")?.value
+      }؟`;
+    if(!this.isAutomated) {
+      const companyName = this.suppliers.find(s => s.value === this.inputForm.get("supplier")?.value)?.label;
+      message = `هل أنت متأكد من رقم البوليصة اليدوي: ${
+        this.inputForm.get("policyNumber")?.value
+      }، وشركة الشحن المختارة: ${companyName}؟`;
+    }
     const config: ConfirmDialogConfig = {
       header: "تأكيد",
       closeOnEscape: true,
@@ -416,9 +425,7 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
       acceptIcon: "pi pi-check",
       rejectLabel: "إلغاء",
       rejectIcon: "pi pi-times",
-      message: `هل أنت متأكد من رقم البوليصة: ${
-        this.inputForm.get("policyNumber")?.value
-      }؟`,
+      message,
       onAccept: () => {
         this.uploadPayload();
       },
