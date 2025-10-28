@@ -393,7 +393,7 @@ export class UploadPayloadComponent implements OnInit, OnDestroy {
       ]),
       policyNumber: new UntypedFormControl("", [Validators.required]),
       image: new UntypedFormControl(null, [Validators.required]),
-      supplier: new FormControl<Suppliers>(Suppliers.Banisuef),
+      supplier: new FormControl<Suppliers>(Suppliers.Arish),
       isManual: new FormControl<boolean>(!this.isAutomated),
     });
   }
