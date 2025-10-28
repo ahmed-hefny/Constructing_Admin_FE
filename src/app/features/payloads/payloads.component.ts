@@ -13,7 +13,7 @@ import { TooltipModule } from "primeng/tooltip";
 import { InputTextModule } from "primeng/inputtext";
 import { CalendarModule } from "primeng/calendar";
 import { ButtonModule } from "primeng/button";
-import { ExportType, Payload, PayloadConfig, PayloadsFiltration } from "./models/payloads.models";
+import { ExportType, PayloadConfig, PayloadModel, PayloadsFiltration, SupplierTotals } from "./models/payloads.models";
 import { PaginationConfig } from "app/core/models";
 import { PayloadsService } from "./service/payloads.service";
 import { PaginationComponent } from "app/shared/components/pagination/pagination.component";
@@ -56,7 +56,7 @@ const imports = [
 export class PayloadsComponent implements OnInit {
   SystemRoles = SystemRoles;
   payloadConfig: PayloadConfig | null = null;
-  data: Payload[] = [];
+  data: PayloadModel[] = [];
   pagination: PaginationConfig = Default_PAGINATION;
   inputForm!: FormGroup;
   isLoading: boolean = false;
@@ -94,6 +94,7 @@ export class PayloadsComponent implements OnInit {
       command: () => this.export(ExportType.Bennisuif)
     }
   ]
+  supplierTotals: SupplierTotals | null = null;
 
   private router: Router = inject(Router);
   private toaster: ToasterService = inject(ToasterService);
@@ -150,6 +151,7 @@ export class PayloadsComponent implements OnInit {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: (res) => {
+          this.supplierTotals = res?.supplierTotals || null;
           this.data = res?.items || [];
           this.policyNumberImages = this.data
             ?.filter((item) => item?.image)
@@ -257,7 +259,7 @@ export class PayloadsComponent implements OnInit {
     );
   }
 
-  confirmDelete(payload: Payload): void {
+  confirmDelete(payload: PayloadModel): void {
     const config: ConfirmDialogConfig = {
       header: 'تأكيد',
       closeOnEscape: true,

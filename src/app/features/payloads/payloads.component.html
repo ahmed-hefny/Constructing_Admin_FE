@@ -10,16 +10,35 @@
       </h1>
     </div>
     @if(shouldShowCreateButton && !payloadsPerProject) {
-      <div>
-        <button class="btn btn-primary gap-3" (click)="menu.toggle($event)">
-          <span class="font-bold text-md">جديد</span>
-          <i class="pi pi-angle-down pt-1"></i>
-        </button>
-        <p-menu #menu [model]="createNewPayloadItems" [popup]="true" />
-      </div>
+    <div>
+      <button class="btn btn-primary gap-3" (click)="menu.toggle($event)">
+        <span class="font-bold text-md">جديد</span>
+        <i class="pi pi-angle-down pt-1"></i>
+      </button>
+      <p-menu #menu [model]="createNewPayloadItems" [popup]="true" />
+    </div>
     }
   </div>
-  <div class="page-content">
+  <div class="page-content flex flex-col gap-4">
+    <p-card class="p-0 shadow">
+      <h2 class="text-lg font-bold mb-2">إجماليات الموردين</h2>
+      @if (supplierTotals) {
+        <div class="grid grid-cols-2 gap-4">
+          <div class="p-4 border-l border-gray-300">
+            <h3 class="text-md font-semibold mb-1">إجمالي العريش</h3>
+            <p class="text-2xl font-bold">{{ supplierTotals.arishTotal || 0 }}</p>
+          </div>
+          <div class="p-4">
+            <h3 class="text-md font-semibold mb-1">إجمالي بنى سويف</h3>
+            <p class="text-2xl font-bold">
+              {{ supplierTotals.benniSuifTotal || 0 }}
+            </p>
+          </div>
+        </div>
+      } @else {
+        <p>لا توجد معلومات متاحة.</p>
+      }
+    </p-card>
     <p-card class="p-0">
       <!-- Filter Form -->
       <div class="mb-4">
@@ -140,9 +159,11 @@
           <tr [ngClass]="{ 'bg-red-50': item?.isManual }">
             <td class="company-name-cell">{{ item?.company || "غير معرف" }}</td>
             <td>{{ item.date | date : "dd/MM/yyyy" }}</td>
-            <td class="ps-12 ">
+            <td class="ps-12">
+              <!-- prettier-ignore -->
               @if (item?.isModified) {
                 <i class="pi pi-check-circle text-green-500 text-xl"></i>
+              <!-- prettier-ignore -->
               } @else {
                 -
               }

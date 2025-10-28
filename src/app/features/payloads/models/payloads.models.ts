@@ -1,3 +1,5 @@
+import { PaginationResponse } from "app/core/models";
+
 export interface PayloadConfig {
   id?: number;
   projectId: string;
@@ -11,7 +13,7 @@ export interface PayloadModel {
   date: string;
   company: string;
   isActiveProject: boolean;
-  image: string;  
+  image: string;
   isManual?: boolean;
   isModified?: boolean;
 }
@@ -24,7 +26,14 @@ export interface PayloadsFiltration {
   companyId?: string;
 }
 
-export interface Payload extends PayloadModel { }
+export interface PayloadResponse extends PaginationResponse<PayloadModel> {
+  supplierTotals?: SupplierTotals;
+}
+
+export interface SupplierTotals {
+  arishTotal: number;
+  benniSuifTotal: number;
+}
 
 export enum ScanState {
   StartScan = "بدء المسح",
@@ -35,5 +44,5 @@ export enum ScanState {
 
 export enum ExportType {
   Arish = 1,
-  Bennisuif = 2
+  Bennisuif = 2,
 }

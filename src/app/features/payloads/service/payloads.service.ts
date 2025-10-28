@@ -5,7 +5,7 @@ import { HttpService } from "app/core/services";
 import { buildQueryParams } from "app/shared/helpers/queryParamBuilder";
 import { Project } from "app/shared/models/company.models";
 import { map, Observable } from "rxjs";
-import { Payload, PayloadModel } from "../models/payloads.models";
+import { PayloadModel, PayloadResponse } from "../models/payloads.models";
 import { environment } from "environments/environment";
 
 @Injectable({
@@ -36,9 +36,9 @@ export class PayloadsService {
     return this.http.delete(`/Payload/DeletePayload/${id}`);
   }
 
-  getAll(body: any): Observable<PaginationResponse<Payload>> {
+  getAll(body: any): Observable<PayloadResponse> {
     return this.http
-      .post<PaginationResponse<Payload>>(`/Payload/GetPayloadsList`, body)
+      .post<PayloadResponse>(`/Payload/GetPayloadsList`, body)
       .pipe(
         map((res) => {
           res.items.forEach((item) => {
